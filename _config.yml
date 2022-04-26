@@ -1,0 +1,29 @@
+collections:
+  research:
+    output: true
+  blog:
+    output: true
+
+title: Epoch
+theme: minima
+max_width: 800px
+
+url: eirol.github.io
+baseurl: /epoch-website
+repository: eirol/epoch-website
+
+defaults:
+  - scope:
+      path: ""
+      type: "blog"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "research"
+    values:
+      layout: "article"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
