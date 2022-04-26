@@ -1,0 +1,185 @@
+---
+---
+
+$max-content-width: {{ site.max_width }};
+
+@import
+  "{{ site.theme }}",
+  "variables",
+  "themes",
+  "layout",
+  "base",
+  "distill"
+;
+
+// Fonts
+
+@font-face {
+  font-family: "Computer Modern";
+  font-weight: normal;
+    src: url(../fonts/computer-modern/cmunrm.ttf);
+  }
+
+@font-face {
+  font-family: "Computer Modern";
+  font-weight: bold;
+  src: url(../fonts/computer-modern/cmunbx.ttf);
+}
+
+@font-face {
+  font-family: "Computer Modern";
+  font-style: italic;
+  src: url(../fonts/computer-modern/cmunsl.ttf);
+}
+
+@font-face {
+  font-family: "Noto Serif";
+  font-weight: normal;
+  src: url(../fonts/Noto_Serif_TC/NotoSerifTC-Regular.otf);
+}
+
+@font-face {
+  font-family: "Noto Serif";
+  font-weight: bold;
+  src: url(../fonts/Noto_Serif_TC/NotoSerifTC-Bold.otf);
+}
+
+// Site header
+.site-header { 
+  border-top: 0;
+  background-color: #231f20;
+  min-height: 54px;
+}
+
+.site-header a:hover, .site-header a:hover * {
+  color: #999;
+  text-decoration: none;
+}
+
+.site-title { 
+  color: #fff; 
+  font-family: "Computer Modern", "Noto Serif";
+  font-weight: bold;
+  //line-height: $base-line-height * 1.5;
+  float: left;
+
+  &:visited {
+    color: #fff;
+    }
+}
+
+.site-nav {
+  font-family: "Computer Modern", "Noto Serif";
+  font-weight: bold;
+  
+  .page-link {
+    color: #fff;
+  }
+
+}
+
+// Site footer
+.site-footer { 
+  padding: 10px;
+  background-color: #111;
+  text-align: center;
+  font-family: "Computer Modern", "Noto Serif";
+}
+
+// Page content
+
+.page-content {
+  padding: $spacing-unit 0;
+  font-family: "Computer Modern", "Noto Serif";
+  font-style: normal;
+  word-spacing: -1px;
+
+  h1 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+  
+  h2 {
+    font-weight: bold;
+    font-size: 25px;
+  }
+  
+  h3 {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  h4 {
+    font-weight: bold;
+    font-size: 12px;
+  }
+
+  h1.page-heading {
+    font-family: 'Computer Modern';
+    font-weight: bold;
+    font-size: 40px;
+  }
+
+  }
+
+.post-meta {
+  font-family: 'Computer Modern';
+  font-size: $base-font-size;
+  color: #111;
+
+  a.post-tag {
+    color: grey;
+    font-style: italic;
+  }
+}
+
+.post-header {
+  h1.page-heading {
+    font-family: 'Computer Modern';
+    font-weight: bold;
+    font-size: 40px;
+  }
+}
+
+.post-excerpt {
+  background-color: grey;
+}
+
+.post-content {
+
+  h1 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+  
+  h2 {
+    font-weight: bold;
+    font-size: 25px;
+  }
+  
+  h3 {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  
+  h4 {
+    font-weight: bold;
+    font-size: 12px;
+  }
+}
+
+.collection-grid {
+  display: grid;
+  grid-gap: 32px;
+  vertical-align: top;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 47.5%));
+  padding-bottom: 40px;
+
+  img {
+    max-height: 300px;
+    max-width: 100%;
+    display: block;
+    border-radius: 10%;
+  }
+}
+

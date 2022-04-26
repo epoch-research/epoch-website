@@ -1,0 +1,16 @@
+- name: Anson
+  role: Human
+  description: Foo
+  image: anson.jpg
+- name: Jaime
+  role: Human
+  description: Bar
+  image: jaime.jpg
+- name: Pablo
+  role: Human
+  description: Foobar
+  image: pablo.jpg
+- name: Eduardo
+  role: Human
+  description: Qux
+  image: edu.jpg

@@ -1,0 +1,25 @@
+collections:
+  research:
+    output: true
+  blog:
+    output: true
+
+theme: minima
+title: Epoch
+max_width: 800px
+
+defaults:
+  - scope:
+      path: ""
+      type: "blog"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "research"
+    values:
+      layout: "article"
+  - scope:
+      path: ""
+    values:
+      layout: "default"
