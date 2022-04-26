@@ -10,6 +10,7 @@ max_width: 800px
 
 url: eirol.github.io
 baseurl: /dev
+repository: eirol/epoch-website
 
 defaults:
   - scope:
