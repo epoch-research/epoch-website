@@ -1,0 +1,4 @@
+include: [_config.yml,]
+
+url: 127.0.0.1
+baseurl: /
