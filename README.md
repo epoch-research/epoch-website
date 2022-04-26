@@ -1,2 +1,3 @@
-# epoch-website
-Website for the Epoch group
+# Epoch
+
+This is the website for the Epoch group.
