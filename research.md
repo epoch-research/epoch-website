@@ -27,7 +27,7 @@ Our research agenda focuses on the best researches on the world. If you know res
 
 <div class="collection-grid">
   {% for item in site.research %}
-  <a href="{{item.url}}">
+  <a href="{{item.url | relative_url}}">
     <div class="project">
       <h3>{{ item.title }}</h3>
       <p>{% if item.subtitle %} {{item.subtitle}} {% else %} {{item.excerpt}} {% endif %}</p>
