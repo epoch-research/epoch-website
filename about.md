@@ -37,8 +37,9 @@ title: About
 </head>
 
 # About us
+We are a research initiative at working on monitoring AI developments and forecasting the development of Transformative AI. Our mission is to narrow the gap between technical AI developments and AI governance, and inform key decision makers in AI safety.
 
-We are a bunch of weird academics, plus Eduardo.
+## Our Team
 
 <div class="collection-grid team-grid">
   {% for item in site.data.team %}

@@ -1,16 +1,28 @@
-- name: Anson
-  role: Human
-  description: Foo
-  image: anson.jpg
-- name: Jaime
-  role: Human
+- name: Jaime Sevilla
+  role: Director
   description: Bar
-  image: jaime.jpg
-- name: Pablo
-  role: Human
+  image: jaime-sevilla.jpg
+- name: Tamay Besiroglu
+  role: Researcher
+  description: Foo
+  image: tamay-besiroglu.jpg
+- name: Pablo Villalobos
+  role: Staff Researcher
   description: Foobar
-  image: pablo.jpg
-- name: Eduardo
-  role: Human
+  image: pablo-villalobos.jpg
+- name: Eduardo Infante-Roldán
+  role: Software Engineer
   description: Qux
-  image: edu.jpg
+  image: eduardo-infante-roldan.jpg
+- name: Anson Ho
+  role: Staff Researcher
+  description: Anson is a researcher and writer for Epoch. His research interests are in interpretability and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.
+  image: anson-ho.jpg
+- name: Lennart Heim
+  role: Research Fellow and Strategy Specialist
+  description: Lennart Heim is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.
+  image: lennart-heim.jpg
+- name: Marius Hobbhahn
+  role: Research Fellow
+  description: Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.
+  image: marius-hobbhahn.jpg
