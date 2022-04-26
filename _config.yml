@@ -9,7 +9,7 @@ theme: minima
 max_width: 800px
 
 url: eirol.github.io
-baseurl: /dev
+baseurl: /epoch-website
 repository: eirol/epoch-website
 
 defaults:
