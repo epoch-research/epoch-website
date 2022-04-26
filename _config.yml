@@ -4,9 +4,12 @@ collections:
   blog:
     output: true
 
-theme: minima
 title: Epoch
+theme: minima
 max_width: 800px
+
+url: eirol.github.io
+baseurl: /dev
 
 defaults:
   - scope:
