@@ -23,7 +23,6 @@ title: Research
 
 # Research
 
-Our research agenda focuses on the best researches on the world. If you know researches, please, let us know, so that we can know them as well.
 
 <div class="collection-grid">
   {% for item in site.research %}
@@ -36,3 +35,5 @@ Our research agenda focuses on the best researches on the world. If you know res
   </a>
   {% endfor %}
 </div>
+
+## Research Agenda
