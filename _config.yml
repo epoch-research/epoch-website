@@ -10,7 +10,7 @@ max_width: 800px
 
 url: epochai.org
 baseurl: /
-repository: eirol/epoch-website
+repository: epoch-research/epoch-website
 
 defaults:
   - scope:
