@@ -1,7 +1,7 @@
 ---
 ---
 
-$max-content-width: {{ site.max_width }};
+$max-content-width: 984px;
 
 @import
   "{{ site.theme }}",
@@ -120,7 +120,7 @@ $max-content-width: {{ site.max_width }};
     font-size: 40px;
   }
 
-  }
+}
 
 .post-meta {
   font-family: 'Computer Modern';
@@ -183,3 +183,8 @@ $max-content-width: {{ site.max_width }};
   }
 }
 
+.wrapper {
+  max-width: $max-content-width;
+  margin-right: auto;
+  margin-left: auto;
+}

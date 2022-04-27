@@ -17,21 +17,16 @@ title: About
       .team-grid { grid-template-columns: repeat(1, 1fr); }
     }
 
-    /*
-    @media (min-width: 600px) {
-      .team-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    */
-
-		.member .mug {
-      /*
-      width: 100%;
-      height: 300px;
-      */
+		.mug {
       padding-top: 100%;
+      margin-bottom: 10px;
       box-shadow: 0 0 10px 0 rgb(0 0 0 / 20%);
       background-size: cover;
       background-position: center;
+    }
+
+    .member-name {
+      margin-bottom: 2px;
     }
   </style>
 </head>
@@ -44,11 +39,10 @@ We are a research initiative at working on monitoring AI developments and foreca
 <div class="collection-grid team-grid">
   {% for item in site.data.team %}
   <div class="member">
-  <!--
-    <img src="{{item.image | prepend: '/assets/images/team/' | relative_url }}" style="background-image: ">
-  -->
     <div class="mug" style="background-image: url('{{item.image | prepend: '/assets/images/team/' | relative_url }}')"></div>
-    <p>{{item.name}} - {{item.role}} - {{item.description}}</p>
+    <h3 class="member-name">{{item.name}}</h3>
+    <h4 class="member-role">{{item.role}}</h4>
+    <p class="member-description">{{item.description}}</p>
   </div>
   {% endfor %}
 </div>
