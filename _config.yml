@@ -8,8 +8,8 @@ title: Epoch
 theme: minima
 max_width: 800px
 
-url: eirol.github.io
-baseurl: /epoch-website
+url: epochai.org
+baseurl: /
 repository: eirol/epoch-website
 
 defaults:
