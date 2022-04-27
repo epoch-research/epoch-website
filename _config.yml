@@ -28,9 +28,12 @@ max_width: 800px
 url: epochai.org
 baseurl:
 
+exclude: [README.md]
+
 #
 # GitHub stuff
 #
-repository: epoch-research/epoch-website
+#repository: epoch-research/epoch-website
+repository:
 include: [CNAME]
 
