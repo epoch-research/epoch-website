@@ -4,14 +4,6 @@ collections:
   blog:
     output: true
 
-title: Epoch
-theme: minima
-max_width: 800px
-
-url: epochai.org
-baseurl: /
-repository: epoch-research/epoch-website
-
 defaults:
   - scope:
       path: ""
@@ -27,3 +19,18 @@ defaults:
       path: ""
     values:
       layout: "default"
+
+
+title: Epoch
+theme: minima
+max_width: 800px
+
+url: epochai.org
+baseurl: /
+
+#
+# GitHub stuff
+#
+repository: epoch-research/epoch-website
+include: [CNAME]
+
