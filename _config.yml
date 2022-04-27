@@ -33,7 +33,6 @@ exclude: [README.md]
 #
 # GitHub stuff
 #
-#repository: epoch-research/epoch-website
-repository:
+repository: epoch-research/epoch-website
 include: [CNAME]
 
