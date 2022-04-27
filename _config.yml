@@ -31,6 +31,6 @@ baseurl:
 #
 # GitHub stuff
 #
-#repository: epoch-research/epoch-website
+repository: epoch-research/epoch-website
 include: [CNAME]
 
