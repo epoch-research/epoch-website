@@ -28,6 +28,13 @@ title: About
     .member-name {
       margin-bottom: 2px;
     }
+
+    /* Helps focusing the attention when jumping to the miniprofile of a member */
+    :target {
+      border: 1px solid #bb8888;
+      border-radius: 1px;
+      background-color: #bb888833;
+    }
   </style>
 </head>
 
@@ -38,8 +45,8 @@ We are a research initiative at working on monitoring AI developments and foreca
 
 <div class="collection-grid team-grid">
   {% for item in site.data.team %}
-  <div class="member">
-    <div class="mug" style="background-image: url('{{item.image | prepend: '/assets/images/team/' | relative_url }}')"></div>
+  <div class="member" id="{{item.id}}">
+    <div class="mug" style="background-image: url('{{item.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}')"></div>
     <h3 class="member-name">{{item.name}}</h3>
     <h4 class="member-role">{{item.role}}</h4>
     <p class="member-description">{{item.description}}</p>

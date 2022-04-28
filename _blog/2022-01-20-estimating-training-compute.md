@@ -18,23 +18,23 @@ date: 2022-01-20
 
 authors:
   - name: Jaime Sevilla
-    url: ""
+    url: "/about#jaime-sevilla"
     affiliations:
       name: University of Aberdeen
   - name: Lennart Heim
-    url: ""
+    url: "/about#lennart-heim"
     affiliations:
       name: Centre for the Governance of AI
   - name: Marius Hobbhahn
-    url: ""
+    url: "/about#marius-hobbhahn"
     affiliations:
       name: University of Tübingen
   - name: Tamay Besiroglu
-    url: ""
+    url: "/about#tamay-besiroglu"
     affiliations:
       name: Massachusetts Institute of Technology
   - name: Anson Ho
-    url: ""
+    url: "/about#anson-ho"
     affiliations:
       name: University of St Andrews
 ---

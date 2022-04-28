@@ -104,7 +104,7 @@ title: Blog
     <div class="project-meat">
       <h2 class="project-name">{{item.title}}</h2>
       <p class="project-authors">{{item.authors | map: 'name' | better_join: ", ", ", and "}}</p>
-      <p class="project-abstract">{{item.excerpt}}</p>
+      <p class="project-abstract">{% if (item.description) %} {{item.description}} {% else %} {{item.excerpt}} {% endif %}</p>
     </div>
   </a>
   {% endfor %}
