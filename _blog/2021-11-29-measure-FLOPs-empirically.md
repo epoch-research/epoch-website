@@ -1,20 +1,22 @@
 ---
 layout: article
-title: "Announcing Epoch: A research initiative monitoring the road to transformative AI"
+title: "How to measure FLOP/s for Neural Networks empirically"
 subtitle: Subtitle
 image: assets/images/sunrise.jpg
 description: A new era has arrived. Are you prepared for it?
+external: true
+external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/jJApGWG95495pYM7C
 
 toc:
   - name: What is Lorem Ipsum?
   - name: Why do we use it?
   - name: Where does it come from?
 
-date: 2022-04-26
+date: 2021-11-29
 
 authors:
-  - name: Anson Ho
-    url: "https://ansonwhho.github.io"
+  - name: Marius Hobbhahn
+    url: ""
     affiliations:
       name: Epoch
   - name: Boris Podolsky
