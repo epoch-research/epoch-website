@@ -29,8 +29,6 @@ baseurl: /
 
 exclude: [README.md]
 
-#
-# GitHub stuff
-#
+# To make GitHub Pages work with our domain
 include: [CNAME]
 

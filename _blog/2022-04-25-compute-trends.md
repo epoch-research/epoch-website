@@ -2,7 +2,7 @@
 layout: article
 title: Compute Trends Across Three Eras of Machine Learning
 subtitle: An interesting collaboration between two of the best teams in the world
-image: assets/images/sunrise.jpg
+image: assets/images/thumbnail.jpg
 description: A new era has arrived. Are you prepared for it?
 
 toc:

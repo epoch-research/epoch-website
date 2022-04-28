@@ -2,7 +2,7 @@
 layout: distill
 title: Parameter Counts in Machine Learning
 subtitle: We describe two approaches for estimating the training compute of Deep Learning systems, by counting operations and looking at GPU time. 
-image: assets/images/sunrise.jpg
+image: assets/images/thumbnail.jpg
 description: We describe two approaches for estimating the training compute of Deep Learning systems, by counting operations and looking at GPU time.
 external: true
 external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/GzoWcYibWYwJva8aL

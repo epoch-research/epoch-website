@@ -4,7 +4,8 @@ title: Careers
 
 # Careers
 
-**We expect to be hiring for several full-time research and management roles from May to July. Salaries range from \\$60,000 for entry roles to \\$80,000 for senior roles.**
+**We expect to be hiring for several full-time research and management roles from May to July. Salaries range from $60,000 for entry roles to $80,000 for senior roles.**
+{: .tex2jax_ignore }
 
 Why work with Epoch? 
 - You can work from anywhere in the world, and work will primarily be done remotely We expect to organise group retreats every 6 months to do in-person coworking, and we can help with visa applications

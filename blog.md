@@ -4,57 +4,107 @@ title: Blog
 
 <head>
 	<style>
-		.project-list {
+    .project:hover {
+      text-decoration: none;
+    }
+
+    .project-list {
       overflow: hidden;
     }
+
 		.project {
 			vertical-align: top;
 			color: #111;
       height: 100%;
-      border-bottom: 1 solid grey;
+      padding-bottom: 15px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--global-divider-color);
+      display: flex;
+      flex-wrap: wrap;
 		}
+
+    .project:last-child {
+      border-bottom: 0;
+    }
+
 		.project h3 {
 			margin-bottom: 0px;
 		}
-		.project p {
-			color: grey;
-		}
+
     .project-date {
-      float: left;
-      width: 10%;
-      margin-top: 7px;
+      margin-top: 0.5em;
       margin-right: 1em;
+      margin-right: 0;
+      font-size: 0.9rem;
+      color: #333;
+      flex: none;
+      width: 10%;
+      order: 0;
+      margin-bottom: 18px;
     }
-    .project-summary {
-      float: left;
+
+    .project-meat {
+      flex: none;
       width: 50%;
+      margin: 0;
+      padding-right: 0.8rem;
+      box-sizing: border-box;
+      order: 1;
     }
+
+		.project-authors {
+      font-size: 0.9rem;
+			color: #555;
+		}
+
     .project-thumbnail {
-      float: right;
-      width: 30%;
+      flex: none;
+      width: 40%;
+      margin: 0;
+      order: 2;
     }
+
+    .project-name {
+      margin-bottom: 0;
+    }
+
     .project-thumbnail img {
-      max-width: 100%;
+      width: 100%;
     }
+
+    @media (max-width: 750px) {
+      .project {
+        display: block;
+      }
+
+      .project-date {
+        width: 100%;
+      }
+
+      .project-thumbnail {
+        width: 100%;
+      }
+
+      .project-meat {
+        width: 100%;
+      }
+    }
+
 	</style>
 </head>
 
 # Blog
 
 <div class="project-list">
-  {% for item in site.blog reversed %}
-  {% if item.external %}
-  <a href="{{item.external_url}}">
-  {% else %}
-  <a href="{{item.url | relative_url}}">
-  {% endif %}
-    <div class="project">
-      <div class="project-date">{{item.date | date: "%-d %B %Y"}}</div>
-      <div class="project-summary">
-        <h2 class="project-name">{{item.title}}</h2>
-        <p class="project-description">{% if item.subtitle %} {{item.subtitle}} {% else %} {{item.excerpt}} {% endif %}</p>
-      </div>
-      <div class="project-thumbnail"><img src="{{item.image | relative_url }}"></div>
+  {% assign articles = site.blog | sort: 'date' | reverse %}
+  {% for item in articles %}
+  <a href="{{item.url | relative_url}}" class="project">
+    <div class="project-date">{{item.date | date: "%b. %d, %Y"}}</div>
+    <div class="project-thumbnail"><img src="{{item.image | relative_url }}"></div>
+    <div class="project-meat">
+      <h2 class="project-name">{{item.title}}</h2>
+      <p class="project-authors">{{item.authors | map: 'name' | better_join: ", ", ", and "}}</p>
+      <p class="project-abstract">{{item.excerpt}}</p>
     </div>
   </a>
   {% endfor %}

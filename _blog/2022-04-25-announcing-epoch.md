@@ -2,7 +2,7 @@
 layout: article
 title: "Announcing Epoch: A research initiative monitoring the road to transformative AI"
 subtitle: Subtitle
-image: assets/images/sunrise.jpg
+image: assets/images/thumbnail.jpg
 description: A new era has arrived. Are you prepared for it?
 
 toc:

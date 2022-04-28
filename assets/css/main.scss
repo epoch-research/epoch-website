@@ -84,6 +84,10 @@ $max-content-width: 984px;
   background-color: #111;
   text-align: center;
   font-family: "Computer Modern", "Noto Serif";
+
+  p {
+    margin: 0;
+  }
 }
 
 // Page content

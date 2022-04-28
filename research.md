@@ -4,14 +4,18 @@ title: Research
 
 <head>
 	<style>
+    .project:hover {
+      text-decoration: none;
+    }
+
 		.project-list {
       		overflow: hidden;
     	}
 		.project {
 			vertical-align: top;
 			color: #111;
-     		height: 100%;
-      		border-bottom: 1 solid grey;
+     	height: 100%;
+      border-bottom: 1 solid grey;
 		}
 		.project h3 {
 			margin-bottom: 0px;

@@ -7,7 +7,12 @@ d-byline {
 }
 
 d-byline h3 {
-  color: var(--global-text-color) !important;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.6rem !important;
+}
+
+d-byline span {
+  color: rgba(0, 0, 0, 1.0);
 }
 
 d-byline a, d-article d-byline a {
@@ -15,6 +20,11 @@ d-byline a, d-article d-byline a {
   &:hover {
     color: var(--global-hover-color) !important;
   }
+}
+
+d-byline .authors-affiliations {
+  grid-column-end: span 3 !important;
+  grid-template-columns: 1fr 2fr;
 }
 
 d-article {
@@ -39,19 +49,13 @@ d-article {
     justify-self: end;
     margin-top: 0em;
     padding-left: 2em;
-    padding-right: 3em;
     border-right: 1px solid var(--global-divider-color);
-    width: calc(max(70%, 300px));
+    padding-right: 1em;
     margin-right: 0px;
     margin-top:  0em;
-    display: grid;
-    grid-template-columns:
-      minmax(8px, 1fr) [toc] auto
-      minmax(8px, 1fr) [toc-line] 1px
-      minmax(32px, 2fr);
 
     nav {
-      grid-column: toc;
+      grid-column: toc !important;
       a {
         border-bottom: none !important;
         &:hover {
@@ -61,6 +65,7 @@ d-article {
       h3 {
         margin-top: 0;
         margin-bottom: 1em;
+        color: rgba(0, 0, 0, 0.7) !important;
       }
       div {
         display: block;
@@ -111,13 +116,15 @@ d-appendix {
   d-article {
     d-contents {
       display: block;
-      grid-column-start: 2;
+      grid-column: text;
+      justify-self: start;
       grid-column-end: -2;
       padding-bottom: 0.5em;
       margin-bottom: 1em;
+      padding-left: 0;
       padding-top: 0.5em;
       width: 100%;
-      border: 1px solid var(--global-divider-color);
+      border-bottom: 1px solid var(--global-divider-color);
       nav {
         grid-column: none;
       }

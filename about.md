@@ -9,11 +9,11 @@ title: About
       grid-template-columns: repeat(3, 1fr);
     }
 
-    @media (max-width: 700px) {
+    @media (max-width: 800px) {
       .team-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 500px) {
       .team-grid { grid-template-columns: repeat(1, 1fr); }
     }
 

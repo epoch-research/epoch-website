@@ -2,7 +2,7 @@
 layout: article
 title: "Projecting compute trends in Machine Learning"
 subtitle: Subtitle
-image: assets/images/sunrise.jpg
+image: assets/images/thumbnail.jpg
 description: A new era has arrived. Are you prepared for it?
 external: true
 external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/3dBtgKCkJh5yCHbag
