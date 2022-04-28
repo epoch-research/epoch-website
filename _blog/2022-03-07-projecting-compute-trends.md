@@ -1,28 +1,30 @@
 ---
 layout: article
-title: "Announcing Epoch: A research initiative monitoring the road to transformative AI"
+title: "Projecting compute trends in Machine Learning"
 subtitle: Subtitle
 image: assets/images/sunrise.jpg
 description: A new era has arrived. Are you prepared for it?
+external: true
+external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/3dBtgKCkJh5yCHbag
 
 toc:
   - name: What is Lorem Ipsum?
   - name: Why do we use it?
   - name: Where does it come from?
 
-date: 2022-04-26
+date: 2022-03-07
 
 authors:
-  - name: Anson Ho
-    url: "https://ansonwhho.github.io"
+  - name: Tamay Besiroglu
+    url: ""
     affiliations:
       name: Epoch
-  - name: Boris Podolsky
-    url: "https://en.wikipedia.org/wiki/Boris_Podolsky"
+  - name: Lennart Heim
+    url: ""
     affiliations:
       name: IAS, Princeton
-  - name: Nathan Rosen
-    url: "https://en.wikipedia.org/wiki/Nathan_Rosen"
+  - name: Jaime Sevilla
+    url: ""
     affiliations:
       name: IAS, Princeton
 ---

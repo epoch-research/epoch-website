@@ -1,16 +1,18 @@
 ---
 layout: article
-title: "Announcing Epoch: A research initiative monitoring the road to transformative AI"
+title: "What’s the backward-forward FLOP ratio for Neural Networks?"
 subtitle: Subtitle
 image: assets/images/sunrise.jpg
 description: A new era has arrived. Are you prepared for it?
+external: true
+external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/fnjKpBoWJXcSDwhZk
 
 toc:
   - name: What is Lorem Ipsum?
   - name: Why do we use it?
   - name: Where does it come from?
 
-date: 2022-04-26
+date: 2021-12-13
 
 authors:
   - name: Anson Ho
