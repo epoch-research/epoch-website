@@ -30,12 +30,21 @@ title: About
     }
 
     /* Helps focusing the attention when jumping to the miniprofile of a member */
-    :target {
+    body:not(.clicked) :target {
+      /*
       border: 1px solid #bb8888;
       border-radius: 1px;
+      */
       background-color: #bb888833;
     }
+
   </style>
+
+  <script>
+    // TODO Implement this properly
+    document.body.addEventListener("touchstart", e => document.body.classList.add("clicked"));
+    document.body.addEventListener("click", e => document.body.classList.add("clicked"));
+  </script>
 </head>
 
 # About us
