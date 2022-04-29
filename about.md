@@ -25,6 +25,10 @@ title: About
       background-position: center;
     }
 
+    .member-info {
+      padding: 4px;
+    }
+
     .member-name {
       margin-bottom: 2px;
     }
@@ -32,10 +36,9 @@ title: About
     /* Helps focusing the attention when jumping to the miniprofile of a member */
     body:not(.clicked) :target {
       /*
-      border: 1px solid #bb8888;
-      border-radius: 1px;
-      */
       background-color: #bb888833;
+      */
+      box-shadow: 0 0 18px 3px rgb(203 104 253 / 74%);
     }
 
   </style>
@@ -56,9 +59,11 @@ We are a research initiative at working on monitoring AI developments and foreca
   {% for item in site.data.team %}
   <div class="member" id="{{item.id}}">
     <div class="mug" style="background-image: url('{{item.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}')"></div>
-    <h3 class="member-name">{{item.name}}</h3>
-    <h4 class="member-role">{{item.role}}</h4>
-    <p class="member-description">{{item.description}}</p>
+    <div class="member-info">
+      <h3 class="member-name">{{item.name}}</h3>
+      <h4 class="member-role">{{item.role}}</h4>
+      <p class="member-description">{{item.description}}</p>
+    </div>
   </div>
   {% endfor %}
 </div>
