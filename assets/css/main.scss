@@ -2,6 +2,7 @@
 ---
 
 $max-content-width: 984px;
+$hovered-link-color: #999;
 
 @import
   "{{ site.theme }}",
@@ -52,7 +53,7 @@ $max-content-width: 984px;
 }
 
 .site-header a:hover, .site-header a:hover * {
-  color: #999;
+  color: $hovered-link-color;
   text-decoration: none;
 }
 
@@ -87,6 +88,14 @@ $max-content-width: 984px;
 
   p {
     margin: 0;
+  }
+
+  a {
+    color: white;
+    &:hover {
+      color: $hovered-link-color;
+      text-decoration: none;
+    }
   }
 }
 
@@ -191,4 +200,11 @@ $max-content-width: 984px;
   max-width: $max-content-width;
   margin-right: auto;
   margin-left: auto;
+}
+
+$on-palm: 600px;
+@media (max-width: $on-palm) {
+  .site-nav .page-link {
+    color: black;
+  }
 }
