@@ -204,7 +204,10 @@ $hovered-link-color: #999;
 
 $on-palm: 600px;
 @media (max-width: $on-palm) {
-  .site-nav .page-link {
-    color: black;
+  .site-nav {
+    z-index: 1;
+    .page-link {
+      color: black;
+    }
   }
 }
