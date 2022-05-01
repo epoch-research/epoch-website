@@ -5,8 +5,13 @@
   {%- include head.html -%}
 
   <style>
-    html {
-      height: 100%;
+    /*
+       Q: Why?
+       A: So as to avoid (sort of) the 100vh "bug" on Chrome for Android (see https://dev.to/glittle/comment/a0n3)
+    */
+    html, body {
+      //height: 100%;
+      //background-color: var(--footer-color);
     }
 
     body {
@@ -16,8 +21,7 @@
     }
 
     .facade {
-      height: 100%;
-      min-height: 100vh;
+      height: 100vh;
       display: flex;
       align-items: center;
       font-size: 2em;
@@ -32,7 +36,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 100vh;
       background-image: url('{{ page.image | relative_url }}');
       background-size: cover;
       background-position-x: center;
@@ -62,7 +66,7 @@
     }
 
     .site-header {
-      z-index: 1;
+      z-index: 2;
       position: absolute;
       top: 0;
       left: 0;
@@ -102,7 +106,7 @@
   <body>
     {%- include header.html -%}
 
-    <div class="facade">
+    <div id="facade" class="facade">
       <div class="cover"></div>
       {% if page.cover_text %}
       <div class="wrapper cover-text">
@@ -126,5 +130,4 @@
     {%- include footer.html -%}
 
   </body>
-
 </html>

@@ -3,6 +3,7 @@
 
 $max-content-width: 984px;
 $hovered-link-color: #999;
+$footer-color: #111;
 
 @import
   "{{ site.theme }}",
@@ -15,6 +16,7 @@ $hovered-link-color: #999;
 
 :root {
   --hovered-link-color: #{$hovered-link-color};
+  --footer-color: #{$footer-color};
 }
 
 // Fonts
@@ -86,7 +88,7 @@ $hovered-link-color: #999;
 // Site footer
 .site-footer { 
   padding: 10px;
-  background-color: #111;
+  background-color: $footer-color;
   text-align: center;
   font-family: "Computer Modern", "Noto Serif";
 

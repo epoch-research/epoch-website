@@ -33,11 +33,8 @@ title: About
       margin-bottom: 2px;
     }
 
-    /* Helps focusing the attention when jumping to the miniprofile of a member */
+    /* Helps directing the attention when jumping to the miniprofile of a member */
     body:not(.clicked) :target {
-      /*
-      background-color: #bb888833;
-      */
       box-shadow: 0 0 18px 3px rgb(203 104 253 / 74%);
     }
 

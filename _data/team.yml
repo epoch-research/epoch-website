@@ -1,19 +1,15 @@
 - name: Jaime Sevilla
   role: Director
-  description: Bar
+  description: Foo
   id: jaime-sevilla
 - name: Tamay Besiroglu
   role: Researcher
-  description: Foo
+  description: Bar
   id: tamay-besiroglu
 - name: Pablo Villalobos
   role: Staff Researcher
   description: Foobar
   id: pablo-villalobos
-- name: Eduardo I. Roldán
-  role: Software Engineer
-  description: Eduardo does some programming.
-  id: eduardo-infante-roldan
 - name: Anson Ho
   role: Staff Researcher
   description: Anson is a researcher and writer for Epoch. His research interests are in interpretability and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.
@@ -26,3 +22,7 @@
   role: Research Fellow
   description: Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.
   id: marius-hobbhahn
+- name: Eduardo Infante Roldán
+  role: Software Engineer
+  description: Eduardo does some programming.
+  id: eduardo-infante-roldan
