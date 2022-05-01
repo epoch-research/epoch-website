@@ -13,6 +13,10 @@ $hovered-link-color: #999;
   "distill"
 ;
 
+:root {
+  --hovered-link-color: #{$hovered-link-color};
+}
+
 // Fonts
 
 @font-face {
