@@ -4,6 +4,7 @@ title: "Announcing Epoch: A research initiative monitoring the road to transform
 subtitle: Subtitle
 image: assets/images/thumbnail.jpg
 description: A new era has arrived. Are you prepared for it?
+tags: editorial
 
 toc:
   - name: What is Lorem Ipsum?

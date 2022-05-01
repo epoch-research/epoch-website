@@ -1,10 +1,8 @@
 ---
 layout: home
 title: Epoch
-description: Epoch is, truly, the best organization you could ever imagine.
-image: space.png
+cover_text: Foo bar foo foo bar. Foo qux bar. Foo foo foobar.
+featured_url: /blog/2022-01-20-estimating-training-compute.html
+featured_url_text: Read article
+image: assets/images/wave.jpg
 ---
-
-In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. It is also used to temporarily replace text in a process called greeking, which allows designers to consider the form of a webpage or publication, without the meaning of the text influencing the design.
-
-Lorem ipsum is typically a corrupted version of De finibus bonorum et malorum, a 1st-century BC text by the Roman statesman and philosopher Cicero, with words altered, added, and removed to make it nonsensical and improper Latin.

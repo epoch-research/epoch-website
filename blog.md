@@ -4,15 +4,15 @@ title: Blog
 
 <head>
 	<style>
-    .project:hover {
+    .post:hover {
       text-decoration: none;
     }
 
-    .project-list {
+    .post-list {
       overflow: hidden;
     }
 
-		.project {
+		.post {
 			vertical-align: top;
 			color: #111;
       height: 100%;
@@ -23,69 +23,102 @@ title: Blog
       flex-wrap: wrap;
 		}
 
-    .project:last-child {
+    .post:last-child {
       border-bottom: 0;
     }
 
-		.project h3 {
+		.post h3 {
 			margin-bottom: 0px;
 		}
 
-    .project-date {
-      margin-top: 0.5em;
-      margin-right: 1em;
-      margin-right: 0;
+    .post-metadata {
+      margin-top: 0.5rem;
+      margin-right: 0.5rem;
       font-size: 0.9rem;
-      color: #333;
-      flex: none;
-      width: 10%;
+      width: calc(15% - 0.5rem);
       order: 0;
-      margin-bottom: 18px;
+      margin-bottom: 0px;
     }
 
-    .project-meat {
-      flex: none;
-      width: 50%;
+    .post-date {
+      color: #333;
+      margin-right: 0.5rem;
+    }
+
+    .post-tags {
+    }
+
+    .post-tag {
+      width: fit-content;
+      padding: 0.01rem 0.3rem;
+      color: white;
+      font-weight: bold;
+      background-color: #333;
+      border-radius: 4px;
+      border: 1px solid #0008;
+      margin-bottom: 0.2em;
+
+      font-size: 0.7rem;
+      line-height: 1.0rem;
+    }
+
+    .post-tag.peer-reviewed {
+      background-color: #557;
+    }
+
+    .post-tag.editorial {
+      background-color: #646;
+    }
+
+    .post-meat {
+      width: 45%;
       margin: 0;
       padding-right: 0.8rem;
       box-sizing: border-box;
       order: 1;
     }
 
-		.project-authors {
+		.post-authors {
       font-size: 0.9rem;
 			color: #555;
 		}
 
-    .project-thumbnail {
-      flex: none;
+    .post-thumbnail {
       width: 40%;
       margin: 0;
       order: 2;
     }
 
-    .project-name {
+    .post-name {
       margin-bottom: 0;
     }
 
-    .project-thumbnail img {
+    .post-thumbnail img {
       width: 100%;
     }
 
     @media (max-width: 750px) {
-      .project {
+      .post {
         display: block;
       }
 
-      .project-date {
+      .post-metadata * {
+        display: inline-block;
+      }
+
+      .post-tags {
+        transform: translateY(-2px);
+      }
+
+      .post-metadata {
         width: 100%;
       }
 
-      .project-thumbnail {
+      .post-thumbnail {
         width: 100%;
       }
 
-      .project-meat {
+      .post-meat {
         width: 100%;
       }
     }
@@ -95,16 +128,25 @@ title: Blog
 
 # Blog
 
-<div class="project-list">
+<div class="post-list">
   {% assign articles = site.blog | sort: 'date' | reverse %}
   {% for item in articles %}
-  <a href="{{item.url | relative_url}}" class="project">
-    <div class="project-date">{{item.date | date: "%b. %d, %Y"}}</div>
-    <div class="project-thumbnail"><img src="{{item.image | relative_url }}"></div>
-    <div class="project-meat">
-      <h2 class="project-name">{{item.title}}</h2>
-      <p class="project-authors">{{item.authors | map: 'name' | better_join: ", ", ", and "}}</p>
-      <p class="project-abstract">{% if (item.description) %} {{item.description}} {% else %} {{item.excerpt}} {% endif %}</p>
+  <a href="{{item.url | relative_url}}" class="post">
+    <div class="post-metadata">
+      <div class="post-date">{{item.date | date: "%b. %d, %Y"}}</div>
+      {% if item.tags %}
+      <div class="post-tags">
+        {% for tag in item.tags %}
+        <div class="post-tag {{tag}}">{{tag}}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="post-thumbnail"><img src="{{item.image | relative_url }}"></div>
+    <div class="post-meat">
+      <h2 class="post-name">{{item.title}}</h2>
+      <p class="post-authors">{{item.authors | map: 'name' | better_join: ", ", ", and "}}</p>
+      <p class="post-abstract">{% if item.description %} {{item.description}} {% else %} {{item.excerpt}} {% endif %}</p>
     </div>
   </a>
   {% endfor %}

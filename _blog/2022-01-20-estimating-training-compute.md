@@ -6,6 +6,7 @@ image: assets/images/thumbnail.jpg
 description: We describe two approaches for estimating the training compute of Deep Learning systems, by counting operations and looking at GPU time. 
 external: true
 external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/HvqQm6o8KnwxbdmhZ
+tags: editorial
 
 toc:
   - name: Summary

@@ -6,6 +6,7 @@ image: assets/images/thumbnail.jpg
 description: A new era has arrived. Are you prepared for it?
 external: true
 external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/3dBtgKCkJh5yCHbag
+tags: editorial
 
 toc:
   - name: What is Lorem Ipsum?

@@ -4,6 +4,7 @@ title: Compute Trends Across Three Eras of Machine Learning
 subtitle: An interesting collaboration between two of the best teams in the world
 image: assets/images/thumbnail.jpg
 description: A new era has arrived. Are you prepared for it?
+tags: peer-reviewed
 
 toc:
   - name: What is Lorem Ipsum?
