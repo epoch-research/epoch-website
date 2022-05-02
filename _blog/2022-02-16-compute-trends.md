@@ -28,6 +28,72 @@ authors:
       name: IAS, Princeton
 ---
 
+<head>
+  <!-- Jesus -->
+
+  <link rel="stylesheet" href="/assets/bundles/trends/graph.css">
+  <link rel="stylesheet" href="/assets/bundles/trends/plotter/multislider.css">
+  <link rel="stylesheet" href="/assets/bundles/trends/plotter/libs/modal.css">
+  <link rel="stylesheet" href="/assets/bundles/trends/plotter/mlp.css">
+
+  <script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-array@3"></script>
+  <script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-color@3"></script>
+  <script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-format@3"></script>
+  <script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-interpolate@3"></script>
+  <script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-time@3"></script>
+  <script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-time-format@4"></script>
+  <script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-scale@4"></script>
+
+  <script src="/assets/bundles/trends/plotter/HEADER.js"></script>
+  <script src="/assets/bundles/trends/plotter/utils.js"></script>
+  <script src="/assets/bundles/trends/plotter/libs/canvas-txt.js"></script>
+  <script src="/assets/bundles/trends/plotter/libs/modal.js"></script>
+  <script src="/assets/bundles/trends/plotter/libs/interact.min.js"></script>
+  <script src="/assets/bundles/trends/plotter/libs/event.js"></script>
+  <script src="/assets/bundles/trends/plotter/canvas.js"></script>
+  <script src="/assets/bundles/trends/plotter/objects.js"></script>
+  <script src="/assets/bundles/trends/plotter/controls.js"></script>
+  <script src="/assets/bundles/trends/plotter/plotter.js"></script>
+  <script src="/assets/bundles/trends/plotter/multislider.js"></script>
+
+  <script src="/assets/bundles/trends/stats.js"></script>
+  <script src="/assets/bundles/trends/trends.js"></script>
+  <script src="/assets/bundles/trends/presets.js"></script>
+  <script src="/assets/bundles/trends/graph.js"></script>
+
+  <script src="/assets/bundles/trends/database.js"></script>
+
+  <style>
+    #trends-graph {
+      transition: 0.2s ease;
+      width: 100%;
+      height: 80vh;
+    }
+
+    #trends-graph:hover {
+      box-shadow: 0px 0px 7px 8px rgb(0 0 0 / 10%);
+    }
+
+    .modal-container {
+      max-width: 400px;
+    }
+
+    .mlp-tooltip-table {
+      border: 0;
+      margin-bottom: 0;
+    }
+
+    .mlp-tooltip-table td {
+      padding: 2px;
+    }
+
+    .mlp-tooltip-table tr, .mlp-tooltip-table td {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      border: 0;
+    }
+  </style>
+</head>
+
 <!--
 # Contents
 {:.no_toc}
@@ -73,6 +139,9 @@ This selection process lets us focus on the most important systems, helping us u
 # Results
 Using these techniques, we yielded a [dataset](https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/edit#gid=0) with training compute for over 120 milestone ML systems, the largest such dataset yet. We have chosen to make this and our [interactive data visualisation](https://colab.research.google.com/drive/11m0AfSQnLiDijtE1fsIPqF-ipbTQcsFp) publicly available, in order to facilitate further research along the same lines. 
 
+<div id="trends-graph">
+</div>
+
 When analysing the gathered data, we draw two main conclusions. 
 * Trends in training compute are slower than previously reported
 * We identify three eras of training compute usage across machine learning
@@ -115,3 +184,7 @@ _[Read the full paper now on the arXiv](https://arxiv.org/abs/2202.05924)._
 [^4]: These criteria are ambiguous and can vary on a case-by-case basis. For instance, new papers (published within the last year or two) can be very influential without having had the time to gather many citations. In such cases we make relatively subjective decisions of the importance of these ML models. 
 
 [^5]: We discuss this more in Appendix D of the [paper](https://arxiv.org/pdf/2202.05924.pdf). While AlexNet ([Krizhevsky _et al._, 2012](https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf)) is commonly associated with the start of Deep Learning, we argue that models before AlexNet have key features commonly associated with Deep Learning, and that 2010 is most consistent with evidence.
+
+<script>
+  buildTrendsGraph("#trends-graph", database);
+</script>
