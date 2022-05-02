@@ -131,7 +131,11 @@ title: Blog
 <div class="post-list">
   {% assign articles = site.blog | sort: 'date' | reverse %}
   {% for item in articles %}
+  {% if item.external %}
+  <a href="{{item.external_url}}" class="post">
+  {% else %}
   <a href="{{item.url | relative_url}}" class="post">
+  {% endif %}
     <div class="post-metadata">
       <div class="post-date">{{item.date | date: "%b. %d, %Y"}}</div>
       {% if item.tags %}

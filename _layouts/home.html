@@ -37,13 +37,14 @@
 
     .facade .cover-text {
       z-index: 1;
-      color: black;
+      /* color: white; */
       font-weight: bold;
       width: 100%;
     }
 
     .facade .cover-text p {
       width: 50%;
+      color: white;
     }
 
     .facade .content {
@@ -67,7 +68,7 @@
     }
 
     .site-header * {
-      color: black !important;
+      color: white !important;
     }
 
     .site-header a:hover {
@@ -79,12 +80,12 @@
     }
 
     a.button {
-      color: black;
-      background-color: white;
+      color: white;
+      background-color: none;
       font-size: 1.0rem;
       border-radius: 13px;
       padding: 10px;
-      border: 1px solid #888;
+      border: 1px solid white;
       cursor: pointer;
     }
 
@@ -101,7 +102,7 @@
       {% if page.cover_text %}
       <div class="wrapper cover-text">
         <p>{{ page.cover_text }}</p>
-        <a class="button" href="{{page.featured_url | relative_url}}">Read article</a>
+        <a class="button" href="{{page.featured_url | relative_url}}">{{page.featured_url_text}}</a>
       </div>
       {% endif %}
     </div>

@@ -1,17 +1,17 @@
 ---
 layout: article
 title: Compute Trends Across Three Eras of Machine Learning
-subtitle: An interesting collaboration between two of the best teams in the world
-image: assets/images/thumbnail.jpg
-description: A new era has arrived. Are you prepared for it?
-tags: peer-reviewed
+subtitle: Subtitle
+image: assets/images/posts/2022/compute-trends.png
+description: We've compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward. 
+tags: paper peer-reviewed
 
 toc:
   - name: What is Lorem Ipsum?
   - name: Why do we use it?
   - name: Where does it come from?
 
-date: 2022-04-26
+date: 2022-02-16
 
 authors:
   - name: Anson Ho
@@ -36,6 +36,7 @@ authors:
 {:toc}
 -->
 
+**Last update**: May 2nd, 2022
 
 _Summary: We have collected a dataset and analysed key trends in the training compute of Machine Learning models since 1950. We identify three major eras of training compute - the pre-Deep Learning Era, the Deep Learning Era, and the Large-Scale Era. Furthermore, we find that the training compute has grown by a factor of 10 billion since 2010, with a doubling rate of around 5-6 months. See our recent paper, [Compute Trends Across Three Eras of Machine Learning](https://arxiv.org/abs/2202.05924), for more details._
 
