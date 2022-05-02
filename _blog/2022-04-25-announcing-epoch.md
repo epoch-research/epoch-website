@@ -2,30 +2,20 @@
 layout: article
 title: "Announcing Epoch: A research initiative monitoring the road to transformative AI"
 subtitle: Subtitle
-image: assets/images/thumbnail.jpg
-description: A new era has arrived. Are you prepared for it?
-tags: editorial
+image: assets/images/epoch-logo.png
+description: We're a new research initiative working on monitoring AI developments and forecasting the developments of AI. Come join us!
+tags: announcements
 
 toc:
-  - name: What is Lorem Ipsum?
-  - name: Why do we use it?
-  - name: Where does it come from?
+  - name: 
 
 date: 2022-04-26
 
 authors:
-  - name: Anson Ho
-    url: "https://ansonwhho.github.io"
+  - name: The Epoch Team
+    url: ""
     affiliations:
-      name: Epoch
-  - name: Boris Podolsky
-    url: "https://en.wikipedia.org/wiki/Boris_Podolsky"
-    affiliations:
-      name: IAS, Princeton
-  - name: Nathan Rosen
-    url: "https://en.wikipedia.org/wiki/Nathan_Rosen"
-    affiliations:
-      name: IAS, Princeton
+      name: 
 ---
 
 # Summary
