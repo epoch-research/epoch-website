@@ -1,0 +1,16 @@
+<script src="./d3-array@3"></script>
+<script src="./d3-color@3"></script>
+<script src="./d3-format@3"></script>
+<script src="./d3-interpolate@3"></script>
+<script src="./d3-time@3"></script>
+<script src="./d3-time-format@4"></script>
+<script src="./d3-scale@4"></script>
+
+<script>
+let x = d3.scaleLog();
+x.domain([1, 1e14]);
+x.domain([1e4, 2e4]);
+console.log(x.ticks());
+console.log(x.ticks().map(x.tickFormat(5, "e")));
+x(10);
+</script>
