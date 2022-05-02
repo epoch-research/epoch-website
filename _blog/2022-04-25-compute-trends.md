@@ -66,7 +66,6 @@ authors:
   <style>
     #trends-graph {
       transition: 0.2s ease;
-      //padding: 5px;
       width: 100%;
       height: 80vh;
     }
@@ -102,7 +101,6 @@ authors:
 1. Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 -->
-
 
 _Summary: We have collected a dataset and analysed key trends in the training compute of Machine Learning models since 1950. We identify three major eras of training compute - the pre-Deep Learning Era, the Deep Learning Era, and the Large-Scale Era. Furthermore, we find that the training compute has grown by a factor of 10 billion since 2010, with a doubling rate of around 5-6 months. See our recent paper, [Compute Trends Across Three Eras of Machine Learning](https://arxiv.org/abs/2202.05924), for more details._
 
