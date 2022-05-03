@@ -62,14 +62,6 @@ title: Blog
       line-height: 1.0rem;
     }
 
-    .post-tag.peer-reviewed {
-      background-color: #557;
-    }
-
-    .post-tag.editorial {
-      background-color: #646;
-    }
-
     .post-meat {
       width: 45%;
       margin: 0;
@@ -141,7 +133,7 @@ title: Blog
       {% if item.tags %}
       <div class="post-tags">
         {% for tag in item.tags %}
-        <div class="post-tag {{tag}}">{{tag}}</div>
+        <div class="post-tag {{tag}}" style="background-color: {{site.data.tags | find_exp: 'item','item.name == tag' | map: 'background_color'}}">{{tag}}</div>
         {% endfor %}
       </div>
       {% endif %}

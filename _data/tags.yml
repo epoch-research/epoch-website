@@ -1,0 +1,8 @@
+- name: paper
+  background_color: '#545'
+- name: peer-reviewed
+  background_color: '#557'
+- name: report
+  background_color: '#646'
+- name: announcements
+  background_color: '#443'
