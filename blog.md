@@ -55,7 +55,6 @@ title: Blog
       font-weight: bold;
       background-color: #333;
       border-radius: 4px;
-      border: 1px solid #0008;
       margin-bottom: 0.2em;
 
       font-size: 0.7rem;
@@ -68,6 +67,11 @@ title: Blog
       padding-right: 0.8rem;
       box-sizing: border-box;
       order: 1;
+    }
+
+    .post.external .post-date:after {
+      content: url(http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png);
+      margin: 0 0 0 5px;
     }
 
 		.post-authors {
@@ -124,18 +128,19 @@ title: Blog
   {% assign articles = site.blog | sort: 'date' | reverse %}
   {% for item in articles %}
   {% if item.external %}
-  <a href="{{item.external_url}}" class="post">
+  <a href="{{item.external_url}}" class="post external">
   {% else %}
   <a href="{{item.url | relative_url}}" class="post">
   {% endif %}
     <div class="post-metadata">
       <div class="post-date">{{item.date | date: "%b. %d, %Y"}}</div>
       {% if item.tags %}
-      <div class="post-tags">
-        {% for tag in item.tags %}
-        <div class="post-tag {{tag}}" style="background-color: {{site.data.tags | find_exp: 'item','item.name == tag' | map: 'background_color'}}">{{tag}}</div>
-        {% endfor %}
-      </div>
+        <div class="post-tags">
+          {% for tag in item.tags %}
+            {% assign backgroundColor = site.data.tags | find_exp: 'item','item.name == tag' | map: 'background_color' %}
+            <div class="post-tag {{tag}}" style="background-color: {{backgroundColor}}">{{tag}}</div>
+          {% endfor %}
+        </div>
       {% endif %}
     </div>
     <div class="post-thumbnail"><img src="{{item.image | relative_url }}"></div>
