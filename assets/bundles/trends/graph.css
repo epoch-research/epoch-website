@@ -22,16 +22,6 @@ table.dataTable th, table.dataTable td {
   padding-left: 4px !important;
 }
 
-/*
-table.dataTable th {
-  font-size:  0.9em !important;
-}
-
-table.dataTable td {
-  font-size:  0.9em !important;
-}
-*/
-
 .dateSlider {
   margin: 10px auto;
 }

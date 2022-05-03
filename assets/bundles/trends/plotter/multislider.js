@@ -62,17 +62,20 @@ Multislider = mlp.createClass(mlp.Observable, {
     // Mouse/touch interactions
     // - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+    let lastInteractionT = 0;
+
     function onHandlePress(e) {
       let handle = e.target;
       self.draggingHandle = handle;
       self.handleAnchor  = {x: parseFloat(handle.style.left), y: parseFloat(handle.style.top)};
       self.pointerAnchor = {x: e.clientX, y: e.clientY};
       document.body.classList.add('dragging');
+      lastInteractionT = new Date();
+      e.preventDefault();
     }
 
     function onMove(e) {
       if (!self.draggingHandle) return;
-      e.preventDefault();
 
       let handle = self.draggingHandle;
       let newP = self.handleAnchor.x + (e.clientX - self.pointerAnchor.x);
@@ -84,29 +87,48 @@ Multislider = mlp.createClass(mlp.Observable, {
       self._reorderHandles();
 
       self.fire("change", {});
+      lastInteractionT = new Date();
+      e.preventDefault();
     }
 
     function onRelease(e) {
-      self.draggingHandle = null;
       document.body.classList.remove('dragging');
-
+      if (!self.draggingHandle) return;
+      self.draggingHandle = null;
       self.fire("changed", {});
+      lastInteractionT = new Date();
+      e.preventDefault();
+    }
+
+    function preventMisclick(e) {
+      // Prevents click events due to a drag release
+      if (new Date() - lastInteractionT < 100) {
+        e.stopImmediatePropagation();
+      }
     }
 
     function mouseToTouchHandler(mouseHandler) {
-      return e => mouseHandler({target: e.target, clientX: e.touches[0].clientX, clientY: e.touches[0].clientY});
+      return e => {
+        if (e.touches && e.touches[0]) {
+          e.clientX = e.touches[0].clientX;
+          e.clientY = e.touches[0].clientY;
+        }
+        return mouseHandler(e);
+      }
     }
 
     for (let handle of self.handles) {
-      handle.addEventListener('mousedown', onHandlePress);
-      handle.addEventListener('touchstart', mouseToTouchHandler(onHandlePress));
+      handle.addEventListener('mousedown', onHandlePress, {passive: false});
+      handle.addEventListener('touchstart', mouseToTouchHandler(onHandlePress), {passive: false});
     }
 
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onRelease);
+    document.addEventListener('mousemove', onMove, {passive: false});
+    document.addEventListener('mouseup', onRelease, {passive: false});
 
-    document.addEventListener('touchmove', mouseToTouchHandler(onMove));
-    document.addEventListener('touchend', mouseToTouchHandler(onRelease));
+    document.addEventListener('touchmove', mouseToTouchHandler(onMove), {passive: false});
+    document.addEventListener('touchend', mouseToTouchHandler(onRelease), {passive: false});
+
+    document.addEventListener('click', preventMisclick, {passive: false});
   },
 
   // TODO _reorderHandles and _repositionHandles should be merged, right? Do that when you are more sober
