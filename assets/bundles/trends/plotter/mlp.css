@@ -84,6 +84,7 @@ body.disabled *:focus {
 .plotter-container canvas {
   width: 100%;
   height: 100%;
+  touch-action: none;
 }
 
 .plotter-container .left-panel {

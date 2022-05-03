@@ -579,9 +579,14 @@ function buildTrendsGraph(container, database, linkParamsToUrl) {
   v.on('optionsChanged', onChange);
   onChange({options: params});
 
-  function onChange(args) {
-    v.showLegend(true);
+  function updateLegendVisibility() {
+    v.showLegend(v.mainArea.bounds().w > 500);
+  }
 
+  v.canvas.on('resize', updateLegendVisibility);
+  updateLegendVisibility();
+
+  function onChange(args) {
     params = {...params, ...args.options};
 
     for (let button of xButtonGroup.getElementsByTagName("button")) {

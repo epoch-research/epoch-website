@@ -64,14 +64,37 @@ authors:
   <script src="/assets/bundles/trends/database.js"></script>
 
   <style>
-    #trends-graph {
-      transition: 0.2s ease;
-      width: 100%;
-      height: 80vh;
+    @media (hover: hover){
+      /* For non touch devices, I think */
+      #trends-graph-wrapper:not(.active) {
+        cursor: pointer;
+      }
     }
 
-    #trends-graph:hover {
+    #trends-graph-wrapper:not(.active) * {
+      pointer-events: none;
+    }
+
+    #trends-graph-wrapper.active {
       box-shadow: 0px 0px 7px 8px rgb(0 0 0 / 10%);
+    }
+
+    #trends-graph-wrapper {
+      transition: box-shadow 0.3s ease;
+    }
+
+    #trends-graph-wrapper:not(.active) .dateSliderContainer, #trends-graph-wrapper:not(.active) .over-button {
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    #trends-graph-wrapper .dateSliderContainer, #trends-graph-wrapper .over-button {
+      transition: visibility 0.3s ease, opacity 0.3s ease;
+    }
+
+    #trends-graph {
+      width: 100%;
+      height: 80vh;
     }
 
     .modal-container {
@@ -139,7 +162,9 @@ This selection process lets us focus on the most important systems, helping us u
 # Results
 Using these techniques, we yielded a [dataset](https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/edit#gid=0) with training compute for over 120 milestone ML systems, the largest such dataset yet. We have chosen to make this and our [interactive data visualisation](https://colab.research.google.com/drive/11m0AfSQnLiDijtE1fsIPqF-ipbTQcsFp) publicly available, in order to facilitate further research along the same lines. 
 
-<div id="trends-graph">
+<div id="trends-graph-wrapper">
+  <div id="trends-graph">
+  </div>
 </div>
 
 When analysing the gathered data, we draw two main conclusions. 
@@ -187,4 +212,18 @@ _[Read the full paper now on the arXiv](https://arxiv.org/abs/2202.05924)._
 
 <script>
   buildTrendsGraph("#trends-graph", database);
+
+  let graphWrapperNode = document.getElementById("trends-graph-wrapper");
+
+  // :hover alternative for touch devices
+  document.addEventListener('click', function(e) {
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+
+    if (graphWrapperNode.contains(target)) {
+      graphWrapperNode.classList.add("active");
+    } else {
+      graphWrapperNode.classList.remove("active");
+    }
+  });
 </script>

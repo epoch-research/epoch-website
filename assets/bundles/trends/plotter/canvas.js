@@ -44,6 +44,7 @@
         self.node.width = mlp.devicePixelRatio * self.bounds().w;
         self.node.height = mlp.devicePixelRatio * self.bounds().h;
 
+        this.fire('resize');
         self.render(); // Sorry, but using requestRenderAll makes things less smooth, here
         self.dirty = false;
       }
@@ -62,7 +63,7 @@
 
       renderLoop();
 
-      eventjs.add(this.node, "mousemove mouseover mouseout drag wheel click", this.onEvent.bind(this));
+      eventjs.add(this.node, "mousemove mouseover mouseout drag wheel click", this.onEvent.bind(this), {passive: false});
     },
 
     onEvent: function(e, self) {
