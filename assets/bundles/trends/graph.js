@@ -438,7 +438,6 @@ function buildTrendsGraph(container, database, linkParamsToUrl) {
 
     for (let label of eraLabels) {
       label.text.visible = params.labelEras;
-      console.log(label.text.visible);
     }
 
     plotter.requestRenderAll();

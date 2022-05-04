@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <head>
+    <link rel="canonical" href="{{ page.redir_to }}"/>
+    <meta http-equiv="refresh" content="0;url={{ page.redir_to }}" />
+    <title>Redirecting...</title>
+
+    <style>
+      .invisible {
+        display: none;
+      }
+    </style>
+
+    <script>
+      // Give the browser a bit of time to redirect
+      document.addEventListener("load", () => {
+        setTimeout(() => {document.body.classList.remove("invisible")}, 5000);
+      });
+    </script>
+  </head>
+
+  <body class="invisible">
+
+    {%- include header.html -%}
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+
+        <h1>Redirecting...</h1>
+        <a href="{{ page.redir_to }}">Click here if you are not redirected.<a>
+        <script>location='{{ page.redir_to }}'</script>
+        
+      </div>
+    </main>
+
+    {%- include footer.html -%}
+
+  </body>
+
+</html>

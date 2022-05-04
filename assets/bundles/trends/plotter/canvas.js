@@ -5,6 +5,9 @@
 
   let rect = mlp.rect;
 
+  const IDLE            = 0;
+  const NAVIGATING      = 1;
+
   mlp.Canvas = mlp.createClass(mlp.Observable, {
     // The canvas element
     node: undefined,
@@ -64,6 +67,111 @@
       renderLoop();
 
       eventjs.add(this.node, "mousemove mouseover mouseout drag wheel click", this.onEvent.bind(this), {passive: false});
+
+      /*
+      this.state = IDLE;
+      this.activePointers = [];
+
+      // Careful. Not all of these should be attached to the document
+      document.addEventListener("pointerdown",   onPointerEvent);
+      document.addEventListener("pointerup",     onPointerEvent);
+      document.addEventListener("pointermove",   onPointerEvent);
+      document.addEventListener("pointerenter",  onPointerEvent);
+      document.addEventListener("pointerleave",  onPointerEvent);
+      document.addEventListener("pointercancel", onPointerEvent);
+      document.addEventListener("pointerout",    onPointerEvent);
+      */
+    },
+
+    onPointerEvent: function(e) {
+      let areaHovered = null;
+
+      if ('offsetX' in e && 'offsetY' in e) {
+        let moved = (this.currentPointer.x != e.offsetX) || (this.currentPointer.y != e.offsetY);
+        this.currentPointer = {x: e.offsetX, y: e.offsetY};
+
+        for (let area of this.areas) {
+          if (area.bounds().contains(this.currentPointer)) {
+            areaHovered = area;
+            break;
+          }
+        }
+
+        if (moved) {
+          this.fire('mousemove', {e, pointer: this.currentPointer, area: areaHovered});
+          e.preventDefault();
+        }
+      }
+
+      return;
+
+      e.preventDefault();
+
+      let pointerQ = canvasToPaper(e);
+
+      let pointerIndex = -1;
+      let cachedPointer = null;
+      for (let i = 0; i < activePointers.length; i++) {
+        if (activePointers[i].pointerId == e.pointerId) {
+          pointerIndex = i;
+          cachedPointer = activePointers[i];
+          break;
+        }
+      }
+
+      if (e.type == "pointerdown") {
+        if (pointerIndex < 0 && activePointers.length < 2) {
+          activePointers.push(e);
+          pointerIndex = activePointers.length - 1;
+          cachedPointer = e;
+        }
+      } else if (e.type == "pointerup" || e.type == "pointercancel" || e.type == "pointerleave") {
+        if (pointerIndex >= 0) {
+          activePointers.splice(pointerIndex, 1);
+          pointerIndex = -1;
+        }
+      }
+
+      let ignorePointer = (pointerIndex < 0);
+      if (ignorePointer) {
+        return;
+      }
+
+      let cachedPointerQ = canvasToPaper(cachedPointer);
+      e.deltaX = pointerQ.x - cachedPointerQ.x;
+      e.deltaY = pointerQ.y - cachedPointerQ.y;
+
+      if (e.type == "pointerdown") {
+        state = NAVIGATING;
+      }
+
+      if (e.type == "pointermove" && state == NAVIGATING) {
+        if (activePointers.length == 1) {
+          camera.x -= e.deltaX;
+          camera.y -= e.deltaY;
+        } else if (activePointers.length == 2) {
+          let otherPointer = activePointers[(pointerIndex + 1) % 2];
+          let otherPointerQ = canvasToPaper(otherPointer);
+
+          let oldDist = dist(cachedPointer, otherPointer);
+          let newDist = dist(e, otherPointer);
+          let scaleFactor = newDist/oldDist;
+
+          camera.w /= scaleFactor;
+          //camera.w = Math.max(camera.w, minCameraWidth);
+          //camera.w = Math.min(camera.w, maxCameraWidth);
+          //camera.h = window.innerHeight * camera.w/window.innerWidth;
+          camera.h /= scaleFactor;
+
+          let newPointerQ = canvasToPaper(e);
+
+          camera.x += pointerQ.x - newPointerQ.x;
+          camera.y += pointerQ.y - newPointerQ.y;
+        }
+      }
+
+      activePointers[pointerIndex] = e;
+      render();
     },
 
     onEvent: function(e, self) {
