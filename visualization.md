@@ -56,8 +56,6 @@ title: Visualization
       height: 100%;
     }
 
-    /* Undoing the default style */
-
     .modal-container {
       max-width: 400px;
     }
@@ -84,5 +82,5 @@ title: Visualization
 </div>
 
 <script>
-  buildTrendsGraph("#trends-graph", database);
+  buildTrendsGraph("#trends-graph", database, {linkParamsToUrl: true});
 </script>

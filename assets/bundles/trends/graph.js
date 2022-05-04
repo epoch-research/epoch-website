@@ -1,5 +1,8 @@
-function buildTrendsGraph(container, database, linkParamsToUrl) {
+function buildTrendsGraph(container, database, args) {
   'use strict';
+
+  args = args || {};
+  let linkParamsToUrl = args.linkParamsToUrl;
 
   if (typeof container == 'string') {
     let selector = container;
