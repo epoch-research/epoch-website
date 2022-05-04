@@ -19,36 +19,8 @@ $footer-color: #111;
   --footer-color: #{$footer-color};
 }
 
-// Fonts
-
-@font-face {
-  font-family: "Computer Modern";
-  font-weight: normal;
-    src: url(../fonts/computer-modern/cmunrm.ttf);
-  }
-
-@font-face {
-  font-family: "Computer Modern";
-  font-weight: bold;
-  src: url(../fonts/computer-modern/cmunbx.ttf);
-}
-
-@font-face {
-  font-family: "Computer Modern";
-  font-style: italic;
-  src: url(../fonts/computer-modern/cmunsl.ttf);
-}
-
-@font-face {
-  font-family: "Noto Serif";
-  font-weight: normal;
-  src: url(../fonts/Noto_Serif_TC/NotoSerifTC-Regular.otf);
-}
-
-@font-face {
-  font-family: "Noto Serif";
-  font-weight: bold;
-  src: url(../fonts/Noto_Serif_TC/NotoSerifTC-Bold.otf);
+body {
+  font-family: Arial, sans-serif;
 }
 
 // Site header
@@ -65,7 +37,6 @@ $footer-color: #111;
 
 .site-title { 
   color: #fff; 
-  font-family: "Computer Modern", "Noto Serif";
   font-weight: bold;
   //line-height: $base-line-height * 1.5;
   float: left;
@@ -76,7 +47,6 @@ $footer-color: #111;
 }
 
 .site-nav {
-  font-family: "Computer Modern", "Noto Serif";
   font-weight: bold;
   
   .page-link {
@@ -90,7 +60,6 @@ $footer-color: #111;
   padding: 10px;
   background-color: $footer-color;
   text-align: center;
-  font-family: "Computer Modern", "Noto Serif";
 
   p {
     margin: 0;
@@ -109,7 +78,6 @@ $footer-color: #111;
 
 .page-content {
   padding: $spacing-unit 0;
-  font-family: "Computer Modern", "Noto Serif";
   font-style: normal;
   word-spacing: -1px;
 
@@ -134,7 +102,6 @@ $footer-color: #111;
   }
 
   h1.page-heading {
-    font-family: 'Computer Modern';
     font-weight: bold;
     font-size: 40px;
   }
@@ -142,7 +109,6 @@ $footer-color: #111;
 }
 
 .post-meta {
-  font-family: 'Computer Modern';
   font-size: $base-font-size;
   color: #111;
 
@@ -154,7 +120,6 @@ $footer-color: #111;
 
 .post-header {
   h1.page-heading {
-    font-family: 'Computer Modern';
     font-weight: bold;
     font-size: 40px;
   }
