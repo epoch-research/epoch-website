@@ -437,7 +437,8 @@ function buildTrendsGraph(container, database, linkParamsToUrl) {
     }
 
     for (let label of eraLabels) {
-      label.visible = params.labelEras;
+      label.text.visible = params.labelEras;
+      console.log(label.text.visible);
     }
 
     plotter.requestRenderAll();
@@ -504,7 +505,7 @@ function buildTrendsGraph(container, database, linkParamsToUrl) {
 
       // TODO Automatic positioning (top/bottom and left/right)
 
-      text.visible = (verticalStripBounds.w > rotatedTextBounds.w);
+      text.visible = params.labelEras && (verticalStripBounds.w > rotatedTextBounds.w);
 
       let y = areaBounds.y1 - 20;
       let x = verticalStripBounds.x1;
