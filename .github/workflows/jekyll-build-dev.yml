@@ -22,7 +22,7 @@ jobs:
           target_branch: dev-build
           target_path: public
           post_build_commands: |
-            cp "${GITHUB_WORKSPACE}/firebase.json" .
+            cp "${GITHUB_WORKSPACE}/firebase-dev.json" firebase.json
   deploy:
     needs: build
     runs-on: ubuntu-latest
