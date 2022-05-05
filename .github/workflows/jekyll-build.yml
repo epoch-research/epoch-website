@@ -26,6 +26,8 @@ jobs:
           BUILD_DIR="${GITHUB_WORKSPACE}/../jekyll_build"
           echo ${GITHUB_WORKSPACE}
           echo ${BUILD_DIR}
+          ls -l ${GITHUB_WORKSPACE}
+          ls -l ${BUILD_DIR}
           cd ${BUILD_DIR}
           ls -l
           pwd
