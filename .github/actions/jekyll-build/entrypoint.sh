@@ -3,8 +3,6 @@ set -e
 
 echo "Starting the Jekyll Action"
 
-echo "Sup, yo?"
-
 if [ -n "$INPUT_PRE_BUILD_COMMANDS" ]; then
   echo "Execute pre-build commands specified by the user."
   eval "$INPUT_PRE_BUILD_COMMANDS"
@@ -164,6 +162,9 @@ fi
 touch .nojekyll
 
 echo "Publishing to ${GITHUB_REPOSITORY} on branch ${remote_branch}"
+
+pwd
+ls -l
 
 git config user.name "${GITHUB_ACTOR}" && \
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com" && \
