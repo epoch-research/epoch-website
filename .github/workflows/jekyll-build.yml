@@ -24,3 +24,4 @@ jobs:
           target_path: public
       - run: |
         ls -l
+        pwd
