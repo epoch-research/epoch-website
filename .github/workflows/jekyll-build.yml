@@ -16,7 +16,7 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
           restore-keys: |
             ${{ runner.os }}-gems-
-      - uses: .github/actions/test
+      - uses: /.github/actions/test
 #     - uses: ./.github/actions/jekyll-build
 #       with:
 #         token: ${{ secrets.GITHUB_TOKEN }}
