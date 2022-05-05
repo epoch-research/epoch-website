@@ -164,7 +164,7 @@ if [ "${INPUT_KEEP_HISTORY}" != true ]; then
 fi
 
 # No need to have GitHub Pages to run Jekyll
-touch .nojekyll
+#touch .nojekyll
 
 echo "Publishing to ${GITHUB_REPOSITORY} on branch ${remote_branch}"
 
