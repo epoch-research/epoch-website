@@ -23,6 +23,7 @@ jobs:
           build_only: true
           target_path: public
       - run: |
+          ls -l /github/
           BUILD_DIR="/github/jekyll_build"
           ls ${BUILD_DIR}
           echo ${GITHUB_WORKSPACE}
