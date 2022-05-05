@@ -3,7 +3,7 @@ name: Builds and deploys Jekyll site
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
   build:
@@ -29,10 +29,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: main-build
+          ref: dev-build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_EPOCH_WEBSITE }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_EPOCH_WEBSITE_DEV }}'
           channelId: live
-          projectId: epoch-website
+          projectId: epoch-website-dev
