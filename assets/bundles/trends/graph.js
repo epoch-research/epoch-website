@@ -61,8 +61,11 @@ function buildTrendsGraph(container, database, args) {
 
     // Set these
     'Driving':        ['#279eff', drawStar],
-    'Recommendation': ['#279eff', drawStar],
-    'Video':          ['#279eff', drawStar],
+    'Recommendation': ['#9e27ff', drawStar],
+    'Video':          ['#279e27', drawStar],
+    'Multimodal':     ['#ff0000', drawStar],
+    'Search':         ['#00ff00', drawStar],
+    'Robotics':       ['#0000ff', drawStar],
   };
 
   /////////////////////////////////////////////////////
@@ -288,17 +291,23 @@ function buildTrendsGraph(container, database, args) {
   //
 
   let domainsDisabled = {
-      'Vision'       : false,
-      'Language'     : false,
-      'Games'        : false,
-      'Drawing'      : false,
-      'Speech'       : false,
-      'Other'        : false,
-      'Large Scale'  : false,
-      'All'          : false,
-      'Outlier'      : false,
-      'Record'       : false,
-      'AlphaGo Zero' : false,
+      'Vision'         : false,
+      'Language'       : false,
+      'Games'          : false,
+      'Drawing'        : false,
+      'Speech'         : false,
+      'Other'          : false,
+      'Large Scale'    : false,
+      'All'            : false,
+      'Outlier'        : false,
+      'Record'         : false,
+      'AlphaGo Zero'   : false,
+      'Driving'        : false,
+      'Recommendation' : false,
+      'Video'          : false,
+      'Multimodal'     : false,
+      'Search'         : false,
+      'Robotics'       : false,
   };
 
   v.on('legendItemClick', args => {
@@ -380,7 +389,7 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newNumberControl("Low Z value",        "lowOutliersZValueThreshold",  0));
   v.addControl(mlp.newNumberControl("High Z value",       "highOutliersZValueThreshold", 0));
   v.addControl(mlp.newNumberControl("Citation threshold", "citationThreshold",           0));
-  v.addControl(mlp.newNumberControl("Others threshold",   "otherDomainThreshold",        0));
+  v.addControl(mlp.newNumberControl("Others threshold",   "otherDomainThreshold",        10));
 
   // Outliers actions
 
@@ -400,18 +409,26 @@ function buildTrendsGraph(container, database, args) {
   if (linkParamsToUrl) options = getUrlParams(v.options);
   v.setOptions(options);
 
+  // TODO This needs to be set differently
   v.setLegend([
-    {name: 'Vision',       color: '#6d904f', shape: '#cross'},
-    {name: 'Language',     color: '#b96db8', shape: '#square'},
-    {name: 'Games',        color: '#30a2da', shape: '#circle'},
-    {name: 'Drawing',      color: '#8b8b8b', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
-    {name: 'Speech',       color: '#ff9e27', shape: '#triangle-down'},
-    {name: 'Other',        color: '#e5ae38', shape: '#diamond'},
-    {name: 'Large Scale',  color: '#fc4f30', shape: '#triangle'},
-    {name: 'All',          color: '#30a2da', shape: '#circle'},
-    {name: 'Outlier',      color: '#56cc60', shape: '#triangle-left'},
-    {name: 'Record',       color: '#bfc11b', shape: '#triangle-up'},
-    {name: 'AlphaGo Zero', color: '#ff9e27', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
+    {name: 'Vision',         color: '#6d904f', shape: '#cross'},
+    {name: 'Language',       color: '#b96db8', shape: '#square'},
+    {name: 'Games',          color: '#30a2da', shape: '#circle'},
+    {name: 'Drawing',        color: '#8b8b8b', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
+    {name: 'Speech',         color: '#ff9e27', shape: '#triangle-down'},
+    {name: 'Other',          color: '#e5ae38', shape: '#diamond'},
+    {name: 'Large Scale',    color: '#fc4f30', shape: '#triangle'},
+    {name: 'All',            color: '#30a2da', shape: '#circle'},
+    {name: 'Outlier',        color: '#56cc60', shape: '#triangle-left'},
+    {name: 'Record',         color: '#bfc11b', shape: '#triangle-up'},
+    {name: 'AlphaGo Zero',   color: '#ff9e27', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
+
+    {name: 'Driving',        color: '#279eff', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
+    {name: 'Recommendation', color: '#9e27ff', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
+    {name: 'Video',          color: '#279e27', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
+    {name: 'Multimodal',     color: '#ff0000', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
+    {name: 'Search',         color: '#00ff00', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
+    {name: 'Robotics',       color: '#0000ff', shape: 'M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z'},
   ]);
 
   let eraPolylines = [];
