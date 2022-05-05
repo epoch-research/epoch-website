@@ -23,5 +23,5 @@ jobs:
           build_only: true
           target_path: public
       - run: |
-        ls -l
-        pwd
+          ls -l
+          pwd
