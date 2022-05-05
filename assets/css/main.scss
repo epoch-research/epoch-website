@@ -38,12 +38,20 @@ body {
 .site-title { 
   color: #fff; 
   font-weight: bold;
-  //line-height: $base-line-height * 1.5;
   float: left;
 
   &:visited {
     color: #fff;
-    }
+  }
+}
+
+.header-icon {
+  float: left;
+  width: 40px;
+  height: 40px;
+  padding-top: 5px;
+  margin-top: 0px;
+  margin-right: 5px;
 }
 
 .site-nav {
