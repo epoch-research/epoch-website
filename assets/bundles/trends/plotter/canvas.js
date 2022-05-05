@@ -244,7 +244,10 @@
     },
 
     onWheel: function(e, self) {
-      let areaUnderPointer = this.getTouchedArea(e);
+      let rect = this.node.getBoundingClientRect();
+      let pointer = {x: e.clientX - rect.left, y: e.clientY - rect.top};
+
+      let areaUnderPointer = this.getTouchedArea(pointer);
 
       if (areaUnderPointer) {
         let camBounds = areaUnderPointer.cameraBounds;
@@ -252,12 +255,12 @@
 
         let zoom = 2**(-self.wheelDelta/800);
 
-        let p = areaUnderPointer.canvasToPaper(e);
+        let p = areaUnderPointer.canvasToPaper(pointer);
 
         if (!areaUnderPointer.lockCameraX) camBounds.setW(camBounds.w * zoom);
         if (!areaUnderPointer.lockCameraY) camBounds.setH(camBounds.h * zoom);
 
-        let q = areaUnderPointer.canvasToPaper(e);
+        let q = areaUnderPointer.canvasToPaper(pointer);
 
         if (!areaUnderPointer.lockCameraX) camBounds.setX(camBounds.x - (q.x - p.x));
         if (!areaUnderPointer.lockCameraY) camBounds.setY(camBounds.y - (q.y - p.y));
