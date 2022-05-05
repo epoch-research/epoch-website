@@ -22,5 +22,5 @@ jobs:
 #         target_branch: main-build
 #         build_only: true
 #         target_path: public
-      - run: |
-          echo "Sup, yo?"
+      - run: ./.github/scripts/build.sh
+        shell: bash
