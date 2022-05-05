@@ -19,7 +19,7 @@ jobs:
       - uses: ./.github/actions/jekyll-build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target_branch: main-build
+          target_branch: dev-build
           target_path: public
           post_build_commands: |
             cp "${GITHUB_WORKSPACE}/firebase.json" .
