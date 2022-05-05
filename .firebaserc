@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "epoch-website"
-  }
+    "default": "epoch-website-dev",
+    "dev": "epoch-website-dev"
+  },
+  "targets": {}
 }
