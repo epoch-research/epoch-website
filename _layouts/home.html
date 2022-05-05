@@ -38,8 +38,12 @@
     }
 
     .facade .cover-text {
-      z-index: 1;
       font-weight: bold;
+      display: inline-block;
+      background-color: #333;
+      border-radius: 10px;
+      padding: 10px;
+      z-index: 1;
     }
 
     .facade .cover-text p {
@@ -107,9 +111,11 @@
       <div class="cover"></div>
       {% if page.cover_text %}
       <div class="text-container">
-        <div class="wrapper cover-text">
-          <p>{{ page.cover_text }}</p>
-          <a class="button" href="{{page.featured_url | relative_url}}">{{page.featured_url_text}}</a>
+        <div class="wrapper">
+          <div class="cover-text">
+            <p>{{ page.cover_text }}</p>
+            <a class="button" href="{{page.featured_url | relative_url}}">{{page.featured_url_text}}</a>
+          </div>
         </div>
       </div>
       {% endif %}
