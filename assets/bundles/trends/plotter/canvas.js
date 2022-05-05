@@ -96,6 +96,7 @@
 
     hoverAction: function(e, p) {
       this.fire('hover', {e, p: p, area: this.getTouchedArea(p), state: this.state});
+      this.hoverActive = true;
     },
 
     stopHoverAction: function() {

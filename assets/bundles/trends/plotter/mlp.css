@@ -27,11 +27,9 @@
   display: block;
   max-width: 300px;
   text-align: left;
-  /*
   max-height: 7em;
   overflow: hidden;
   text-overflow: ellipsis;
-  */
 }
 
 .modal {
