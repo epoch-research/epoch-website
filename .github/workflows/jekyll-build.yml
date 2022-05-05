@@ -29,7 +29,8 @@ jobs:
     steps:
       - run: echo "Hey!"
       - uses: actions/checkout@v2
-        ref: main-build
+        with:
+          ref: main-build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
