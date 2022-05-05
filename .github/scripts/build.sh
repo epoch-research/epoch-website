@@ -1,7 +1,11 @@
-echo "Yay!!!"
+set -e
 
-pwd
+echo "Building the website..."
 
 ls -l
 
-#bundle exec jekyll build -s ${GITHUB_WORKSPACE}/${JEKYLL_SRC} -d ${TARGET_DIR} ${INPUT_JEKYLL_BUILD_OPTIONS} ${VERBOSE} 
+bundle exec jekyll build -d _site
+
+ls -l
+
+echo "Done!"
