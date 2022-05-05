@@ -179,6 +179,7 @@ function buildTrendsGraph(container, database, args) {
         tooltip = plotter.buildTooltipTable([
             {label: "System",                    value: system["System"]},
             {label: "Organization(s)",           value: system["Organization(s)"]},
+            {label: "Author(s)",                 value: system["Author(s)"]},
             {label: "Reference",                 value: system["Reference"]},
             {label: "Publication date",          value: system["Publication date"].toLocaleString('en-us',{month:'short', day: 'numeric', year:'numeric'})},
             {label: "Parameters",                value: system["Parameters"].toExponential()},
