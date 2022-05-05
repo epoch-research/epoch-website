@@ -35,6 +35,10 @@ inputs:
       new dependencies. For example, use `apk --update add 
       imagemagick` to install ImageMagick.
     required: false
+  post_build_commands:
+    description: >
+      Commands to run after build and before deploy.
+    required: false
 outputs:
   sha: 
     description: 'Generated commit SHA1 that will be published'

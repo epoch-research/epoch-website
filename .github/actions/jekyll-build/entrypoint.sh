@@ -149,6 +149,11 @@ fi
 
 cd ${BUILD_DIR}
 
+if [ -n "$INPUT_POST_BUILD_COMMANDS" ]; then
+  echo "Execute post-build commands specified by the user."
+  eval "$INPUT_POST_BUILD_COMMANDS"
+fi 
+
 # Initializing the repo now to prevent the Jekyll build from overwriting the .git folder 
 if [ "${INPUT_KEEP_HISTORY}" != true ]; then
   echo "::debug::Initializing new repo"
