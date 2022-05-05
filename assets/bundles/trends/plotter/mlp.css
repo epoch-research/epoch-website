@@ -26,13 +26,10 @@
 .mlp-tooltip-table td.value {
   display: block;
   max-width: 300px;
-  max-height: 7em;
+  //max-height: 7em;
   text-align: left;
-}
-
-.mlp-tooltip-table td {
-  overflow: hidden;
-  text-overflow: ellipsis;
+  //overflow: hidden;
+  //text-overflow: ellipsis;
 }
 
 .modal {
