@@ -23,7 +23,8 @@ jobs:
           target_path: public
           post_build_commands: |
             cp "${GITHUB_WORKSPACE}/firebase.json" public/
-            ls -l *
+            ls -l
+            #ls -l public/
 #     - run: |
 #         ls -l /github/
 #         BUILD_DIR="/github/jekyll_build"
