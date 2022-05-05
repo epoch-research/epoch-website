@@ -220,7 +220,7 @@ function buildTrendsGraph(container, database, args) {
     return tooltip;
   });
     
-  plotter.on('mousemove', args => {
+  plotter.on('hover', args => {
     if (args.mouseLeaveObject) {
       plotter.canvas.node.style.cursor = 'auto';
       if (args.mouseLeaveObject instanceof mlp.Point) {

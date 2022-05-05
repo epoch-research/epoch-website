@@ -459,6 +459,18 @@
     return minDist;
   }
 
+  mlp.mul = function(p, a) {
+    return {x: p.x * a, y: p.y * a};
+  }
+
+  mlp.add = function(p, q) {
+    return {x: p.x + q.x, y: p.y + q.y};
+  }
+
+  mlp.diff = function(q, p) {
+    return {x: q.x - p.x, y: q.y - p.y};
+  }
+
   mlp.rotate = function(p, q, angle) {
     angle = -angle;
 

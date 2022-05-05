@@ -3,10 +3,11 @@
 
   mlp.devicePixelRatio = window.devicePixelRatio || window.webkitDevicePixelRatio || window.mozDevicePixelRatio || 1;
 
-  let rect = mlp.rect;
+  mlp.STATE_IDLE     = 0;
+  mlp.STATE_DRAGGING = 1;
+  mlp.STATE_ZOOMING  = 2;
 
-  const IDLE            = 0;
-  const NAVIGATING      = 1;
+  let rect = mlp.rect;
 
   mlp.Canvas = mlp.createClass(mlp.Observable, {
     // The canvas element
@@ -66,207 +67,204 @@
 
       renderLoop();
 
-      eventjs.add(this.node, "mousemove mouseover mouseout drag wheel click", this.onEvent.bind(this), {passive: false});
+      this.activeEvents = [];
+      this.state = mlp.STATE_IDLE;
 
-      /*
-      this.state = IDLE;
-      this.activePointers = [];
+      this.node.addEventListener("pointerdown",   this.onPointerEvent.bind(this));
+      this.node.addEventListener("pointerenter",  this.onPointerEvent.bind(this));
+      document.addEventListener("pointerleave",  this.onPointerEvent.bind(this));
+      document.addEventListener("pointerup",     this.onPointerEvent.bind(this));
+      document.addEventListener("pointermove",   this.onPointerEvent.bind(this));
+      document.addEventListener("pointercancel", this.onPointerEvent.bind(this));
+      document.addEventListener("pointerout",    this.onPointerEvent.bind(this));
 
-      // Careful. Not all of these should be attached to the document
-      document.addEventListener("pointerdown",   onPointerEvent);
-      document.addEventListener("pointerup",     onPointerEvent);
-      document.addEventListener("pointermove",   onPointerEvent);
-      document.addEventListener("pointerenter",  onPointerEvent);
-      document.addEventListener("pointerleave",  onPointerEvent);
-      document.addEventListener("pointercancel", onPointerEvent);
-      document.addEventListener("pointerout",    onPointerEvent);
-      */
+      // TODO do we really need eventjs?
+      eventjs.add(this.node, "wheel", this.onWheel.bind(this), {passive: false});
     },
 
-    onPointerEvent: function(e) {
-      let areaHovered = null;
-
-      if ('offsetX' in e && 'offsetY' in e) {
-        let moved = (this.currentPointer.x != e.offsetX) || (this.currentPointer.y != e.offsetY);
-        this.currentPointer = {x: e.offsetX, y: e.offsetY};
-
-        for (let area of this.areas) {
-          if (area.bounds().contains(this.currentPointer)) {
-            areaHovered = area;
-            break;
-          }
-        }
-
-        if (moved) {
-          this.fire('mousemove', {e, pointer: this.currentPointer, area: areaHovered});
-          e.preventDefault();
-        }
-      }
-
-      return;
-
-      e.preventDefault();
-
-      let pointerQ = canvasToPaper(e);
-
-      let pointerIndex = -1;
-      let cachedPointer = null;
-      for (let i = 0; i < activePointers.length; i++) {
-        if (activePointers[i].pointerId == e.pointerId) {
-          pointerIndex = i;
-          cachedPointer = activePointers[i];
+    getTouchedArea: function(p) {
+      let activeArea = null;
+      for (let area of this.areas) {
+        if (area.bounds().contains({x: p.x, y: p.y})) {
+          activeArea = area;
           break;
         }
       }
 
-      if (e.type == "pointerdown") {
-        if (pointerIndex < 0 && activePointers.length < 2) {
-          activePointers.push(e);
-          pointerIndex = activePointers.length - 1;
+      return activeArea;
+    },
+
+    hoverAction: function(e, p) {
+      this.fire('hover', {e, p: p, area: this.getTouchedArea(p), state: this.state});
+    },
+
+    stopHoverAction: function() {
+      if (this.hoverActive) {
+        this.fire('hoverStop');
+        this.hoverActive = false;
+      }
+    },
+
+    startOnePointerAction: function(e, p) {
+      this.state = mlp.STATE_DRAGGING;
+      this.activeArea = this.getTouchedArea(p);
+      if (this.activeArea) this.cameraAnchor = rect(this.activeArea.cameraBounds);
+      this.anchorP = p;
+    },
+
+    onePointerAction: function(e, p) {
+      if (this.activeArea && this.anchorP) {
+        let delta = mlp.diff(p, this.anchorP);
+
+        let bounds = this.activeArea.bounds();
+
+        if (!this.activeArea.lockCameraX) this.activeArea.cameraBounds.setX(this.cameraAnchor.x - delta.x * this.activeArea.cameraBounds.w/bounds.w);
+        if (!this.activeArea.lockCameraY) this.activeArea.cameraBounds.setY(this.cameraAnchor.y + delta.y * this.activeArea.cameraBounds.h/bounds.h);
+
+        this.activeArea.onCameraChange();
+        this.requestRenderAll();
+      }
+    },
+
+    stopOnePointerAction: function(e, p) {
+      if (this.anchorP) {
+        if (p.x == this.anchorP.x && p.y == this.anchorP.y) {
+          this.fire('click', {e, p: p, area: this.activeArea});
+        }
+
+        this.activeArea = null;
+        this.anchorP = null;
+      }
+      this.state = mlp.STATE_IDLE;
+    },
+
+    startTwoPointerAction: function(es, ps) {
+      this.state = mlp.STATE_ZOOMING;
+      if (!this.activeArea) this.activeArea = this.getTouchedArea(ps[0]);
+      if (this.activeArea) this.cameraAnchor = rect(this.activeArea.cameraBounds);
+      this.anchorP1 = ps[0];
+      this.anchorP2 = ps[1];
+    },
+
+    twoPointerAction: function(es, ps) {
+      if (this.activeArea && this.anchorP1 && this.anchorP2) {
+        let dist = mlp.dist(ps[1], ps[0]);
+        let anchorDist = mlp.dist(this.anchorP2, this.anchorP1);
+        let zoom = anchorDist/dist;
+
+        let anchorCenter = mlp.mul(mlp.add(this.anchorP2, this.anchorP1), 0.5);
+
+        let camBounds = rect(this.cameraAnchor);
+        this.activeArea.cameraBounds = camBounds;
+
+        let p = this.activeArea.canvasToPaper(anchorCenter);
+
+        if (!this.activeArea.lockCameraX) camBounds.setW(camBounds.w * zoom);
+        if (!this.activeArea.lockCameraY) camBounds.setH(camBounds.h * zoom);
+
+        let q = this.activeArea.canvasToPaper(anchorCenter);
+
+        if (!this.activeArea.lockCameraX) camBounds.setX(camBounds.x - (q.x - p.x));
+        if (!this.activeArea.lockCameraY) camBounds.setY(camBounds.y - (q.y - p.y));
+
+        this.activeArea.onCameraChange();
+        this.requestRenderAll();
+      }
+    },
+
+    stopTwoPointerAction: function() {
+      this.state = mlp.STATE_IDLE;
+    },
+
+    onPointerEvent: function(e) {
+      let activeEvents = this.activeEvents;
+      let prevActiveEvents = [...activeEvents];
+
+      let pointerIndex = -1;
+      let cachedPointer = null;
+      for (let i = 0; i < activeEvents.length; i++) {
+        if (activeEvents[i].pointerId == e.pointerId) {
+          pointerIndex = i;
+          cachedPointer = activeEvents[i];
+          activeEvents[i] = e;
+          break;
+        }
+      }
+
+      let isDownEvent = (e.type == "pointerdown");
+      let isMoveEvent = (e.type == "pointermove");
+      let isUpEvent = (e.type == "pointerup" || e.type == "pointercancel");
+      let isOutEvent = (e.type == "pointerleave" || e.type == "pointerout");
+
+      if (isDownEvent) {
+        if (pointerIndex < 0 && activeEvents.length < 2) {
+          activeEvents.push(e);
+          pointerIndex = activeEvents.length - 1;
           cachedPointer = e;
         }
-      } else if (e.type == "pointerup" || e.type == "pointercancel" || e.type == "pointerleave") {
+      } else if (isUpEvent) {
         if (pointerIndex >= 0) {
-          activePointers.splice(pointerIndex, 1);
+          activeEvents.splice(pointerIndex, 1);
           pointerIndex = -1;
         }
       }
 
-      let ignorePointer = (pointerIndex < 0);
-      if (ignorePointer) {
-        return;
+      let prevActivePointerCount = prevActiveEvents.length;
+      let activePointerCount = activeEvents.length;
+
+      let activePoints = [];
+      let rect = this.node.getBoundingClientRect();
+      for (let e of activeEvents) {
+        activePoints.push({x: e.clientX - rect.left, y: e.clientY - rect.top});
       }
 
-      let cachedPointerQ = canvasToPaper(cachedPointer);
-      e.deltaX = pointerQ.x - cachedPointerQ.x;
-      e.deltaY = pointerQ.y - cachedPointerQ.y;
+      let currentPoint = {x: e.clientX - rect.left, y: e.clientY - rect.top};
 
-      if (e.type == "pointerdown") {
-        state = NAVIGATING;
+      if (prevActivePointerCount != activePointerCount) {
+        if (prevActivePointerCount == 1) this.stopOnePointerAction(activeEvents[0], currentPoint);
+        if (prevActivePointerCount == 2) this.stopTwoPointerAction([activeEvents[0], e], [activePoints[0], currentPoint]);
+
+        if (activePointerCount == 1) this.startOnePointerAction(activeEvents[0], activePoints[0]);
+        if (activePointerCount == 2) this.startTwoPointerAction(activeEvents, activePoints)
+      } else {
+        if (activePointerCount == 1) this.onePointerAction(activeEvents[0], activePoints[0]);
+        if (activePointerCount == 2) this.twoPointerAction(activeEvents, activePoints);
       }
 
-      if (e.type == "pointermove" && state == NAVIGATING) {
-        if (activePointers.length == 1) {
-          camera.x -= e.deltaX;
-          camera.y -= e.deltaY;
-        } else if (activePointers.length == 2) {
-          let otherPointer = activePointers[(pointerIndex + 1) % 2];
-          let otherPointerQ = canvasToPaper(otherPointer);
-
-          let oldDist = dist(cachedPointer, otherPointer);
-          let newDist = dist(e, otherPointer);
-          let scaleFactor = newDist/oldDist;
-
-          camera.w /= scaleFactor;
-          //camera.w = Math.max(camera.w, minCameraWidth);
-          //camera.w = Math.min(camera.w, maxCameraWidth);
-          //camera.h = window.innerHeight * camera.w/window.innerWidth;
-          camera.h /= scaleFactor;
-
-          let newPointerQ = canvasToPaper(e);
-
-          camera.x += pointerQ.x - newPointerQ.x;
-          camera.y += pointerQ.y - newPointerQ.y;
-        }
+      if ((e.target == this.node) && (isMoveEvent || activeEvents.length == 0)) {
+        this.hoverAction(e, currentPoint);
       }
 
-      activePointers[pointerIndex] = e;
-      render();
+      if (isOutEvent) {
+        this.stopHoverAction();
+      }
+
+      e.preventDefault();
     },
 
-    onEvent: function(e, self) {
-      let areaHovered = null;
+    onWheel: function(e, self) {
+      let areaUnderPointer = this.getTouchedArea(e);
 
-      if ('offsetX' in e && 'offsetY' in e) {
-        let moved = (this.currentPointer.x != e.offsetX) || (this.currentPointer.y != e.offsetY);
-        this.currentPointer = {x: e.offsetX, y: e.offsetY};
+      if (areaUnderPointer) {
+        let camBounds = areaUnderPointer.cameraBounds;
+        let areaBounds = areaUnderPointer.bounds();
 
-        for (let area of this.areas) {
-          if (area.bounds().contains(this.currentPointer)) {
-            areaHovered = area;
-            break;
-          }
-        }
+        let zoom = 2**(-self.wheelDelta/800);
 
-        if (moved) {
-          this.fire('mousemove', {e, pointer: this.currentPointer, area: areaHovered});
-          e.preventDefault();
-        }
+        let p = areaUnderPointer.canvasToPaper(e);
+
+        if (!areaUnderPointer.lockCameraX) camBounds.setW(camBounds.w * zoom);
+        if (!areaUnderPointer.lockCameraY) camBounds.setH(camBounds.h * zoom);
+
+        let q = areaUnderPointer.canvasToPaper(e);
+
+        if (!areaUnderPointer.lockCameraX) camBounds.setX(camBounds.x - (q.x - p.x));
+        if (!areaUnderPointer.lockCameraY) camBounds.setY(camBounds.y - (q.y - p.y));
+
+        areaUnderPointer.onCameraChange();
+        this.requestRenderAll();
       }
-
-      if (self && self.gesture == "click") {
-        //console.log(e, self);
-        //this.fire('click', {e, pointer: this.currentPointer, area: areaHovered});
-        e.preventDefault();
-      } else if (self && self.gesture == "drag") {
-        if (self.state == "down") {
-          this.activeArea = null;
-          this.cameraAnchor = null;
-          for (let area of this.areas) {
-            if (area.bounds().contains({x: self.x, y: self.y})) {
-              this.activeArea = area;
-              this.cameraAnchor = rect(area.cameraBounds); // clone
-              break;
-            }
-          }
-        } else if (self.state == "move") {
-          if (this.activeArea) {
-            let delta = {
-              x: self.x - self.start.x,
-              y: self.y - self.start.y,
-            };
-
-            let bounds = this.activeArea.bounds();
-
-            if (!this.activeArea.lockCameraX) this.activeArea.cameraBounds.setX(this.cameraAnchor.x - delta.x * this.activeArea.cameraBounds.w/bounds.w);
-            if (!this.activeArea.lockCameraY) this.activeArea.cameraBounds.setY(this.cameraAnchor.y + delta.y * this.activeArea.cameraBounds.h/bounds.h);
-
-            this.activeArea.onCameraChange();
-            this.requestRenderAll();
-          }
-        } else if (self.state == "up") {
-          if (self.x == self.start.x && self.y == self.start.y) {
-            this.fire('click', {e, pointer: this.currentPointer, area: this.activeArea});
-          }
-          this.activeArea = null;
-        }
-
-        if (e.preventDefault) e.preventDefault();
-      } else if (self && self.gesture == "wheel") {
-        // TODO Take into account touch devices!
-
-        let areaUnderPointer = null;
-        for (let area of this.areas) {
-          if (area.bounds().contains(this.currentPointer)) {
-            areaUnderPointer = area;
-            break;
-          }
-        }
-
-        if (areaUnderPointer) {
-          let camBounds = areaUnderPointer.cameraBounds;
-          let areaBounds = areaUnderPointer.bounds();
-
-          let zoom = 2**(-self.wheelDelta/800);
-
-          let p = areaUnderPointer.canvasToPaper(this.currentPointer);
-
-          if (!areaUnderPointer.lockCameraX) camBounds.setW(camBounds.w * zoom);
-          if (!areaUnderPointer.lockCameraY) camBounds.setH(camBounds.h * zoom);
-
-          let q = areaUnderPointer.canvasToPaper(this.currentPointer);
-
-          if (!areaUnderPointer.lockCameraX) camBounds.setX(camBounds.x - (q.x - p.x));
-          if (!areaUnderPointer.lockCameraY) camBounds.setY(camBounds.y - (q.y - p.y));
-
-          areaUnderPointer.onCameraChange();
-          this.requestRenderAll();
-        }
-        e.preventDefault();
-      } else {
-        this.fire(e.type, {e, pointer: this.currentPointer, area: this.activeArea});
-        e.preventDefault();
-      }
+      e.preventDefault();
     },
 
     bounds: function() {

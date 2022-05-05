@@ -330,18 +330,23 @@
       });
 
       this.canvas.on('click', args => {
-        let hoveredObject = this.getObjectUnderPoint(args.pointer);
+        let hoveredObject = this.getObjectUnderPoint(args.p);
         this.fire('click', {...args, object: hoveredObject});
       });
 
-      this.canvas.on('mouseout', args => {
+      this.canvas.on('hoverStop', args => {
         this.objectTooltip.style.visibility = 'hidden';
       });
 
-      this.canvas.on('mousemove', args => {
+      this.canvas.on('hover', args => {
+        if (args.state != mlp.STATE_IDLE) {
+          this.objectTooltip.style.visibility = 'hidden';
+          return;
+        }
+
         let subArgs = {...args};
 
-        let hoveredObject = this.getObjectUnderPoint(args.pointer);
+        let hoveredObject = this.getObjectUnderPoint(args.p);
         let hoveredObjectChanged = false;
 
         if (this.hoveredObject != hoveredObject) {
@@ -355,7 +360,7 @@
           this.objectTooltip.style.visibility = 'hidden';
         }
 
-        this.fire('mousemove', subArgs);
+        this.fire('hover', subArgs);
         args.stopPropagation = subArgs.stopPropagation;
 
         if (!args.stopPropagation) {
@@ -363,7 +368,7 @@
 
           if (hoveredObject) {
             if (hoveredObjectChanged) {
-              this.objectTooltip.innerHTML = this.objectTooltipBuilder(hoveredObject, args.pointer);
+              this.objectTooltip.innerHTML = this.objectTooltipBuilder(hoveredObject, args.p);
             }
 
             let offsetX = 10;
