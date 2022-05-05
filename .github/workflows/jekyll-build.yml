@@ -22,18 +22,5 @@ jobs:
           target_branch: main-build
           target_path: public
           post_build_commands: |
-            cp "${GITHUB_WORKSPACE}/firebase.json" public/
-            ls -l
-            #ls -l public/
-#     - run: |
-#         ls -l /github/
-#         BUILD_DIR="/github/jekyll_build"
-#         ls ${BUILD_DIR}
-#         echo ${GITHUB_WORKSPACE}
-#         echo ${BUILD_DIR}
-#         ls -l ${GITHUB_WORKSPACE}
-#         ls -l ${BUILD_DIR}
-#         cd ${BUILD_DIR}
-#         ls -l
-#         pwd
+            cp "${GITHUB_WORKSPACE}/firebase.json" .
 
