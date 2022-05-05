@@ -32,5 +32,4 @@ jobs:
 #         cd ${BUILD_DIR}
 #         ls -l
 #         pwd
-      - uses: ./.github/actions/test
 
