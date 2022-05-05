@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  github-pages:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,9 +16,11 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
           restore-keys: |
             ${{ runner.os }}-gems-
-      - uses: ./.github/actions/jekyll-build
+      - uses: .github/actions/jekyll-build
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target_branch: main-build
           build_only: true
           target_path: public
+      - run: |
+        ls -l

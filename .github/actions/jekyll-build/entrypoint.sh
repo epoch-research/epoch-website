@@ -163,9 +163,6 @@ touch .nojekyll
 
 echo "Publishing to ${GITHUB_REPOSITORY} on branch ${remote_branch}"
 
-pwd
-ls -l
-
 git config user.name "${GITHUB_ACTOR}" && \
 git config user.email "${GITHUB_ACTOR}@users.noreply.github.com" && \
 git add . && \
