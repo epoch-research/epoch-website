@@ -16,12 +16,12 @@ jobs:
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
           restore-keys: |
             ${{ runner.os }}-gems-
-#     - uses: ./.github/actions/jekyll-build
-#       with:
-#         token: ${{ secrets.GITHUB_TOKEN }}
-#         target_branch: main-build
-#         build_only: true
-#         target_path: public
+      - uses: ./.github/actions/jekyll-build
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target_branch: main-build
+          build_only: true
+          target_path: public
       - run: |
           BUILD_DIR="${GITHUB_WORKSPACE}/../jekyll_build"
           echo ${GITHUB_WORKSPACE}
