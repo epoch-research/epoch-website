@@ -1,7 +1,46 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
-<h1>{{page.title}}</h1>
+  {%- include head.html -%}
 
-{{content}}
+  <head>
+    <script src="{{ '/assets/js/distillpub/template.v2.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/distillpub/transforms.v2.js' | relative_url }}"></script>
+
+    <style>
+      d-title {
+        padding: 0;
+      }
+
+      d-title {
+        margin-bottom: 15px;
+      }
+
+      d-article {
+        border-top: 0;
+        padding-top: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    {%- include header.html -%}
+
+    <main class="page-content" aria-label="Content">
+      <div class="post distill">
+        <d-title>
+          <h1>{{ page.title }}</h1>
+        </d-title>
+
+        <d-article>
+          {{ content }}
+        </d-article>
+      </div>
+    </main>
+
+    {%- include footer.html -%}
+
+  </body>
+
+</html>

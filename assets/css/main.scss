@@ -2,6 +2,7 @@
 ---
 
 $max-content-width: 984px;
+$max-article-content-width: 704px;
 $hovered-link-color: #999;
 $footer-color: #111;
 
@@ -179,6 +180,14 @@ body {
   max-width: $max-content-width;
   margin-right: auto;
   margin-left: auto;
+}
+
+.page-content .wrapper, .article-content .wrapper {
+  max-width: $max-article-content-width;
+}
+
+.page-content.wide .wrapper, .article-content.wide .wrapper {
+  max-width: $max-content-width;
 }
 
 $on-palm: 600px;

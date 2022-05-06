@@ -5,16 +5,25 @@ title: About
 <head>
   <style>
     .team-grid {
-      grid-column-gap: 20px;
-      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 10px !important;
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (max-width: 800px) {
-      .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .member {
+      max-width: 350px;
+      width: 100%;
     }
 
-    @media (max-width: 500px) {
-      .team-grid { grid-template-columns: repeat(1, 1fr); }
+    @media (max-width: 550px) {
+      .team-grid {
+        grid-template-columns: repeat(1, 1fr);
+        justify-items: center;
+      }
+
+      .member {
+        max-width: 300px;
+        width: 100%;
+      }
     }
 
 		.mug {
