@@ -224,8 +224,8 @@
 
       let plotter = this;
 
-      let axisMarginLeft = 59;
-      let axisMarginBottom = 40;
+      let axisMarginLeft = 68;
+      let axisMarginBottom = 45;
 
       this.mainArea = this.canvas.addArea({
         bounds: (canvasBounds) => {
@@ -449,13 +449,15 @@
       this.objects.set(this.xAxisArea, []);
       this.areas.push(this.xAxisArea);
 
-      this.xAxis = new mlp.Axis({area: this.xAxisArea, scaleType: mlp.ScaleType.LINEAR, direction: mlp.AxisDirection.HORIZONTAL}),
-      this.yAxis = new mlp.Axis({area: this.yAxisArea, scaleType: mlp.ScaleType.LOG, direction: mlp.AxisDirection.VERTICAL}),
+      this.xAxis = new mlp.Axis({area: this.xAxisArea, scaleType: mlp.ScaleType.LINEAR, direction: mlp.AxisDirection.HORIZONTAL});
+      this.yAxis = new mlp.Axis({area: this.yAxisArea, scaleType: mlp.ScaleType.LOG, direction: mlp.AxisDirection.VERTICAL});
+
+      let axisFontSize = 23;
 
       this.yAxisLabel = this.addText("y", {
         rotation: 90,
         area: this.yAxisArea,
-        fontSize: 14,
+        fontSize: axisFontSize,
         fontWeight: "bold",
         normalizedBasePoint: {x: 0.5, y: 1.0},
       });
@@ -481,7 +483,7 @@
 
       this.xAxisLabel = this.addText("x", {
         area: this.xAxisArea,
-        fontSize: 14,
+        fontSize: axisFontSize,
         fontWeight: "bold",
         normalizedBasePoint: {x: 0.5, y: 0.5},
       });
@@ -749,11 +751,19 @@
       return null;
     },
 
+    paperToCanvas: function(p, area) {
+      area ||= this.mainArea;
+
+      let q = area.paperToCanvas(p);
+
+      return q;
+    },
+
     dataToCanvas: function(q, area) {
       area ||= this.mainArea;
 
-      let x = plotter.xAxis.dataToPaper(q.x);
-      let y = plotter.yAxis.dataToPaper(q.y);
+      let x = this.xAxis.dataToPaper(q.x);
+      let y = this.yAxis.dataToPaper(q.y);
 
       let p = area.paperToCanvas(mlp.rect({x, y}));
 

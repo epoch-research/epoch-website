@@ -1,6 +1,5 @@
 ---
 title: Blog
-content_width: wide
 ---
 
 <head>

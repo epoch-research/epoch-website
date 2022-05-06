@@ -169,7 +169,8 @@ function buildTrendsGraph(container, database, args) {
   let plotter = v;
 
   let objectToSystem = new Map();      // Graphical object --> system info 
-  let slopeObjectToDomain = new Map(); // Graphical slope object --> regression data rows
+  let slopeObjectToDomain = new Map(); // Graphical slope object --> regression data row
+  let slopeTextToInfo = new Map(); // Graphical slope object --> regression data row
 
   let result;
 
@@ -191,25 +192,13 @@ function buildTrendsGraph(container, database, args) {
             {label: "Domain",                    value: system["_Domain"]},
         ]);
       }
-    } else if (object instanceof mlp.Polyline) {
-      let domain = slopeObjectToDomain.get(object);
-
-      let d = mlp.julianDateToDate(plotter.mainArea.canvasToPaper(pointer).x);
-      let eraUnderPointer;
-      for (let era of result.eras) {
-        if (era.start <= d && d < era.stop) {
-          eraUnderPointer = era;
-          break;
-        }
-      }
-
-
-      let slopeInfo = null;
-      for (let row of result.regressionInfoTable) {
-        if (row.domain == domain && row.era == eraUnderPointer.Era) {
-          slopeInfo = row;
-          break;
-        }
+    } else if (object instanceof mlp.Polyline || slopeTextToInfo.has(object)) {
+      let slopeInfo;
+      if (slopeTextToInfo.has(object)) {
+        slopeInfo = slopeTextToInfo.get(object);
+      } else {
+        let domain = slopeObjectToDomain.get(object);
+        slopeInfo = getSlopeInfoAtJulianDate(domain, plotter.mainArea.canvasToPaper(pointer).x);
       }
 
       if (slopeInfo) {
@@ -223,7 +212,28 @@ function buildTrendsGraph(container, database, args) {
 
     return tooltip;
   });
-    
+
+  function getSlopeInfoAtJulianDate(domain, jd) {
+    let d = mlp.julianDateToDate(jd);
+    let eraUnderPointer;
+    for (let era of result.eras) {
+      if (era.start <= d && d < era.stop) {
+        eraUnderPointer = era;
+        break;
+      }
+    }
+
+    let slopeInfo = null;
+    for (let row of result.regressionInfoTable) {
+      if (row.domain == domain && row.era == eraUnderPointer.Era) {
+        slopeInfo = row;
+        break;
+      }
+    }
+
+    return slopeInfo;
+  }
+
   plotter.on('hover', args => {
     if (args.mouseLeaveObject) {
       plotter.canvas.node.style.cursor = 'auto';
@@ -382,6 +392,7 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newCheckControl("Plot regressions",     "plotRegressions",    true));
   v.addControl(mlp.newCheckControl("Separate by category", "separateCategories", true));
   v.addControl(mlp.newCheckControl("Label eras",           "labelEras",          true));
+  v.addControl(mlp.newCheckControl("Show doubling times",  "showDoublingTimes",  true));
   v.addControl(mlp.newCheckControl("Label systems",        "labelSystems",       false));
 
   // Thresholds
@@ -402,6 +413,10 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newCheckControl("Adjust for estimate uncertainty", "adjustForEstimateUncertainty", true));
 
   v.addControl(mlp.newTextControl("Filter by text", "filterText"));
+
+  if (presets.length > 0 ) {
+    v.setOptions(presets[0].params);
+  }
 
   // Oh, Jesus, sweet Jesus
 
@@ -433,6 +448,7 @@ function buildTrendsGraph(container, database, args) {
 
   let eraPolylines = [];
   let eraLabels = [];
+  let slopeTexts = [];
 
   function updateVisibility() {
     for (let entry of objectToSystem.entries()) {
@@ -445,6 +461,12 @@ function buildTrendsGraph(container, database, args) {
       }
 
       object.visible = visible;
+    }
+
+    for (let entry of slopeTextToInfo.entries()) {
+      let text = entry[0];
+      let domain = entry[1].domain;
+      text.visible = params.showDoublingTimes && !domainsDisabled[domain];
     }
 
     for (let entry of slopeObjectToDomain.entries()) {
@@ -465,25 +487,12 @@ function buildTrendsGraph(container, database, args) {
   }
 
   plotter.on("beforeRender", args => {
-    /*
-    // Update the slope text
-
-    let a = plotter.dataToCanvas({x: new Date(2022, 1, 1),  y: 10});
-    let b = plotter.dataToCanvas({x: new Date(2022, 1, 10), y: 40});
-
-    let p = {x: 0.5 * (a.x + b.x), y: 0.5 * (a.y + b.y)};
-
-    // Leave a bit of margin
-    let diff = {x: (b.x - a.x), y: (b.y - a.y)};
-    let u = {x: diff.x/mlp.norm(diff), y: diff.y/mlp.norm(diff)};
-    let n = {x: u.y, y: -u.x};
-    p.x += 8*n.x;
-    p.y += 8*n.y;
-
-    slopeText.visible = mlp.dist(a, b) > 120;
-    slopeText.position = plotter.mainArea.canvasToPaper(p);
-    slopeText.rotation = -Math.atan2(b.y - a.y, b.x - a.x) * 180/Math.PI;
-    */
+    // Update the slope texts
+    for (let {text, p, q, slopeInfo} of slopeTexts) {
+      let a = plotter.paperToCanvas(p);
+      let b = plotter.paperToCanvas(q);
+      text.rotation = -Math.atan2(b.y - a.y, b.x - a.x) * 180/Math.PI;
+    }
 
     // Update the era polylines
     let y0 = plotter.yAxisArea.canvasToPaper({y: plotter.yAxisArea.bounds().y0}).y;
@@ -607,7 +616,12 @@ function buildTrendsGraph(container, database, args) {
   v.canvas.on('resize', updateLegendVisibility);
   updateLegendVisibility();
 
+  let prevXAxis = "";
+  let prevYAxis = "";
+
   function onChange(args) {
+    let axesUpdated = (params.xAxis != args.options.xAxis) || (params.yAxis != args.options.yAxis);
+
     params = {...params, ...args.options};
 
     for (let button of xButtonGroup.getElementsByTagName("button")) {
@@ -673,19 +687,22 @@ function buildTrendsGraph(container, database, args) {
 
     objectToSystem.clear();
     slopeObjectToDomain.clear();
+    slopeTextToInfo.clear();
     v.clear();
 
     v.inputCoords = mlp.CoordSystem.DATA;
 
-    v.setXAxis({
-      scaleType: (params.xAxis == 'Publication date') ? mlp.ScaleType.TIME : mlp.ScaleType.LOG,
-      label: params.xAxis,
-    });
+    if (axesUpdated) {
+      v.setXAxis({
+        scaleType: (params.xAxis == 'Publication date') ? mlp.ScaleType.TIME : mlp.ScaleType.LOG,
+        label: params.xAxis,
+      });
 
-    v.setYAxis({
-      scaleType: mlp.ScaleType.LOG,
-      label: params.yAxis,
-    });
+      v.setYAxis({
+        scaleType: mlp.ScaleType.LOG,
+        label: params.yAxis,
+      });
+    }
 
     //
     // Eras
@@ -693,6 +710,7 @@ function buildTrendsGraph(container, database, args) {
 
     eraPolylines.length = 0;
     eraLabels.length = 0;
+    slopeTexts.length = 0;
 
     function addEra(era, color, backgroundColor) {
       let interval = [era.start, era.stop];
@@ -723,11 +741,11 @@ function buildTrendsGraph(container, database, args) {
 
     if (params.xAxis == "Publication date") {
       let eraColorIndex = 0;
-      let eraColors = ["#e45756", "#4c78a8", "#f69131",];
-      let eraBackgroundColors = ["#e5ae3822", "#30a2da22", "#fc4f3022"];
+      let eraColors = ["#e5ae38", "#30a2da", "#fc4f30"];
 
       for (let era of result.eras) {
-        addEra(era, eraColors[eraColorIndex], eraBackgroundColors[eraColorIndex]);
+        let backgroundColor = eraColors[eraColorIndex] + "22"; // era color with transparency
+        addEra(era, eraColors[eraColorIndex], backgroundColor);
         eraColorIndex++;
       }
     }
@@ -749,9 +767,50 @@ function buildTrendsGraph(container, database, args) {
         let style = domainStyles[domain];
         if (!style) style = ['black', 'triangle-down'];
 
-        let poly = v.addPolyline(domainToPoints[domain], {
-          stroke: style[0],
+        let color = style[0];
+
+        let points = domainToPoints[domain];
+
+        let poly = v.addPolyline(points, {
+          stroke: color,
         });
+
+        // TODO Make this better!
+        for (let i = 0; i < points.length - 1; i++) {
+          let p = {...points[i]};
+          let q = {...points[i + 1]};
+
+          if (q.x - p.x <= 2*86400) continue;
+
+          let px = plotter.xAxis.dataToPaper(p.x);
+          let py = plotter.yAxis.dataToPaper(p.y);
+
+          let qx = plotter.xAxis.dataToPaper(q.x);
+          let qy = plotter.yAxis.dataToPaper(q.y);
+
+          let cx = 0.5 * (px + qx);
+          let cy = 0.5 * (py + qy);
+
+          let slopeInfo = getSlopeInfoAtJulianDate(domain, cx);
+          if (!slopeInfo) continue;
+
+          cx = plotter.xAxis.paperToData(cx);
+          cy = plotter.yAxis.paperToData(cy);
+
+          let text = plotter.addText(slopeInfo.bestSlope, {
+            position: {x: cx, y: cy},
+            normalizedBasePoint: {x: 0.5, y: 0},
+            fill: color,
+          });
+
+          slopeTextToInfo.set(text, slopeInfo);
+          slopeTexts.push({
+            text: text,
+            p: {x: px, y: py},
+            q: {x: qx, y: qy},
+            slopeInfo: slopeInfo
+          });
+        }
 
         slopeObjectToDomain.set(poly, domain);
       }
@@ -802,38 +861,40 @@ function buildTrendsGraph(container, database, args) {
     // Camera stuff
     //
 
-    let minX = Infinity;
-    let maxX = -Infinity;
-    let minY = Infinity;
-    let maxY = -Infinity;
+    if (axesUpdated) {
+      let minX = Infinity;
+      let maxX = -Infinity;
+      let minY = Infinity;
+      let maxY = -Infinity;
 
-    for (let i = 0; i < result.systems.length; i++) {
-      let system = result.systems[i];
+      for (let i = 0; i < result.systems.length; i++) {
+        let system = result.systems[i];
 
-      if (system.deleted || !system.visible) continue;
+        if (system.deleted || !system.visible) continue;
 
-      let x = system[params.xAxis];
-      let y = system[params.yAxis];
+        let x = system[params.xAxis];
+        let y = system[params.yAxis];
 
-      if (x < minX) minX = x;
-      if (x > maxX) maxX = x;
-      if (y < minY) minY = y;
-      if (y > maxY) maxY = y;
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
 
-      system._x = x;
-      system._y = y;
+        system._x = x;
+        system._y = y;
+      }
+
+      if (minX instanceof Date) {
+        let minTime = minX.getTime();
+        let maxTime = maxX.getTime();
+        let margin = Math.max(86400e3, 0.01 * (maxTime - minTime));
+
+        minX = new Date(minTime - margin);
+        maxX = new Date(maxTime + margin);
+      };
+
+      v.setCamera({x0: minX, y0: minY / 1.5, x1: maxX, y1: maxY * 1.5});
     }
-
-    if (minX instanceof Date) {
-      let minTime = minX.getTime();
-      let maxTime = maxX.getTime();
-      let margin = Math.max(86400e3, 0.01 * (maxTime - minTime));
-
-      minX = new Date(minTime - margin);
-      maxX = new Date(maxTime + margin);
-    };
-
-    v.setCamera({x0: minX, y0: minY / 1.5, x1: maxX, y1: maxY * 1.5});
 
     v.requestRenderAll();
   }

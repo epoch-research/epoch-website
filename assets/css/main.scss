@@ -182,14 +182,6 @@ body {
   margin-left: auto;
 }
 
-.page-content .wrapper, .article-content .wrapper {
-  max-width: $max-article-content-width;
-}
-
-.page-content.wide .wrapper, .article-content.wide .wrapper {
-  max-width: $max-content-width;
-}
-
 $on-palm: 600px;
 @media (max-width: $on-palm) {
   .site-nav {

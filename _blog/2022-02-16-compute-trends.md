@@ -82,6 +82,7 @@ authors:
     #trends-graph-wrapper {
       transition: box-shadow 0.3s ease;
       grid-column: page;
+      padding: 7px 7px 0px 5px;
     }
 
     #trends-graph-wrapper:not(.active) .dateSliderContainer, #trends-graph-wrapper:not(.active) .over-button {

@@ -489,9 +489,12 @@ function regressData(rows, eras, params) {
       medianSlope *= DAYS_PER_YEAR;
       highSlope *= DAYS_PER_YEAR;
       info.Slope = `${bestSlope.toFixed(1)} OOMs/year [${lowSlope.toFixed(1)} ; ${medianSlope.toFixed(1)} ; ${highSlope.toFixed(1)}]`
+      info.bestSlope = `${bestSlope.toFixed(1)} OOMs/year`
     } else {
+      info.bestSlope = `${bestSlope.toExponential(1)}`
       info.Slope = `${bestSlope.toExponential(1)} [${lowSlope.toExponential(1)} ; ${medianSlope.toExponential(1)} ; ${highSlope.toExponential(1)}]`
     }
+
 
     // Doubling time
     if (params.xAxis == 'Publication date') {
