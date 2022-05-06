@@ -202,11 +202,16 @@ function buildTrendsGraph(container, database, args) {
       }
 
       if (slopeInfo) {
-        tooltip = plotter.buildTooltipTable([
-          {label: "Slope",  value: slopeInfo.Slope},
-          {label: "Era",    value: slopeInfo.era},
-          {label: "Domain", value: slopeInfo.domain},
-        ]);
+        let tableRows = [];
+        tableRows.push({label: "Slope",               value: slopeInfo.Slope});
+        tableRows.push({label: "Douling time",        value: slopeInfo['Doubling time']});
+        tableRows.push({label: "Era",                 value: slopeInfo.era});
+        tableRows.push({label: "Domain",              value: slopeInfo.domain});
+        tableRows.push({label: "n",                   value: slopeInfo.n});
+        tableRows.push({label: "Scale (start / end)", value: slopeInfo['Scale (start / end)']});
+        tableRows.push({label: "R2",                  value: slopeInfo["R2"]});
+
+        tooltip = plotter.buildTooltipTable(tableRows);
       }
     }
 
