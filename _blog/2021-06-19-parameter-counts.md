@@ -21,21 +21,14 @@ authors:
   - name: Jaime Sevilla
     url: ""
     affiliations:
-      name: University of Aberdeen
-  - name: Lennart Heim
+      name: Epoch
+  - name: Pablo Villalobos
     url: ""
     affiliations:
-      name: Centre for the Governance of AI
-  - name: Marius Hobbhahn
+      name: Epoch
+  - name: Juan Felipe Cerón
     url: ""
     affiliations:
-      name: University of Tübingen
-  - name: Tamay Besiroglu
-    url: ""
-    affiliations:
-      name: Massachusetts Institute of Technology
-  - name: Anson Ho
-    url: ""
-    affiliations:
-      name: University of St Andrews
+      name: Epoch
+
 ---

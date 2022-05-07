@@ -14,18 +14,30 @@ toc:
 date: 2022-02-16
 
 authors:
-  - name: Anson Ho
-    url: "https://ansonwhho.github.io"
+  - name: Jaime Sevilla
+    url: ""
     affiliations:
       name: Epoch
-  - name: Boris Podolsky
-    url: "https://en.wikipedia.org/wiki/Boris_Podolsky"
+  - name: Tamay Besiroglu
+    url: ""
     affiliations:
-      name: IAS, Princeton
-  - name: Nathan Rosen
-    url: "https://en.wikipedia.org/wiki/Nathan_Rosen"
+      name: Epoch
+  - name: Anson Ho
+    url: ""
     affiliations:
-      name: IAS, Princeton
+      name: Epoch
+  - name: Lennart Heim
+    url: ""
+    affiliations:
+      name: Epoch
+  - name: Marius Hobbhahn
+    url: ""
+    affiliations:
+      name: Epoch
+  - name: Pablo Villalobos
+    url: ""
+    affiliations:
+      name: Epoch
 ---
 
 <head>

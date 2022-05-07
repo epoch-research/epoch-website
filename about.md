@@ -57,7 +57,7 @@ title: About
 </head>
 
 # About us
-We are a research initiative at working on monitoring AI developments and forecasting the development of Transformative AI. Our mission is to narrow the gap between technical AI developments and AI governance, and inform key decision makers in AI safety.
+We are a research initiative working to support AI governance and improve forecasts around the development of advanced AI systems. Our mission is to narrow the gap between technical AI developments and AI governance, and inform key decision makers in AI safety.
 
 ## Our Team
 
