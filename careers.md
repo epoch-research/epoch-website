@@ -2,21 +2,59 @@
 title: Careers
 ---
 
+<head>
+	<style>
+		.job-list {
+      		overflow: hidden;
+    	}
+		.job {
+			vertical-align: top;
+			color: #111;
+     		height: 100%;
+			display: inline-block;
+			border: 2px solid gray;
+			padding: 10px 10px 10px 30px;
+			margin-bottom: 10px;
+            width: 95%;
+		}
+		.job-summary {
+			float: left;
+			width: 100%;
+		}
+	</style>
+</head>
+
 # Careers
+<img style="width:40%;float:right;margin:15px;" src="/assets/images/team/epoch-team.jpg">
+<!-- {: .tex2jax_ignore } -->
 
-**We expect to be hiring for several full-time research and management roles from May to July. Salaries range from $60,000 for entry roles to $80,000 for senior roles.**
-{: .tex2jax_ignore }
+## Why Work with Epoch? 
+- **You can work remotely from anywhere in the world**: We expect to organise group retreats every 6 months to do in-person coworking, and offer support with visa applications.
+- **You can work on crucial problems that directly inform AI governance and strategy**.
+- **We do not require degrees or extensive experience with AI or Economics**: Compared to other roles in AI safety, we offer a relatively easy ramp into the field of AI governance and forecasting.
+- **You can gain valuable career experience**: Going forward, we will work with prestigious organisations with which you will be affiliated, and release publications relating to our research agenda.
 
-Why work with Epoch? 
-- You can work from anywhere in the world, and work will primarily be done remotely We expect to organise group retreats every 6 months to do in-person coworking, and we can help with visa applications
-- You get to work directly on topics that have key strategic importance
-- Compared to other roles in AI safety, we do not require as much experience, and can offer a relatively easy ramp for getting into the field of AI governance/forecasting
-- Going forward, we will work with prestigious organisations with which you will be affiliated, and release publications relating to our research agenda (more details in a followup hiring post)
+## What We're Looking For
+You may be an especially good fit for our team if:
+- **You're knowledgeable about economics**, especially statistics and econometrics. We spend a lot of time analysing data and trends, in order to improve our understanding of AI developments.
+- **You have experience with data science and programming**, and are comfortable gathering large amounts of data efficiently. 
+- **You're comfortable doing independent research**, and are able to think critically. 
+- **Are familiar with forecasting, recent AI developments, technical AI safety, or AI governance**.
 
-You may be an especially good fit if you:
-- Are knowledgeable about economics (particularly statistics and econometrics)
-- Have experience with data science and programming (particularly scraping data)
-- Are comfortable doing independent research
-- Are familiar with forecasting, recent AI developments, technical AI safety, or AI governance. To get a feel for what kinds of background we think would be the most useful, see this shortform post. 
+Bear in mind that **you don't need to know about all of these things to be a strong candidate**. If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway.
 
-If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway. Please register your interest for these roles at this airtable form – applications will open in May. 
+*Applications will open in late May*. 
+
+# Open Positions
+<div class="job-list">
+  {% assign list = site.data.jobs %}
+  {% for item in list %}
+  <a href="{{item.url | relative_url}}">
+	<div class="job">
+        <h2>{{ item.title }}</h2>
+        <p class="job-summary">{{ item.summary }}</p>
+        <a href="{{ item.url }}">Learn more and apply</a>
+	</div>
+  </a>
+  {% endfor %}
+</div>
