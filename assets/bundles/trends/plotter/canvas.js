@@ -227,9 +227,11 @@
 
         if (activePointerCount == 1) this.startOnePointerAction(activeEvents[0], activePoints[0]);
         if (activePointerCount == 2) this.startTwoPointerAction(activeEvents, activePoints)
-      } else {
+        e.preventDefault();
+      } else if (activePointerCount > 0) {
         if (activePointerCount == 1) this.onePointerAction(activeEvents[0], activePoints[0]);
         if (activePointerCount == 2) this.twoPointerAction(activeEvents, activePoints);
+        e.preventDefault();
       }
 
       if ((e.target == this.node) && (isMoveEvent || activeEvents.length == 0)) {
@@ -239,8 +241,6 @@
       if (isOutEvent) {
         this.stopHoverAction();
       }
-
-      e.preventDefault();
     },
 
     onWheel: function(e, self) {
@@ -268,6 +268,7 @@
         areaUnderPointer.onCameraChange();
         this.requestRenderAll();
       }
+
       e.preventDefault();
     },
 

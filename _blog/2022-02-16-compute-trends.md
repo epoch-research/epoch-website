@@ -228,4 +228,12 @@ _[Read the full paper now on the arXiv](https://arxiv.org/abs/2202.05924)._
       graphWrapperNode.classList.remove("active");
     }
   });
+
+  // Escape from the graph on Escape
+  document.body.addEventListener('keyup', function(e) {
+    console.log(document.activeElement);
+    if (e.key == "Escape") {
+      graphWrapperNode.classList.remove("active");
+    }
+  });
 </script>
