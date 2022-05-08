@@ -5,22 +5,38 @@ title: Careers
 <head>
 	<style>
 		.job-list {
-      		overflow: hidden;
+          display: grid;
+          grid-template-columns: 1fr;
+          grid-auto-rows: 1fr;
     	}
 		.job {
 			vertical-align: top;
 			color: #111;
-     		height: 100%;
-			display: inline-block;
 			border: 2px solid gray;
 			padding: 10px 10px 10px 30px;
 			margin-bottom: 10px;
-            width: 95%;
+      width: 95%;
+      display: flex;
+      flex-direction: column;
 		}
-		.job-summary {
-			float: left;
-			width: 100%;
-		}
+
+    .apply-button {
+      margin-top: auto;
+    }
+
+    .job {
+      border-radius: 5px;
+    }
+
+    .job:hover {
+      text-decoration: none;
+      box-shadow: 0px 0px 5px 3px rgb(0 0 0 / 20%);
+    }
+
+    .job:hover .apply-button {
+      text-decoration: underline;
+    }
+
 	</style>
 </head>
 
@@ -46,15 +62,19 @@ Bear in mind that **you don't need to know about all of these things to be a str
 *Applications will open in late May*. 
 
 # Open Positions
+<!--
 <div class="job-list">
   {% assign list = site.data.jobs %}
   {% for item in list %}
-  <a href="{{item.url | relative_url}}">
-	<div class="job">
-        <h2>{{ item.title }}</h2>
-        <p class="job-summary">{{ item.summary }}</p>
-        <a href="{{ item.url }}">Learn more and apply</a>
-	</div>
+  <a href="{{item.url | relative_url}}" class="job">
+      <h2>{{ item.title }}</h2>
+      <p class="job-summary">{{ item.summary }}</p>
+      <div class="apply-button">Learn more and apply</div>
   </a>
   {% endfor %}
 </div>
+-->
+
+{% assign list = site.data.jobs %}
+{% include box_list.html footer="Learn more and apply" %}
+

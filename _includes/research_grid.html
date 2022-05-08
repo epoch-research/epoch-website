@@ -1,0 +1,20 @@
+<div class="collection-grid research-grid">
+  {% for item in site.data.research %}
+  <a href="{{item.url}}" class="member">
+    <div class="member-info">
+      <h4>{{item.domain}}</h4>
+        <h3>{{item.name}}</h3>
+      <h4 class="uppercase">{{item.type}}</h4>
+      <div class="info-cdr">
+        <div class="unhovered-text">
+          <p>{{item.date | date: "%b. %d, %Y"}}</p>
+          <p>{{item.authors}}</p>
+        </div>
+        <div class="hovered-text">
+          <p>{{item.description | truncatewords: 50}}</p>
+        </div>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>

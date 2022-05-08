@@ -1,0 +1,16 @@
+<div class="grid one-column box-list">
+  {% for item in list %}
+  <a href="{{item.url | relative_url}}" class="box-item flex-row small-screen-flex-column">
+      {% if item.image %}
+			  <div class="right-column order-1 small-screen-order-0 image-container"><img src="{{ item.image | relative_url }}"></div>
+      {% endif %}
+      <div class="left-column flex-column">
+        <h2>{{ item.title }}</h2>
+        <p class="project-summary">{{ item.summary }}</p>
+        {%if include.footer %}
+          <p class="flex-bottom highlight-on-hover">{{ include.footer }}</p>
+        {% endif %}
+      </div>
+  </a>
+  {% endfor %}
+</div>

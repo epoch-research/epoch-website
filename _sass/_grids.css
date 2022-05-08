@@ -1,0 +1,88 @@
+.research-grid {
+  grid-template-columns: repeat(auto-fit, 320px);
+  grid-gap: 10px !important;
+  justify-content: left;
+
+  .member {
+    padding: 10px;
+    max-width: 300px;
+    width: 100%;
+
+    &, &:hover {
+      border: 2px solid gray !important;
+    }
+
+    text-decoration: none;
+    overflow: hidden;
+  }
+
+  .info-cdr {
+    position: relative;
+  }
+
+  .hovered-text {
+    opacity: 0;
+  }
+
+  .unhovered-text {
+    opacity: 1;
+  }
+
+  .unhovered-text {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+  }
+
+  .unhovered-text, .hovered-text  {
+    transition: opacity 0.2s ease;
+  }
+
+  .member:hover .hovered-text {
+    opacity: 1;
+  }
+
+  .member:hover .unhovered-text {
+    opacity: 0;
+  }
+
+  @media (hover: none) {
+    /* For touch devices, show all data at once */
+    .member:hover .hovered-text,
+    .member:hover .unhovered-text,
+    .hovered-text,
+    .unhovered-text {
+      opacity: 1;
+      position: relative;
+    }
+  }
+}
+
+.box-list {
+  overflow: hidden;
+
+  .box-item {
+    vertical-align: top;
+    color: #111;
+    border: 2px solid gray;
+    padding: 10px 10px 10px 30px;
+    margin-bottom: 10px;
+
+    &:hover {
+      text-decoration: none;
+      .highlight-on-hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .left-column {
+    flex: auto;
+  }
+
+  .right-column {
+    flex: 0 0 41%;
+    min-width: 300px;
+  }
+}

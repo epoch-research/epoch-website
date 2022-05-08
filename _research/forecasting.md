@@ -16,20 +16,5 @@ This involves:
 
 ---
 # Prior work
-<div class="collection-grid research-grid">
-  {% for item in site.data.research %}
-  <a href="{{item.url}}">
-  <div class="member">
-    <div class="member-info">
-	  <h4>{{item.domain}}</h4>
-      <h3>{{item.name}}</h3>
-	  <h4>{{item.type}}</h4>
-	  <p>{{item.date | date: "%b. %d, %Y"}}</p>
-	  <p>{{item.authors}}</p>
-    </div>
-	<!-- <p class="member-description">{{item.description}}</p> -->
-	<!-- Want to show the description when hovering, similar to GovAI's research page -->
-  </div>
-  </a>
-  {% endfor %}
-</div>
+
+{% include research_grid.html %}

@@ -6,6 +6,19 @@ image: assets/images/posts/2022/compute-trends.png
 description: We've compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward. 
 tags: paper peer-reviewed
 
+banner:
+  fullscreen: false
+  resources:
+    - label: Paper
+      url: https://arxiv.org/abs/2202.05924
+      icon: file-text
+    - label: Visualization
+      url: /visualization
+      icon: graph-up
+    - label: Dataset
+      url: /data
+      icon: table
+
 toc:
   - name: What is Lorem Ipsum?
   - name: Why do we use it?
@@ -243,7 +256,6 @@ _[Read the full paper now on the arXiv](https://arxiv.org/abs/2202.05924)._
 
   // Escape from the graph on Escape
   document.body.addEventListener('keyup', function(e) {
-    console.log(document.activeElement);
     if (e.key == "Escape") {
       graphWrapperNode.classList.remove("active");
     }

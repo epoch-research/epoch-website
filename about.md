@@ -6,12 +6,16 @@ title: About
   <style>
     .team-grid {
       grid-gap: 10px !important;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
     }
 
     .member {
       max-width: 350px;
       width: 100%;
+    }
+
+    @media (max-width: 800px) {
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 550px) {

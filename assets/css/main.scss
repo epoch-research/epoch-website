@@ -4,7 +4,10 @@
 $max-content-width: 984px;
 $max-article-content-width: 704px;
 $hovered-link-color: #999;
+$header-color: #231f20;
+$header-color-rgb: 35, 31, 32;
 $footer-color: #111;
+$nav-bar-height: 54px;
 
 @import
   "{{ site.theme }}",
@@ -17,7 +20,9 @@ $footer-color: #111;
 
 :root {
   --hovered-link-color: #{$hovered-link-color};
+  --header-color: #{$header-color};
   --footer-color: #{$footer-color};
+  --nav-bar-height: #{$nav-bar-height};
 }
 
 body {
@@ -27,8 +32,9 @@ body {
 // Site header
 .site-header { 
   border-top: 0;
-  background-color: #231f20;
+  background-color: $header-color;
   min-height: 54px;
+  border-bottom: 0;
 }
 
 .site-header a:hover, .site-header a:hover * {
@@ -171,6 +177,7 @@ body {
   grid-gap: 32px;
   vertical-align: top;
   grid-template-columns: repeat(auto-fit, minmax(250px, 47.5%));
+  grid-auto-rows: 1fr;
   padding-bottom: 40px;
 
   img {
@@ -196,3 +203,71 @@ $on-palm: 600px;
     }
   }
 }
+
+.banner {
+  width: 100%;
+  text-align: center;
+
+  img {
+    width: 100%;
+  }
+}
+
+// Shortcuts
+
+.uppercase {text-transform: uppercase;}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.order-0 {order: 0;}
+.order-1 {order: 1;}
+.order-2 {order: 2;}
+
+.flex-bottom {
+  margin-top: auto;
+}
+
+.grid {
+  display: grid;
+}
+
+.one-column {
+  grid-template-columns: 1fr;
+}
+
+.same-row-height {
+  grid-auto-rows: 1fr;
+}
+
+.image-container img {
+  max-width: 100%;
+}
+
+@media (max-width: 750px) {
+  .small-screen-flex-row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .small-screen-flex-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .small-screen-order-0 {order: 0;}
+  .small-screen-order-1 {order: 1;}
+  .small-screen-order-2 {order: 2;}
+}
+
+// Post-imports
+@import
+  "grids"
+;
