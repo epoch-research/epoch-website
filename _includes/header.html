@@ -4,7 +4,10 @@
     {%- assign page_paths = site.header_pages | default: default_paths -%}
     <a href="{{ "/" | relative_url }}">
       <img src="{{ '/assets/images/epoch-icon.png' | relative_url}}" alt="epoch-icon" class="header-icon">
+      <img src="{{ '/assets/images/epoch-logo-text-white.svg' | relative_url}}" class="header-logo-text" alt="epoch">
+      {% comment %}
       <span class="site-title">{{ site.title | escape }}</span>
+      {% endcomment %}
     </a>
 
     {%- if page_paths -%}
@@ -19,7 +22,6 @@
         </label>
 
         <div class="trigger">
-          
           {% assign fields = page.url | downcase | split: '/' %}
           {% assign dir = fields[1] %}
           <a class="page-link{%if dir == 'research' %} current-menu-item{% endif %}" href="{{ '/research' | relative_url }}">Research</a>
