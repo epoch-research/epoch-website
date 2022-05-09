@@ -1,6 +1,8 @@
 function buildTrendsGraph(container, database, args) {
   'use strict';
 
+  let eraColors = ["#e5ae38", "#30a2da", "#fc4f30"];
+
   args = args || {};
   let linkParamsToUrl = args.linkParamsToUrl;
 
@@ -207,7 +209,7 @@ function buildTrendsGraph(container, database, args) {
         tableRows.push({label: "Douling time",        value: slopeInfo['Doubling time']});
         tableRows.push({label: "Era",                 value: slopeInfo.era});
         tableRows.push({label: "Domain",              value: slopeInfo.domain});
-        tableRows.push({label: "n",                   value: slopeInfo.n});
+        tableRows.push({label: "Number of systems",   value: slopeInfo.n});
         tableRows.push({label: "Scale (start / end)", value: slopeInfo['Scale (start / end)']});
         tableRows.push({label: "R2",                  value: slopeInfo["R2"]});
 
@@ -363,16 +365,15 @@ function buildTrendsGraph(container, database, args) {
 
   v.addMultiDateSlider(["startDate", "startDlEra", "startLargeScaleEra", "endDate"],
     [
-      {value: mlp.date(1950, 1, 1), color: 'orange'},
-      {value: mlp.date(1970, 1, 1), color: 'red'},
-      {value: mlp.date(1985, 1, 1), color: 'green'},
-      {value: mlp.date(2023, 1, 1), color: 'blue'},
+      {value: mlp.date(1950, 1, 1), background: `linear-gradient(90deg, #888 50%, ${eraColors[0]} 50%)`},
+      {value: mlp.date(1970, 1, 1), background: `linear-gradient(90deg, ${eraColors[0]} 50%, ${eraColors[1]} 50%)`},
+      {value: mlp.date(1985, 1, 1), background: `linear-gradient(90deg, ${eraColors[1]} 50%, ${eraColors[2]} 50%)`},
+      {value: mlp.date(2023, 1, 1), background: `linear-gradient(90deg, ${eraColors[2]} 50%, #888 50%)`},
     ],
     [
-
-      {color: '#e5ae38'},
-      {color: '#30a2da'},
-      {color: '#fc4f30'},
+      {color: eraColors[0]},
+      {color: eraColors[1]},
+      {color: eraColors[2]},
     ],
     [
       mlp.date(1950, 1, 1),
@@ -746,11 +747,11 @@ function buildTrendsGraph(container, database, args) {
 
     if (params.xAxis == "Publication date") {
       let eraColorIndex = 0;
-      let eraColors = ["#e5ae38", "#30a2da", "#fc4f30"];
 
       for (let era of result.eras) {
+        let textColor = eraColors[eraColorIndex];
         let backgroundColor = eraColors[eraColorIndex] + "22"; // era color with transparency
-        addEra(era, eraColors[eraColorIndex], backgroundColor);
+        addEra(era, textColor, backgroundColor);
         eraColorIndex++;
       }
     }

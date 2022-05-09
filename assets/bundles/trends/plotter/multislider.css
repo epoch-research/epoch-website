@@ -1,3 +1,7 @@
 body.dragging, body.dragging * {
   cursor: grabbing !important;
 }
+
+.slider-handle {
+  box-sizing: border-box;
+}

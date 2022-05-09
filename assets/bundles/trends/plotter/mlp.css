@@ -106,7 +106,7 @@ body.disabled *:focus {
 .plotter-container .legend {
   position: absolute;
   top: 15px;
-  left: 75px;
+  left: 83px;
   min-width: 100px;
   min-height: 100px;
   border-radius: 3px;

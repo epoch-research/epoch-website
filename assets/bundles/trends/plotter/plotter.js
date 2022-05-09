@@ -196,6 +196,9 @@
       let x = d3.scaleLinear();
       let y = d3.scaleLinear();
 
+      let axisMarginLeft = 76;
+      let axisMarginBottom = 45;
+
       //// UI (optional)
 
       let innerContainer = mlp.html(`
@@ -223,9 +226,6 @@
       //// Main area
 
       let plotter = this;
-
-      let axisMarginLeft = 68;
-      let axisMarginBottom = 45;
 
       this.mainArea = this.canvas.addArea({
         bounds: (canvasBounds) => {
@@ -458,6 +458,7 @@
         rotation: 90,
         area: this.yAxisArea,
         fontSize: axisFontSize,
+        fill: "#333",
         fontWeight: "bold",
         normalizedBasePoint: {x: 0.5, y: 1.0},
       });
@@ -473,7 +474,7 @@
         let textBounds = mlp.rect(mlp.getTextBounds(text.area.context, text.text));
         text.area.context.restore();
 
-        labelBounds.setW(labelBounds.w - 56);
+        labelBounds.setW(labelBounds.w - 67);
 
         let cx = 0.5*(labelBounds.x0 + labelBounds.x1);
         let cy = 0.5*(labelBounds.y0 + labelBounds.y1);
@@ -484,6 +485,7 @@
       this.xAxisLabel = this.addText("x", {
         area: this.xAxisArea,
         fontSize: axisFontSize,
+        fill: "#333",
         fontWeight: "bold",
         normalizedBasePoint: {x: 0.5, y: 0.5},
       });
@@ -521,7 +523,7 @@
           let isXAxis = (axis == self.xAxis);
           let scale = isXAxis ? x : y;
 
-          this.context.font = '11px sans-serif';
+          this.context.font = '15px sans-serif';
 
           let ticks = isXAxis ? plotter.xAxis.ticks(plotter.xAxisArea, 20) : plotter.yAxis.ticks(plotter.yAxisArea, 10);
 
@@ -529,8 +531,8 @@
             let tick = ticks.ticks[i];
 
             this.context.beginPath();
-            this.context.fillStyle = "black"; // for the labels
-            this.context.strokeStyle = "grey"; // for the ticks
+            this.context.fillStyle = "#777"; // for the labels
+            this.context.strokeStyle = "#999"; // for the ticks
 
             let canvasTxtState = {...canvasTxt};
 

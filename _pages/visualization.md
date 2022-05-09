@@ -1,11 +1,11 @@
 ---
 layout: full_screen_app
 title: Visualization
-permalink: /visualization
+permalink: /mlinputs/visualization
 
 # Uncomment the lines below and remove everything else for a redirection to the Colab notebook
 #layout: 'redirect'
-#permalink: /visualization
+#permalink: /mlinputs/visualization
 #redir_to: 'https://colab.research.google.com/drive/11m0AfSQnLiDijtE1fsIPqF-ipbTQcsFp#scrollTo=8RNjdCJ1Nd1I'
 ---
 

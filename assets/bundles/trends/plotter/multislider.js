@@ -17,7 +17,7 @@ Multislider = mlp.createClass(mlp.Observable, {
     let container = mlp.html(`<div style="width:100%; height:${containerHeight}px; position:relative"></div>`)
     self.dom = container;
 
-    let background = mlp.html(`<div style="width:calc(100% - ${self.handleSize}px); height:${threadHeight}px; position:absolute; top:0; bottom:0; margin:auto;"></div>`)
+    let background = mlp.html(`<div class="slider-background" style="width:calc(100% - ${self.handleSize}px); height:${threadHeight}px; position:absolute; top:0; bottom:0; margin:auto;"></div>`)
     background.style.left            = (self.handleSize/2) + 'px';
     background.style.borderRadius    = '4px';
     background.style.backgroundColor = '#808080';
@@ -27,7 +27,7 @@ Multislider = mlp.createClass(mlp.Observable, {
     self.edges = [];
 
     for (let i = 0; i < self.handlesConfig.length - 1; i++) {
-      let edge = mlp.html('<div style="position:absolute; top:0; bottom:0; margin:auto"></div>');
+      let edge = mlp.html('<div class="slider-edge" style="position:absolute; top:0; bottom:0; margin:auto"></div>');
       edge.style.height          = background.style.height;
       edge.style.borderRadius    = background.style.borderRadius;
       edge.style.backgroundColor = self.edgesConfig ? self.edgesConfig[i].color : '';
@@ -37,7 +37,7 @@ Multislider = mlp.createClass(mlp.Observable, {
     }
 
     for (let handleConfig of self.handlesConfig) {
-      let handle = mlp.html('<div style="position:absolute"></div>');
+      let handle = mlp.html('<div class="slider-handle" style="position:absolute"></div>');
       handle.style.width           = self.handleSize + 'px';
       handle.style.height          = self.handleSize + 'px';
       handle.style.borderRadius    = self.handleSize + 'px';
@@ -45,6 +45,7 @@ Multislider = mlp.createClass(mlp.Observable, {
       handle.style.cursor          = 'grab';
       handle.style.top             = ((containerHeight - self.handleSize)/2) + 'px';
       handle.dataset.value         = handleConfig.value;
+      if (handleConfig.background) handle.style.background = handleConfig.background;
       container.appendChild(handle);
 
       self.handles.push(handle);
@@ -144,6 +145,7 @@ Multislider = mlp.createClass(mlp.Observable, {
     this.handles.sort((a, b) => parseFloat(a.style.left) - parseFloat(b.style.left));
     for (let i = 0; i < this.handles.length; i++) {
       this.handles[i].style.backgroundColor = this.handlesConfig[i].color;
+      this.handles[i].style.background = this.handlesConfig[i].background;
     }
     this._repositionEdges();
   },
