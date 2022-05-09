@@ -63,18 +63,6 @@ Bear in mind that **you don't need to know about all of these things to be a str
 *Applications will open in late May*. 
 
 # Open Positions
-<!--
-<div class="job-list">
-  {% assign list = site.data.jobs %}
-  {% for item in list %}
-  <a href="{{item.url | relative_url}}" class="job">
-      <h2>{{ item.title }}</h2>
-      <p class="job-summary">{{ item.summary }}</p>
-      <div class="apply-button">Learn more and apply</div>
-  </a>
-  {% endfor %}
-</div>
--->
 
 {% assign list = site.data.jobs %}
 {% include box_list.html footer="Learn more and apply" sameRowHeight=true %}

@@ -3,7 +3,7 @@
   {% for item in site.data.research %}
   {% assign typename = item.type %}
   {% assign icon = site.data.research_types | find_exp: 'type','type.name == typename' | map: 'icon' %}
-  <a href="{{item.url}}" class="member">
+  <a href="{{item.url}}" class="member{% if item.description %} show-description-on-hover{%endif%}">
     <div class="member-info">
       <h4 class="uppercase">{{item.domain}}</h4>
       <h3>{{item.name}}</h3>

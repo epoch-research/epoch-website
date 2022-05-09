@@ -43,12 +43,14 @@
     }
   }
 
-  .member:hover .hovered-text {
-    opacity: 1;
-  }
+  .member.show-description-on-hover:hover {
+    .hovered-text {
+      opacity: 1;
+    }
 
-  .member:hover .unhovered-text {
-    opacity: 0;
+    .unhovered-text {
+      opacity: 0;
+    }
   }
 
   @media (hover: none) {
