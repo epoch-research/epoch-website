@@ -13,10 +13,10 @@ banner:
       url: https://arxiv.org/abs/2202.05924
       icon: file-text
     - label: Visualization
-      url: /visualization
+      url: /mlinputs/visualization
       icon: graph-up
     - label: Dataset
-      url: /data
+      url: /mlinputs/data
       icon: table
 
 toc:
