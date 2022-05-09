@@ -27,8 +27,10 @@ theme: minima
 url: epochai.org
 baseurl: /
 
-exclude: [README.md, CNAME, firebase.json, firebase-dev.json]
+# Top level pages
+include: [_pages]
+
+exclude: [CNAME, firebase-dev.json, firebase.json, README.md]
 
 # To make GitHub Pages work with our domain
 #include: [CNAME]
-

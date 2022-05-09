@@ -2,9 +2,9 @@
   {% for item in site.data.research %}
   <a href="{{item.url}}" class="member">
     <div class="member-info">
-      <h4>{{item.domain}}</h4>
-        <h3>{{item.name}}</h3>
-      <h4 class="uppercase">{{item.type}}</h4>
+      <h4 class="uppercase">{{item.domain}}</h4>
+      <h3>{{item.name}}</h3>
+      <h4 class="uppercase">{%if item.icon %}<i class="bi bi-{{item.icon}}"></i> {% endif %}{{item.type}}</h4>
       <div class="info-cdr">
         <div class="unhovered-text">
           <p>{{item.date | date: "%b. %d, %Y"}}</p>

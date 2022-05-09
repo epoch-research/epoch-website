@@ -1,5 +1,6 @@
 ---
 title: Careers
+permalink: /careers
 ---
 
 <head>
@@ -76,5 +77,5 @@ Bear in mind that **you don't need to know about all of these things to be a str
 -->
 
 {% assign list = site.data.jobs %}
-{% include box_list.html footer="Learn more and apply" %}
+{% include box_list.html footer="Learn more and apply" sameRowHeight=true %}
 

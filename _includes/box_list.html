@@ -1,4 +1,4 @@
-<div class="grid one-column box-list">
+<div class="grid one-column box-list{% if include.sameRowHeight %} same-row-height{% endif %}">
   {% for item in list %}
   <a href="{{item.url | relative_url}}" class="box-item flex-row small-screen-flex-column">
       {% if item.image %}

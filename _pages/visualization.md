@@ -1,6 +1,7 @@
 ---
 layout: full_screen_app
 title: Visualization
+permalink: /visualization
 
 # Uncomment the lines below and remove everything else for a redirection to the Colab notebook
 #layout: 'redirect'
