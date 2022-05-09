@@ -206,7 +206,7 @@ function buildTrendsGraph(container, database, args) {
       if (slopeInfo) {
         let tableRows = [];
         tableRows.push({label: "Slope",               value: slopeInfo.Slope});
-        tableRows.push({label: "Douling time",        value: slopeInfo['Doubling time']});
+        tableRows.push({label: "Doubling time",       value: slopeInfo['Doubling time']});
         tableRows.push({label: "Era",                 value: slopeInfo.era});
         tableRows.push({label: "Domain",              value: slopeInfo.domain});
         tableRows.push({label: "Number of systems",   value: slopeInfo.n});
