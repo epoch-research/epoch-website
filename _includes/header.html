@@ -20,10 +20,12 @@
 
         <div class="trigger">
           
-          <a class="page-link" href="{{ '/research' | relative_url }}">Research</a>
-          <a class="page-link" href="{{ '/blog' | relative_url }}">Blog</a>
-          <a class="page-link" href="{{ '/about' | relative_url }}">About</a>
-          <a class="page-link" href="{{ '/careers' | relative_url }}">Careers</a>
+          {% assign fields = page.url | downcase | split: '/' %}
+          {% assign dir = fields[1] %}
+          <a class="page-link{%if dir == 'research' %} current-menu-item{% endif %}" href="{{ '/research' | relative_url }}">Research</a>
+          <a class="page-link{%if dir == 'blog'     %} current-menu-item{% endif %}" href="{{ '/blog' | relative_url }}">Blog</a>
+          <a class="page-link{%if dir == 'about'    %} current-menu-item{% endif %}" href="{{ '/about' | relative_url }}">About</a>
+          <a class="page-link{%if dir == 'careers'  %} current-menu-item{% endif %}" href="{{ '/careers' | relative_url }}">Careers</a>
 
           <!-- {%- for path in page_paths -%}
             {%- assign my_page = site.pages | where: "path", path | first -%}

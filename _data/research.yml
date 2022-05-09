@@ -1,6 +1,5 @@
 - name: Compute Trends Across Three Eras of Machine Learning
   type: Paper
-  icon: file-text
   domain: Machine Learning Trends
   date: 2022-02-11
   authors: Jamie Sevilla, Tamay Besiroglu, Anson Ho, Lennart Heim, Marius Hobbhahn, and Pablo Villalobos

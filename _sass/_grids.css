@@ -14,29 +14,33 @@
 
     text-decoration: none;
     overflow: hidden;
-  }
 
-  .info-cdr {
-    position: relative;
-  }
+    .type {
+      font-size: 14px;
+    }
 
-  .hovered-text {
-    opacity: 0;
-  }
+    .info-cdr {
+      position: relative;
+    }
 
-  .unhovered-text {
-    opacity: 1;
-  }
+    .hovered-text {
+      opacity: 0;
+    }
 
-  .unhovered-text {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    top: 0;
-  }
+    .unhovered-text {
+      opacity: 1;
+    }
 
-  .unhovered-text, .hovered-text  {
-    transition: opacity 0.2s ease;
+    .unhovered-text {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+    }
+
+    .unhovered-text, .hovered-text  {
+      transition: opacity 0.2s ease;
+    }
   }
 
   .member:hover .hovered-text {

@@ -1,0 +1,6 @@
+- name: Paper
+  icon: file-text
+- name: Report
+  icon: newspaper
+- name: Database
+  icon: table

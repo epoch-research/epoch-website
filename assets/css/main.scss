@@ -3,7 +3,7 @@
 
 $max-content-width: 984px;
 $max-article-content-width: 704px;
-$hovered-link-color: #999;
+$hovered-link-color: #aaa;
 $header-color: #231f20;
 $header-color-rgb: 35, 31, 32;
 $footer-color: #111;
@@ -38,7 +38,7 @@ body {
 }
 
 .site-header a:hover, .site-header a:hover * {
-  color: $hovered-link-color;
+  //color: $hovered-link-color;
   text-decoration: none;
 }
 
@@ -73,6 +73,9 @@ body {
     color: #fff;
   }
 
+  .current-menu-item {
+    color: #bbb;
+  }
 }
 
 // Site footer

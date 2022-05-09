@@ -28,9 +28,14 @@ url: epochai.org
 baseurl: /
 
 # Top level pages
-include: [_pages]
+include:
+  - _pages
 
-exclude: [CNAME, firebase-dev.json, firebase.json, README.md]
+exclude:
+  - CNAME
+  - firebase-dev.json
+  - firebase.json
+  - README.md
 
 # To make GitHub Pages work with our domain
 #include: [CNAME]

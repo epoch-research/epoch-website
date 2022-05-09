@@ -1,10 +1,13 @@
+
 <div class="collection-grid research-grid">
   {% for item in site.data.research %}
+  {% assign typename = item.type %}
+  {% assign icon = site.data.research_types | find_exp: 'type','type.name == typename' | map: 'icon' %}
   <a href="{{item.url}}" class="member">
     <div class="member-info">
       <h4 class="uppercase">{{item.domain}}</h4>
       <h3>{{item.name}}</h3>
-      <h4 class="uppercase">{%if item.icon %}<i class="bi bi-{{item.icon}}"></i> {% endif %}{{item.type}}</h4>
+      <h4 class="uppercase type">{% if icon %}<i class="bi bi-{{icon}}"></i> {% endif %}{{item.type}}</h4>
       <div class="info-cdr">
         <div class="unhovered-text">
           <p>{{item.date | date: "%b. %d, %Y"}}</p>
