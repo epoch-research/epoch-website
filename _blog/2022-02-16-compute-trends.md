@@ -28,27 +28,21 @@ date: 2022-02-16
 
 authors:
   - name: Jaime Sevilla
-    url: ""
     affiliations:
       name: Epoch
   - name: Tamay Besiroglu
-    url: ""
     affiliations:
       name: Epoch
   - name: Anson Ho
-    url: ""
     affiliations:
       name: Epoch
   - name: Lennart Heim
-    url: ""
     affiliations:
       name: Epoch
   - name: Marius Hobbhahn
-    url: ""
     affiliations:
       name: Epoch
   - name: Pablo Villalobos
-    url: ""
     affiliations:
       name: Epoch
 ---

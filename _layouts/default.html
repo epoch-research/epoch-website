@@ -1,11 +1,26 @@
+{% assign banner = page.banner %}
+{% unless banner %}
+{% assign banner = layout.banner %}
+{% endunless %}
+
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
   {%- include head.html -%}
 
+  <head>
+  {% if banner %}
+    {% include article_banner_head.html %}
+  {% endif %}
+  </head>
+
   <body>
 
     {%- include header.html -%}
+
+    {% if banner %}
+          {% include article_banner.html %}
+    {% endif %}
 
     <main class="page-content {{page.content_width}}" aria-label="Content">
       <div class="wrapper">

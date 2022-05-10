@@ -1,16 +1,16 @@
 <div class="grid one-column box-list{% if include.sameRowHeight %} same-row-height{% endif %}">
   {% for item in list %}
-  <a href="{{item.url | relative_url}}" class="box-item flex-row small-screen-flex-column">
+  <div href="{{item.url | relative_url}}" class="box-item flex-row small-screen-flex-column move-up-on-hover shadow-on-hover">
       {% if item.image %}
 			  <div class="right-column order-1 small-screen-order-0 image-container"><img src="{{ item.image | relative_url }}"></div>
       {% endif %}
       <div class="left-column flex-column">
         <h2>{{ item.title }}</h2>
         <p class="project-summary">{{ item.summary }}</p>
-        {%if include.footer %}
-          <p class="flex-bottom highlight-on-hover">{{ include.footer }}</p>
+        {%if include.button %}
+        <div class="flex-bottom footer-wrapper"><a class="highlight-on-hover button" href="{{item.url | relative_url}}">{{ include.button }}</a></div>
         {% endif %}
       </div>
-  </a>
+  </div>
   {% endfor %}
 </div>

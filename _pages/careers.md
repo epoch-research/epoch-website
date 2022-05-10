@@ -1,6 +1,12 @@
 ---
 title: Careers
 permalink: /careers
+banner:
+  fullscreen: false
+  type: regular
+  hide_date: true
+  image_position: bottom left
+image: /assets/images/team/epoch-team.jpg
 ---
 
 <head>
@@ -41,8 +47,6 @@ permalink: /careers
 	</style>
 </head>
 
-# Careers
-<img style="width:40%;float:right;margin:15px;" src="/assets/images/team/epoch-team.jpg">
 <!-- {: .tex2jax_ignore } -->
 
 ## Why Work with Epoch? 
@@ -65,5 +69,5 @@ Bear in mind that **you don't need to know about all of these things to be a str
 # Open Positions
 
 {% assign list = site.data.jobs %}
-{% include box_list.html footer="Learn more and apply" sameRowHeight=true %}
+{% include box_list.html button="Learn more and apply" sameRowHeight=true %}
 

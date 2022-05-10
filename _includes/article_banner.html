@@ -1,0 +1,43 @@
+<div class="article-head {% if banner.type == 'regular' %}regular-banner{% endif %}">
+  <div class="article-head-content">
+    <div class="banner">
+      <div class="banner-img-wrapper">
+        <img src="{{ page.image | relative_url }}"/>
+      </div>
+    </div>
+    <div class="summary">
+      <div class="summary-main">
+        {% if banner.supertitle %}
+          <h5 class="summary-supertitle">{{ banner.supertitle }}</h5>
+        {% endif %}
+        <div class="summary-title">
+          <h1>{{ page.title }}</h1>
+        </div>
+        {% if page.authors %}
+        <div class="summary-authors">
+          {% assign authors = page.authors %}
+          {% include author_list.html %}
+        </div>
+        {% endif %}
+        {% if page.description %}
+        <div class="summary-abstract">
+          {{ page.description }}
+        </div>
+        {% endif %}
+        {% if banner.resources %}
+          <div class="article-resources">
+            {% for resource in banner.resources %}
+            <a class="article-resource" href="{{resource.url | relative_url}}">{% if resource.icon %}<i class="bi bi-{{resource.icon}}"></i>{% endif %}{{resource.label}}</a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      {% unless banner.hide_date %}
+      <div class="summary-footer">
+        {{ page.date | date: "%b. %d, %Y" }}
+      </div>
+      {% endunless %}
+    </div>
+  </div>
+</div>
+

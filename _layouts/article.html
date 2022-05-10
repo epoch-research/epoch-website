@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+
+{% assign banner = page.banner %}
+{% unless banner %}
+{% assign banner = layout.banner %}
+{% endunless %}
+
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
   {%- include head.html -%}
@@ -7,166 +13,23 @@
     <script src="{{ '/assets/js/distillpub/template.v2.js' | relative_url }}"></script>
     <script src="{{ '/assets/js/distillpub/transforms.v2.js' | relative_url }}"></script>
 
-    {% if page.banner %}
-    <style>
-      :root {
-        --resource-color: 78, 51, 80;
-      }
-
-      d-title {
-        padding: 0;
-      }
-
-      d-title {
-        margin-bottom: 15px;
-      }
-
-      d-article {
-        border-top: 0;
-        padding-top: 0;
-      }
-
-      .article-head {
-        width: 100%;
-        margin-bottom: 20px;
-        background-color: var(--header-color);
-      }
-
-      .article-head-content {
-        width: 90%;
-        display: flex;
-        margin: auto;
-        padding-top: 70px;
-        padding-bottom: 20px;
-        box-sizing: border-box;
-      }
-
-      {% if page.banner.fullscreen %}
-      .article-head-content, .article-head {
-        min-height: calc(100vh - var(--nav-bar-height));
-      }
-      {% endif %}
-
-      .summary {
-        order: 1;
-        padding-right: 3rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-
-      .summary * {
-        color: white !important;
-      }
-
-      .summary-footer {
-        margin-top: 2rem;
-      }
-
-      .banner {
-        order: 2;
-        flex: 0 0 41%;
-        margin-left: auto;
-        margin-right: auto;
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-
-      .article-resources {
-        margin-top: 2rem;
-      }
-
-      .article-resource {
-        border-radius: 4px;
-        background-color: rgba(var(--resource-color), 0.8);
-        padding: 9px;
-        margin: 2px;
-        font-size: 0.8rem;
-        font-weight: bold;
-        text-transform: uppercase;
-      }
-
-      .article-resources i {
-        margin-right: 0.5rem;
-      }
-
-      .article-resource:hover {
-        background-color: rgba(var(--resource-color), 1.0);
-      }
-
-      @media (max-width: 800px) {
-        .article-head-content {
-          flex-wrap: wrap;
-        }
-
-        .banner {
-          order: 1;
-          flex-basis: 100%;
-          margin-left: 0;
-          margin-right: 0;
-          padding-left: 0;
-          text-align: left;
-        }
-
-        .banner-img-wrapper {
-          padding-right: 3rem;
-        }
-
-        .summary {
-          order: 2;
-        }
-
-      }
-
-      .page-content {
-        padding-top: 0;
-      }
-    </style>
+    {% if banner %}
+      {% include article_banner_head.html %}
     {% endif %}
   </head>
 
   <body>
-
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
       <div class="post distill">
 
-        {% if page.banner %}
-        <div class="article-head">
-          <div class="article-head-content">
-            <div class="banner">
-              <div class="banner-img-wrapper">
-                <img src="{{ page.image | relative_url }}"/>
-              </div>
-            </div>
-            <div class="summary">
-              <div class="summary-main">
-                <div class="summary-title">
-                  <h1>{{ page.title }}</h1>
-                </div>
-                <div class="summary-abstract">
-                  <p>We are a new research initiative working on monitoring AI developments and forecasting the development of transformative AI (TAI)</p>
-                  <p>Our mission is to narrow the gap between technical AI developments and AI governance, and inform key decision makers in AI safety (e.g. grantmakers)</p>
-                </div>
-                {% if page.banner.resources %}
-                  <div class="article-resources">
-                    {% for resource in page.banner.resources %}
-                    <a class="article-resource" href="{{resource.url | relative_url}}">{% if resource.icon %}<i class="bi bi-{{resource.icon}}"></i>{% endif %}{{resource.label}}</a>
-                    {% endfor %}
-                  </div>
-                {% endif %}
-              </div>
-              <div class="summary-footer">
-                {{ page.date | date: "%b. %d, %Y" }}
-              </div>
-            </div>
-          </div>
-        </div>
+        {% if banner %}
+          {% include article_banner.html %}
         {% else %}
-        <d-title>
-          <h1>{{ page.title }}</h1>
-        </d-title>
+          <d-title>
+            <h1>{{ page.title }}</h1>
+          </d-title>
         {% endif %}
 
         <d-article>

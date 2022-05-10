@@ -8,6 +8,7 @@ $header-color: #231f20;
 $header-color-rgb: 35, 31, 32;
 $footer-color: #111;
 $nav-bar-height: 54px;
+$nav-bar-margin: 36px;
 
 @import
   "{{ site.theme }}",
@@ -23,6 +24,7 @@ $nav-bar-height: 54px;
   --header-color: #{$header-color};
   --footer-color: #{$footer-color};
   --nav-bar-height: #{$nav-bar-height};
+  --nav-bar-margin: #{$nav-bar-margin};
 }
 
 body {
@@ -30,6 +32,7 @@ body {
 }
 
 // Site header
+
 .site-header { 
   border-top: 0;
   background-color: $header-color;
@@ -43,8 +46,8 @@ body {
 }
 
 .header-wrapper {
-  margin-right: 36px;
-  margin-left: 36px;
+  margin-right: var(--nav-bar-margin);
+  margin-left: var(--nav-bar-margin);
 }
 
 .site-title { 
@@ -88,6 +91,7 @@ body {
 }
 
 // Site footer
+
 .site-footer { 
   padding: 10px;
   background-color: $footer-color;
@@ -263,6 +267,13 @@ $on-palm: 600px;
   max-width: 100%;
 }
 
+.shadow-on-hover {
+  transition: box-shadow 0.2s ease;
+  &:hover {
+    box-shadow: 0 0 7px 0px black;
+  }
+}
+
 @media (max-width: 750px) {
   .small-screen-flex-row {
     display: flex;
@@ -278,6 +289,34 @@ $on-palm: 600px;
   .small-screen-order-1 {order: 1;}
   .small-screen-order-2 {order: 2;}
 }
+
+// Misc
+.move-up-on-hover {
+  position: relative;
+
+  &:hover {
+    transform: translate(-4px, 0px);
+  }
+
+  transition: transform 0.3s ease;
+}
+
+a.button {
+  color: black;
+  font-size: 1.0rem;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid black;
+  cursor: pointer;
+  text-decoration: none;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 
 // Post-imports
 @import

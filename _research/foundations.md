@@ -4,8 +4,6 @@ summary: Doing foundational research to understand the inner workings of the AI 
 image: /assets/images/bioanchors-compute.png
 ---
 
-<img src="{{ page.image | relative_url }}" style="max-width: 95%">
-
 ### We aim to do foundational research to understand the inner workings of the AI production function, and what impacts this will have as we head into a world with increasingly advanced AI. 
 
 This involves: 

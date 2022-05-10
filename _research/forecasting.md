@@ -4,8 +4,6 @@ summary: Improving our understanding of how future AI developments will unfold, 
 image: assets/images/posts/2022/projecting-compute-trends.jpeg
 ---
 
-<img src="{% link {{page.image}} %}" style="max-width: 95%">
-
 ### The AI Forecasting team aims to improve our understanding of how future AI developments will unfold, by creating and improving forecasting models, and answering fundamental questions that are of central strategic importance to AI safety. 
 
 This involves: 

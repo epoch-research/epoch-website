@@ -1,0 +1,24 @@
+{% assign processedAuthors = '' | split: '' %}
+{% for author in authors %}
+
+  {% if author.url %}
+    {% assign url = author.url %}
+  {% else %}
+    {% assign member = site.data.team | where: "name", author.name | first %}
+    {% if member %}
+      {% assign url = member.id %}
+    {% endif %}
+  {% endif %}
+
+  {% capture link %}
+    {% if url %}
+      <a href="{{url | prepend: 'about/#' | relative_url}}">{{author.name}}</a>
+    {% else %}
+      {{author.name}}
+    {% endif %}
+  {% endcapture %}
+
+  {% assign processedAuthors = processedAuthors | push: link %}
+{% endfor %}
+
+{{processedAuthors | better_join: ", ", " and "}}
