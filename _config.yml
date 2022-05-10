@@ -14,7 +14,7 @@ defaults:
       path: ""
       type: "research"
     values:
-      layout: "article"
+      layout: "research"
   - scope:
       path: ""
     values:
@@ -36,6 +36,7 @@ exclude:
   - firebase-dev.json
   - firebase.json
   - README.md
+  - coming_soon
 
 # To make GitHub Pages work with our domain
 #include: [CNAME]

@@ -1,9 +1,12 @@
 name: Builds and deploys Jekyll site
 
-on:
-  push:
-    branches:
-      - main
+# Remove this line to enable automatic builds
+on: workflow_dispatch
+# Uncomment these lines to enable automatic builds
+#on: 
+#  push:
+#    branches:
+#      - main
 
 jobs:
   build:
