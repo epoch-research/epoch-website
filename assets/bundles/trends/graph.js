@@ -635,7 +635,6 @@ function buildTrendsGraph(container, database, args) {
   updateLegendVisibility();
 
   function onChange(args) {
-    console.log(args.options.startDate, args.options.endDate);
     let axesUpdated = (prevParams.xAxis != args.options.xAxis) || (prevParams.yAxis != args.options.yAxis);
 
     prevParams = {...params};
