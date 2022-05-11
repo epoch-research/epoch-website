@@ -169,6 +169,9 @@ We are a research initiative working to support AI governance and improve foreca
       msgBarMsg.innerHTML = `${firstName} is no more`;
       if (teamGrid.childElementCount <= 3) {
         msgBarMsg.innerHTML += `. Only ${teamGrid.childElementCount} left.`;
+        if (teamGrid.childElementCount == 1) {
+          msgBarMsg.innerHTML += ` He's asking for mercy.`;
+        }
       }
       msgBar.style.display = '';
 
