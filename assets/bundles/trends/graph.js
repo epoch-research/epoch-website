@@ -878,7 +878,7 @@ function buildTrendsGraph(container, database, args) {
     // Camera stuff
     //
 
-    if (axesUpdated || true) {
+    if (true || axesUpdated) {
       let minX = Infinity;
       let maxX = -Infinity;
       let minY = Infinity;
@@ -901,10 +901,17 @@ function buildTrendsGraph(container, database, args) {
         system._y = y;
       }
 
+      // TODO TMP Is this OK?
+      if (params.xAxis == "Publication date") {
+        minX = params.startDate;
+        maxX = params.endDate;
+      }
+
       if (minX instanceof Date) {
         let minTime = minX.getTime();
         let maxTime = maxX.getTime();
         let margin = Math.max(86400e3, 0.01 * (maxTime - minTime));
+        margin = 0;
 
         minX = new Date(minTime - margin);
         maxX = new Date(maxTime + margin);
