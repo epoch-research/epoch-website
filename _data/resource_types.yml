@@ -1,0 +1,8 @@
+- name: mail
+  icon: envelope
+- name: website
+  icon: globe
+- name: twitter
+  icon: twitter
+- name: github
+  icon: github

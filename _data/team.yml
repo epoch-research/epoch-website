@@ -2,27 +2,43 @@
   role: Director
   description: Jaime has a background in math and computer science. His research focused on technological forecasting. He wants to help humanity attain the wisdom to wield new technologies responsibly.
   id: jaime-sevilla
+  resources:
+    - mail: mailto:jaime@epochai.org
 - name: Tamay Besiroglu
   role: Researcher
   description: Bar
   id: tamay-besiroglu
+  resources:
+    - mail: mailto:tamay@epochai.org
 - name: Pablo Villalobos
   role: Staff Researcher
   description: Pablo Villalobos has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.
   id: pablo-villalobos
+  resources:
+    - mail: mailto:pablo@epochai.org
 - name: Anson Ho
   role: Staff Researcher
   description: Anson is a researcher and writer for Epoch. His research interests are in interpretability and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.
   id: anson-ho
+  resources:
+    - mail: mailto:anson@epochai.org
+    - website: https://ansonwhho.github.io/
+    - github: https://github.com/ansonwhho
 - name: Lennart Heim
   role: Research Fellow and Strategy Specialist
   description: Lennart Heim is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.
   id: lennart-heim
+  resources:
+    - mail: mailto:lennart@epochai.org
 - name: Marius Hobbhahn
   role: Research Fellow
   description: Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.
   id: marius-hobbhahn
+  resources:
+    - mail: mailto:marius@epochai.org
 - name: Eduardo Infante-Roldán
   role: Software Engineer
   description: Eduardo does some programming.
   id: eduardo-infante-roldan
+  resources:
+    - mail: mailto:edu@epochai.org
