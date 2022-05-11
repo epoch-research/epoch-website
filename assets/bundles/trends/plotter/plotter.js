@@ -671,7 +671,7 @@
 
       let multisliderValues = [];
       for (let param of this.multiSliderOptionNames) {
-        multisliderValues.push(params[param]);
+        multisliderValues.push(this.options[param]);
       }
       this.multislider.setValues(multisliderValues);
 

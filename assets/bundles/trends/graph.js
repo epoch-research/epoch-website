@@ -200,14 +200,16 @@ function buildTrendsGraph(container, database, args) {
         slopeInfo = slopeTextToInfo.get(object);
       } else {
         let domain = slopeObjectToDomain.get(object);
-        slopeInfo = getSlopeInfoAtJulianDate(domain, plotter.mainArea.canvasToPaper(pointer).x);
+        slopeInfo = getSlopeInfoAtPoint(domain, plotter.mainArea.canvasToPaper(pointer), params.xAxis);
       }
 
       if (slopeInfo) {
         let tableRows = [];
         tableRows.push({label: "Slope",               value: slopeInfo.Slope});
-        tableRows.push({label: "Doubling time",       value: slopeInfo['Doubling time']});
-        tableRows.push({label: "Era",                 value: slopeInfo.era});
+        if (params.xAxis == 'Publication date') {
+          tableRows.push({label: "Doubling time",       value: slopeInfo['Doubling time']});
+          tableRows.push({label: "Era",                 value: slopeInfo.era});
+        }
         tableRows.push({label: "Domain",              value: slopeInfo.domain});
         tableRows.push({label: "Number of systems",   value: slopeInfo.n});
         tableRows.push({label: "Scale (start / end)", value: slopeInfo['Scale (start / end)']});
@@ -220,21 +222,26 @@ function buildTrendsGraph(container, database, args) {
     return tooltip;
   });
 
-  function getSlopeInfoAtJulianDate(domain, jd) {
-    let d = mlp.julianDateToDate(jd);
+  function getSlopeInfoAtPoint(domain, p, xAxis) {
     let eraUnderPointer;
-    for (let era of result.eras) {
-      if (era.start <= d && d < era.stop) {
-        eraUnderPointer = era;
-        break;
+
+    if (xAxis == 'Publication date') {
+      let d = mlp.julianDateToDate(p.x);
+      for (let era of result.eras) {
+        if (era.start <= d && d < era.stop) {
+          eraUnderPointer = era;
+          break;
+        }
       }
     }
 
     let slopeInfo = null;
     for (let row of result.regressionInfoTable) {
-      if (row.domain == domain && row.era == eraUnderPointer.Era) {
-        slopeInfo = row;
-        break;
+      if (row.domain == domain) {
+        if (xAxis != 'Publication date' || row.era == eraUnderPointer.Era) {
+          slopeInfo = row;
+          break;
+        }
       }
     }
 
@@ -628,6 +635,7 @@ function buildTrendsGraph(container, database, args) {
   updateLegendVisibility();
 
   function onChange(args) {
+    console.log(args.options.startDate, args.options.endDate);
     let axesUpdated = (prevParams.xAxis != args.options.xAxis) || (prevParams.yAxis != args.options.yAxis);
 
     prevParams = {...params};
@@ -800,7 +808,7 @@ function buildTrendsGraph(container, database, args) {
           let cx = 0.5 * (px + qx);
           let cy = 0.5 * (py + qy);
 
-          let slopeInfo = getSlopeInfoAtJulianDate(domain, cx);
+          let slopeInfo = getSlopeInfoAtPoint(domain, {x: cx, y: cy}, params.xAxis);
           if (!slopeInfo) continue;
 
           cx = plotter.xAxis.paperToData(cx);
