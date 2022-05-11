@@ -96,13 +96,21 @@ body {
   padding: 10px;
   background-color: $footer-color;
   text-align: center;
+  font-size: 20px;
+
+  * {
+    color: white;
+  }
 
   p {
     margin: 0;
   }
 
   a {
-    color: white;
+    text-decoration: none;
+    img {
+      width: 30px;
+    }
     &:hover {
       color: $hovered-link-color;
       text-decoration: none;
