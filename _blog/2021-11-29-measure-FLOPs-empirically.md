@@ -8,8 +8,7 @@ external: true
 external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/jJApGWG95495pYM7C
 tags: report
 
-toc:
-  - name: 
+toc: auto
 
 date: 2021-11-29
 

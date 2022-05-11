@@ -8,12 +8,7 @@ external: true
 external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/HvqQm6o8KnwxbdmhZ
 tags: report
 
-toc:
-  - name: Summary
-  - name: Introduction
-  - name: "Method 1: Counting operations in the model"
-  - name: "Method 2: GPU time"
-  - name: Conclusion
+toc: auto
 
 date: 2022-01-20
 

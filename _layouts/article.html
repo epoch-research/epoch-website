@@ -38,7 +38,9 @@
             <nav class="l-text figcaption">
             <h3>Contents</h3>
               {%- if page.toc == 'auto' -%}
-                {%- toc -%}
+                <div>
+                  {%- toc -%}
+                </div>
               {%- else -%}
                 {%- for section in page.toc -%}
                   <div><a href="#{{ section.name | slugify }}">{{ section.name }}</a></div>

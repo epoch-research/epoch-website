@@ -8,8 +8,7 @@ external: true
 external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/3dBtgKCkJh5yCHbag
 tags: report
 
-toc:
-  - name: 
+toc: auto
 
 date: 2022-03-07
 
