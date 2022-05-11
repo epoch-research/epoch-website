@@ -612,6 +612,11 @@ function buildTrendsGraph(container, database, args) {
   // On update
   //
 
+  let prevXAxis = "";
+  let prevYAxis = "";
+
+  let prevParams = {};
+
   v.on('optionsChanged', onChange);
   onChange({options: params});
 
@@ -622,12 +627,10 @@ function buildTrendsGraph(container, database, args) {
   v.canvas.on('resize', updateLegendVisibility);
   updateLegendVisibility();
 
-  let prevXAxis = "";
-  let prevYAxis = "";
-
   function onChange(args) {
-    let axesUpdated = (params.xAxis != args.options.xAxis) || (params.yAxis != args.options.yAxis);
+    let axesUpdated = (prevParams.xAxis != args.options.xAxis) || (prevParams.yAxis != args.options.yAxis);
 
+    prevParams = {...params};
     params = {...params, ...args.options};
 
     for (let button of xButtonGroup.getElementsByTagName("button")) {
@@ -867,7 +870,7 @@ function buildTrendsGraph(container, database, args) {
     // Camera stuff
     //
 
-    if (axesUpdated) {
+    if (axesUpdated || true) {
       let minX = Infinity;
       let maxX = -Infinity;
       let minY = Infinity;
