@@ -19,10 +19,7 @@ banner:
       url: /mlinputs/data
       icon: table
 
-toc:
-  - name: What is Lorem Ipsum?
-  - name: Why do we use it?
-  - name: Where does it come from?
+toc: auto
 
 date: 2022-02-16
 

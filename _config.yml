@@ -24,6 +24,9 @@ defaults:
 title: Epoch
 theme: minima
 
+plugins:
+  - jekyll-toc
+
 url: epochai.org
 baseurl: /
 

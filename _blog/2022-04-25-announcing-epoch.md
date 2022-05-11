@@ -6,8 +6,7 @@ image: assets/images/epoch-logo.png
 description: We're a new research initiative working on monitoring AI developments and forecasting the developments of AI. Come join us!
 tags: announcements
 
-toc:
-  - name: 
+toc: auto
 
 date: 2022-04-26
 
