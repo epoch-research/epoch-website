@@ -412,6 +412,7 @@ function buildTrendsGraph(container, database, args) {
 
   v.addControl(mlp.newNumberControl("Low Z value",        "lowOutliersZValueThreshold",  0));
   v.addControl(mlp.newNumberControl("High Z value",       "highOutliersZValueThreshold", 0));
+  v.addControl(mlp.newNumberControl("Window size",        "outlierWindowSize",           2));
   v.addControl(mlp.newNumberControl("Citation threshold", "citationThreshold",           0));
   v.addControl(mlp.newNumberControl("Others threshold",   "otherDomainThreshold",        10));
 
@@ -545,7 +546,7 @@ function buildTrendsGraph(container, database, args) {
 
       // The label must fall inside both the areaBounds and the verticalStripBounds
 
-      // TODO Automatic positioning (top/bottom and left/right)
+      // TODO Automatic positioning (top/bottom and left/right)?
 
       text.visible = params.labelEras && (verticalStripBounds.w > rotatedTextBounds.w);
 
@@ -565,7 +566,7 @@ function buildTrendsGraph(container, database, args) {
   // Modals
   //
 
-  // Oh, gee, this is awful. We need the container to be 'absolute' or 'relative' positioned for our 'absolute' modals to work
+  // Oh, gee, this is awful. (We need the container to be 'absolute' or 'relative' positioned for our 'absolute' modals to work.)
   if (container.style.position == "") {
     container.style.position = "relative";
   }
@@ -661,7 +662,9 @@ function buildTrendsGraph(container, database, args) {
 
     result = generateGraph(database, params);
 
-    // Filter by text
+    //
+    // Update the visualizer
+    //
 
     let fieldsToCheck = [
       "System",

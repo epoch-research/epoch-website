@@ -73,22 +73,7 @@
 
     &:hover {
       text-decoration: none;
-      .highlight-on-hover {
-      }
     }
-
-    .footer-wrapper {
-      a {
-        display: inline-block;
-        transition: background-color 0.2s ease, color 0.2s ease;
-
-        &:hover {
-          background-color: #558;
-          color: white;
-        }
-      }
-    }
-
   }
 
   .left-column {

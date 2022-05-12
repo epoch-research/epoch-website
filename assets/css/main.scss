@@ -320,11 +320,15 @@ a.button {
   padding-left: 20px;
   padding-right: 20px;
 
+  display: inline-block;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
   &:hover {
     text-decoration: none;
+    background-color: #558;
+    color: white;
   }
 }
-
 
 // Post-imports
 @import
