@@ -11,7 +11,7 @@ Multislider = mlp.createClass(mlp.Observable, {
 
     self.handleSize = 20;
 
-    let threadHeight = 8;
+    let threadHeight = 5;
     let containerHeight = Math.max(threadHeight, this.handleSize);
 
     let container = mlp.html(`<div style="width:100%; height:${containerHeight}px; position:relative"></div>`)
@@ -68,6 +68,7 @@ Multislider = mlp.createClass(mlp.Observable, {
     function onHandlePress(e) {
       let handle = e.target;
       self.draggingHandle = handle;
+      self.draggingHandle.classList.add("active");
       self.handleAnchor  = {x: parseFloat(handle.style.left), y: parseFloat(handle.style.top)};
       self.pointerAnchor = {x: e.clientX, y: e.clientY};
       document.body.classList.add('dragging');
@@ -95,6 +96,7 @@ Multislider = mlp.createClass(mlp.Observable, {
     function onRelease(e) {
       document.body.classList.remove('dragging');
       if (!self.draggingHandle) return;
+      self.draggingHandle.classList.remove("active");
       self.draggingHandle = null;
       self.fire("changed", {});
       lastInteractionT = new Date();
