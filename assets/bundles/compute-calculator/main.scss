@@ -25,8 +25,8 @@ body {
   */
 
   //flex: 0 0 630px;
-  width: 630px;
-  max-width: 100%;
+  max-width: 630px;
+  //max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 2em;
@@ -381,38 +381,91 @@ body {
   }
 }
 
-.info {
+.info, .info:hover {
   cursor: pointer;
   text-decoration: none;
   border: none;
 }
 
 .tippy-box[data-theme='calculator'] {
+  --border-color: rgba(0, 0, 0, 0.2);
+
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid var(--border-color);
   color: black;
 
-  &[data-placement^='top'] > .tippy-arrow::before {
-    border-top-color: black;
-    bottom: -8px;
+  &[data-placement^='top'] {
+    > .tippy-arrow::before, > .tippy-arrow::after {
+      border-color: transparent;
+      border-width: 8px 8px 0;
+      left: 0;
+      content: "";
+    }
+
+    > .tippy-arrow::before {
+      bottom: -8.5px;
+      border-top-color: var(--border-color);
+    }
+
+    > .tippy-arrow::after {
+      bottom: -7px;
+      border-top-color: initial;
+      transform-origin: center top;
+      position: absolute;
+      border-color: transparent;
+      border-style: solid;
+
+      border-top-color: white;
+      border-bottom-color: blue;
+    }
   }
-  &[data-placement^='top'] > .tippy-arrow::after {
-    bottom: -7px;
+
+  &[data-placement^='bottom'] {
+    > .tippy-arrow::before, > .tippy-arrow::after {
+      border-color: transparent;
+      border-width: 0 8px 8px 8px;
+      left: 0;
+      content: "";
+    }
+
+    > .tippy-arrow::before {
+      top: -8.5px;
+      border-bottom-color: var(--border-color);
+    }
+
+    > .tippy-arrow::after {
+      top: -7px;
+      border-bottom-color: initial;
+      transform-origin: center top;
+      position: absolute;
+      border-color: transparent;
+      border-style: solid;
+
+      border-bottom-color: white;
+    }
+  }
+
+
+  /*
+  &[data-placement^='bottom'] > .tippy-arrow::before {
+    border-bottom-color: black;
+    top: -8px;
+  }
+  &[data-placement^='bottom'] > .tippy-arrow::after {
+    top: -7px;
     left: 0;
     border-width: 9px 8px 0;
-    border-top-color: initial;
+    border-bottom-color: initial;
     transform-origin: center top;
     content: "";
     position: absolute;
     border-color: transparent;
     border-style: solid;
 
-    border-top-color: white;
-    border-bottom-color: blue;
+    border-bottom-color: white;
+    border-top-color: blue;
   }
-  &[data-placement^='bottom'] > .tippy-arrow::before {
-    border-color: white;
-  }
+  */
 }
 
 .subtitle {

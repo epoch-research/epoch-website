@@ -918,7 +918,7 @@ function buildComputeCalculator(hardwareDataUrl) {
 
       let flopsBlockInfo = `
         <p>Consult the hardware details database <a href="https://docs.google.com/spreadsheets/d/1iX9ltegY0Ba1ElaLXlxcEi-Je7Qdr1slXju2Ns9XXzg/edit#gid=0">here</a>.</p>
-        <p>You can suggest changes or additions by filling <a href="example.com">this form.</a></p>
+        <p>You can suggest changes or additions filling <a href="example.com">this form.</a></p>
       `;
 
       method.addBlock('Training time <span class="quiet-text">(e.g., <i>10h</i>, <i>20d</i>, <i>0.8y</i>)</span>', {block: timeBlock});
@@ -927,7 +927,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       method.addBlock('Utilization rate', {defaultValue: 33, min: 0, max: 100, units: '%', inputType: 'normal'});
 
       method.computeCompute = (inputs => {
-        return inputs.trainingTime * inputs.numberOfCores * inputs.peakFlopS * inputs.utilizationRate;
+        return inputs.trainingTime * inputs.numberOfCores * inputs.peakFlopS * inputs.utilizationRate/100;
       });
 
       method.update();
