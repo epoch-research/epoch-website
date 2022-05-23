@@ -22,41 +22,17 @@ function buildComputeCalculator(hardwareDataUrl) {
   */
 
   function makeDropdown(node, values) {
-    let selectedResult;
+    let selectedResult = null;
     let selectedIndex = -1;
     let selectedItem = null;
     let noDataItem = null;
+    let items = [];
 
     // Oh my god
     let ignoreNextBlur = false;
 
     let div = document.createElement("div");
     div.classList.add("dropdown");
-
-    let items = [];
-    for (let i = 0; i < values.length; i++) {
-      let value = values[i];
-      let itemDom = document.createElement("div");
-      itemDom.href = "#";
-      itemDom.innerHTML = value;
-      div.appendChild(itemDom);
-      itemDom.classList.add("dropdown-item");
-      items.push({
-        node: itemDom,
-        value: value,
-      });
-      itemDom.addEventListener("pointerdown", () => {
-        ignoreNextBlur = true;
-      });
-      itemDom.addEventListener("click", () => {
-        selectedIndex = i;
-        onSelectionUpdate(true);
-        div.style.display = "none";
-      });
-    }
-
-    noDataItem = u('<div class="dropdown-item">').html('No data');
-    div.appendChild(noDataItem.first());
 
     document.addEventListener("click", (e) => {
       if (e.target != node && e.target != div && !div.contains(e.target)) {
@@ -66,6 +42,51 @@ function buildComputeCalculator(hardwareDataUrl) {
 
     node.parentNode.appendChild(div);
     node.addEventListener("input", () => updateVisibility());
+
+    if (values) {
+      setItems(values);
+    }
+
+    function setMessage(msg) {
+      div.innerHTML = '';
+      div.appendChild(u('<div class="dropdown-message">').html(msg).first());
+    }
+
+    function setValues(values) {
+      div.innerHTML = '';
+
+      items = [];
+      selectedResult = null;
+      selectedIndex = -1;
+      selectedItem = null;
+      noDataItem = null;
+
+      for (let i = 0; i < values.length; i++) {
+        let value = values[i];
+        let itemDom = document.createElement("div");
+        itemDom.href = "#";
+        itemDom.innerHTML = value;
+        div.appendChild(itemDom);
+        itemDom.classList.add("dropdown-item");
+        items.push({
+          node: itemDom,
+          value: value,
+        });
+        itemDom.addEventListener("pointerdown", () => {
+          ignoreNextBlur = true;
+        });
+        itemDom.addEventListener("click", () => {
+          selectedIndex = i;
+          onSelectionUpdate(true);
+          div.style.display = "none";
+        });
+      }
+
+      noDataItem = u('<div class="dropdown-item">').html('No data');
+      div.appendChild(noDataItem.first());
+
+      updateVisibility();
+    }
 
     function updateVisibility() {
       div.style.display = "";
@@ -216,9 +237,15 @@ function buildComputeCalculator(hardwareDataUrl) {
         updateVisibility();
       }
     }
+
+    let self = {};
+    self.setMessage = setMessage;
+    self.setValues = setValues;
+    return self;
   }
 
   let hardwareSheet = null;
+  let hardwareSheetError = false;
 
   /*
   makeDropdown(hardwarePrecision, ["Double (FP64)", "Single (FP32)", "Half (FP16)"]);
@@ -241,73 +268,6 @@ function buildComputeCalculator(hardwareDataUrl) {
     select.addEventListener("input", () => {
       select.dataset.value = select.value;
     });
-  }
-
-  updateResults();
-  document.addEventListener("input", () => updateResults());
-
-  function updateResults() {
-    return;
-    //
-    // Method 1
-    //
-
-    let result1 = 2 * (+numberOfConnections.dataset.value) * 3 * (+numberOfTrainingExamples.dataset.value) * (+numberOfEpochs.dataset.value);
-    window.method1Result.innerHTML = formatReal(result1);
-
-    //
-    // Method 2
-    //
-
-    let hardwareValid = hardwareType.checkValidity() &&
-                        hardwarePrecision.checkValidity() &&
-                        hardwareSheet != null;
-
-    let valid = trainingTime.checkValidity() &&
-                trainingTimeUnit.checkValidity() &&
-                numberOfCores.checkValidity() &&
-                hardwareValid &&
-                utilizationRate.checkValidity();
-
-    if (!hardwareValid) {
-      peakFlopSOutput.innerHTML = "--";
-    }
-
-    if (!valid) {
-      window.method2Result.innerHTML = "--";
-    } else {
-      let trainingTimeUnitToSeconds = {
-        "years":  86400*365,
-        "days":   86400,
-        "hours":  3600,
-      };
-      let trainingTimeInSeconds = (+trainingTime.dataset.value) * trainingTimeUnitToSeconds[trainingTimeUnit.dataset.value.toLowerCase()];
-
-      let peakFlopS = 0;
-      let precisionToRow = {
-        "Double (FP64)": "FP64 (double precision) Performance (FLOP/s)",
-        "Single (FP32)": "FP32 (single precision) Performance (FLOP/s)",
-        "Half (FP16)": "FP16 (half precision) Performance (FLOP/s)",
-      };
-
-      for (let row of hardwareSheet) {
-        if (row["Name of the hardware"] == hardwareType.dataset.value) {
-          peakFlopS = +row[precisionToRow[hardwarePrecision.dataset.value]];
-          break;
-        }
-      }
-
-      peakFlopSOutput.innerHTML = formatReal(peakFlopS);
-      let result2 = trainingTimeInSeconds * (+numberOfCores.dataset.value) * peakFlopS * (+utilizationRate.dataset.value)/100;
-      window.method2Result.innerHTML = formatReal(result2);
-    }
-  }
-
-  function formatReal(x, options = {}) {
-    let lowThreshold = ('lowThreshold' in options) ? options.lowThreshold : 1e2;
-    let decimalPlaces = ('decimalPlaces' in options) ? options.decimalPlaces : 2;
-    let exponentialDecimalPlaces = ('exponentialDecimalPlaces' in options) ? options.exponentialDecimalPlaces : 1;
-    return (x < lowThreshold) ? ((Math.floor(x) == x) ? x : x.toFixed(decimalPlaces)) : x.toExponential(exponentialDecimalPlaces).replace('e+', 'e');
   }
 
   class Method {
@@ -571,7 +531,7 @@ function buildComputeCalculator(hardwareDataUrl) {
 
     set inExponentialMode(v) {
       let formatOptions = v ? this.exponentialFormatOptions : this.normalFormatOptions;
-      this.input.first().value = formatReal(x, formatOptions);
+      this.input.first().value = this.formatReal(x, formatOptions);
     }
 
     formatReal(x) {
@@ -851,8 +811,8 @@ function buildComputeCalculator(hardwareDataUrl) {
           }
 
           if (peakFlopSStr.length > 0) {
-            u("#peakFlopSChecker", flopSBlock.first()).html(`(${formatReal(+peakFlopSStr)} FLOP/s)`);
-            u('#peakFlopS', peakFlopSInput.first()).first().value = formatReal(+peakFlopSStr);
+            u("#peakFlopSChecker", flopSBlock.first()).html(`(${Utils.formatReal(+peakFlopSStr)} FLOP/s)`);
+            u('#peakFlopS', peakFlopSInput.first()).first().value = Utils.formatReal(+peakFlopSStr);
           } else {
             u("#peakFlopSChecker", flopSBlock.first()).html((!hardwareValid || hardwareTypeValue.length == 0) ? '' : '(no data for precision)');
             u('#peakFlopS', peakFlopSInput.first()).first().value = '';
@@ -915,14 +875,41 @@ function buildComputeCalculator(hardwareDataUrl) {
         peakFlopSTitle += '<br><span class="quiet-text">If you don\'t know the peak FLOP/s, fill in the hardware details instead.</span>';
       }
 
-      let flopsBlockInfo = `
+      let flopSBlockInfo = `
         <p>Consult the hardware details database <a href="https://docs.google.com/spreadsheets/d/1iX9ltegY0Ba1ElaLXlxcEi-Je7Qdr1slXju2Ns9XXzg/edit#gid=0">here</a>.</p>
         <p>You can suggest changes or additions filling <a href="example.com">this form.</a></p>
       `;
 
+      let dropdown = makeDropdown(u('#hardwareType', flopSBlock.first()).first());
+
+      let i = 0;
+      function updateLoadingMessage() {
+        if (!hardwareSheet && !hardwareSheetError) {
+          dropdown.setMessage("Loading hardware data." + ('.').repeat((i++)/2 % 3));
+          setTimeout(updateLoadingMessage, 300);
+        }
+      }
+      updateLoadingMessage();
+
+      Papa.parse(hardwareDataUrl, {
+        download: true,
+        header: true,
+        complete: function(result) {
+          hardwareSheet = result.data;
+          let strCmp = (a, b) => (a < b) ? -1 : (a > b) ? +1 : 0;
+          hardwareSheet.sort((a, b) => strCmp(a["Name of the hardware"], b["Name of the hardware"]));
+          let hardwareTypes = result.data.map(x => x["Name of the hardware"]);
+          dropdown.setValues(hardwareTypes);
+        },
+        error: function(result) {
+          dropdown.setMessage("Error downloading hardware data");
+          hardwareSheetError = true;
+        },
+      });
+
       method.addBlock('Training time <span class="quiet-text">(e.g., <i>10h</i>, <i>20d</i>, <i>0.8y</i>)</span>', {block: timeBlock});
       method.addBlock('Number of cores', {defaultValue: 1, inputType: 'normal'});
-      method.addBlock(peakFlopSTitle, {block: flopSBlock, info: flopsBlockInfo}).addClass('full-flex');
+      method.addBlock(peakFlopSTitle, {block: flopSBlock, info: flopSBlockInfo}).addClass('full-flex');
       method.addBlock('Utilization rate', {defaultValue: 33, min: 0, max: 100, units: '%', inputType: 'normal'});
 
       method.computeCompute = (inputs => {
@@ -933,24 +920,6 @@ function buildComputeCalculator(hardwareDataUrl) {
       method.dom.trigger('input');
     }
   }
-
-  Papa.parse(hardwareDataUrl, {
-    download: true,
-    header: true,
-    complete: function(result) {
-      hardwareSheet = result.data;
-      let strCmp = (a, b) => (a < b) ? -1 : (a > b) ? +1 : 0;
-      hardwareSheet.sort((a, b) => strCmp(a["Name of the hardware"], b["Name of the hardware"]));
-      let hardwareTypes = result.data.map(x => x["Name of the hardware"]);
-      if (u('#hardwareType')) {
-        makeDropdown(u('#hardwareType').first(), hardwareTypes);
-      }
-      updateResults();
-    },
-    error: function(result) {
-      console.log("Oh, no, download error");
-    },
-  });
 
   return ComputeCalculator;
 }

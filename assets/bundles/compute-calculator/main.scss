@@ -152,7 +152,8 @@ body {
 
   .input-wrapper {
     flex: 30%;
-    margin-top: 0.2em;
+    //margin-top: 0.2em;
+    margin-top: 0;
 
     .input-label {
       font-size: 0.8em;
@@ -335,6 +336,8 @@ body {
     }
 
     span {
+      line-height: 1.5em !important;
+
       color: #18acd0;
       &:hover {
         color: #e2f0f7;
@@ -590,14 +593,19 @@ input[type=number] {
   display: relative;
 }
 
-.dropdown-item {
+.dropdown-item, .dropdown-message {
   padding-left: 0.2em;
   padding-right: 0.2em;
   padding-bottom: 0.3em;
   padding-top: 0.3em;
   //color: #888;
-  cursor: pointer;
   display: block;
+
+  line-height: 1em !important;
+}
+
+.dropdown-item {
+  cursor: pointer;
 }
 
 .dropdown-item:not(:last-child) {
@@ -605,8 +613,10 @@ input[type=number] {
 }
 
 .highlighted-result {
-  background-color: #7e00bf;
-  color: white;
+  &, &:hover {
+    background-color: #7e00bf;
+    color: white;
+  }
 }
 
 .dropdown-item:hover:not(.highlighted-result) {
