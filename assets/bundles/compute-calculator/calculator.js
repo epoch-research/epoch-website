@@ -4,6 +4,18 @@ function buildComputeCalculator(hardwareDataUrl) {
   let showFillOptions = true;
   let showFillInMessage = false;
 
+  function tooltip(node, options) {
+    return tippy(node, {
+      allowHTML: true,
+      theme: 'calculator',
+      placement: 'top',
+      //arrow: false,
+      interactive: true,
+      maxWidth: '200px',
+      ...options,
+    });
+  }
+
   /*
   let metaOptions = u('<div style="margin-bottom: 1em">').html(`
     <div><input id="showFillOptions" ${showFillOptions ? "checked" : ""} type="checkbox">Show fill options</input></div>
@@ -85,7 +97,9 @@ function buildComputeCalculator(hardwareDataUrl) {
       noDataItem = u('<div class="dropdown-item">').html('No data');
       div.appendChild(noDataItem.first());
 
-      updateVisibility();
+      if (div.style.display == "") {
+        updateVisibility();
+      }
     }
 
     function updateVisibility() {
@@ -287,7 +301,7 @@ function buildComputeCalculator(hardwareDataUrl) {
     setFormula(formula) {
       this.dom.children('.description-wrapper').prepend('<span class="block-label">Formula</span>');
       this.dom.children('.description-wrapper').children('.description')
-        .append(u('<div class="formula">').append(u('<p>').html(formula)))
+        .append(u('<div class="formula">').html(formula))
     }
 
     addBlock(label, options = {}) {
@@ -313,15 +327,9 @@ function buildComputeCalculator(hardwareDataUrl) {
         let infoDom = u('<a class="bi bi-info-circle-fill info">');
         block.children('.name').append(infoDom);
 
-        tippy(infoDom.first(), {
-          content: `${info}`,
-          allowHTML: true,
-          theme: 'calculator',
+        tooltip(infoDom.first(), {
+          content: info,
           trigger: 'click',
-          placement: 'top',
-          //arrow: false,
-          interactive: true,
-          maxWidth: '200px',
         });
       }
 
@@ -598,7 +606,18 @@ function buildComputeCalculator(hardwareDataUrl) {
   class ComputeCalculator {
     static renderMethod1(container) {
       let method = new Method(container, 'Method 1: Counting the number of arithmetic operations');
-      method.setFormula('compute = 2 × # of connections × 3 × # of training examples × # of epochs');
+      //method.setFormula('compute = 2 × # of connections × 3 × # of training examples × # of epochs');
+
+      method.setFormula('<span>compute</span> = <span id="opPerForwardPass" class="formula-block">2 × # of connections</span> × <span id="backForAdjustment" class="formula-block">3</span> × <span id="numberOfPasses" class="formula-block"># of training examples × # of epochs</span>');
+
+      let opPerForwardPass  = u('#opPerForwardPass', method.dom.first()).first();
+      let backForAdjustment = u('#backForAdjustment', method.dom.first()).first();
+      let numberOfPasses    = u('#numberOfPasses', method.dom.first()).first();
+
+      tooltip(opPerForwardPass,  { content: 'Operations per forward pass', placement: 'top', appendTo: document.body, maxWidth: 'none',});
+      tooltip(backForAdjustment, { content: 'Backward-forward adjustment', placement: 'top', appendTo: document.body, maxWidth: 'none',});
+      tooltip(numberOfPasses,    { content: 'Number of passes',            placement: 'top', appendTo: document.body, maxWidth: 'none',});
+
       method.addBlock('Number of connections', {info: 'For more information, click <a href="https://google.com">here</a>'});
       method.addBlock('Number of training examples');
       method.addBlock('Number of epochs');
@@ -902,8 +921,8 @@ function buildComputeCalculator(hardwareDataUrl) {
           dropdown.setValues(hardwareTypes);
         },
         error: function(result) {
-          dropdown.setMessage("Error downloading hardware data");
           hardwareSheetError = true;
+          dropdown.setMessage("Error downloading hardware data");
         },
       });
 

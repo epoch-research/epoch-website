@@ -70,7 +70,7 @@ Other parts of interest of this article include:
 <script src="/assets/bundles/compute-calculator/calculator.js"></script>
 
 <script>
-  let calculator = buildComputeCalculator('/assets/bundles/compute-calculator/hardware_data.csv');
+  let calculator = buildComputeCalculator('/assets/bundles/compute-calculator/data/hardware_data.csv');
   calculator.renderMethod1('.calculator-method-container');
   calculator.renderMethod2('.calculator-method-container');
 </script>

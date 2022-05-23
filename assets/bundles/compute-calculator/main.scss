@@ -85,6 +85,13 @@ body {
   .formula {
     //overflow-x: auto;
     padding-bottom: 10px;
+
+    .formula-block {
+      border-bottom: 1px dashed grey;
+      &:hover {
+        border-bottom: 1px dashed #0014ff;
+      }
+    }
   }
 
   .lined-heading {
