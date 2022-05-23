@@ -491,7 +491,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       let inputOptions = "";
       if (this.min != null) inputOptions += " min=" + this.min;
       if (this.max != null) inputOptions += " max=" + this.max;
-      if (options.required) inputOptions += " required";
+      //if (options.required) inputOptions += " required";
 
       let classes = 'scientific-input';
       if (options.classes) classes += ' ' + options.classes;
@@ -534,21 +534,20 @@ function buildComputeCalculator(hardwareDataUrl) {
           return;
         }
 
-        this.lastRawValue = this.input.first().value;
+        let value = this.input.first().value;
+        this.lastRawValue = value;
 
-        if (this.input.first().value.match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]*)?$/)) {
-          this.input.first().setCustomValidity("");
-        } else {
+        let empty = (value == "");
+        let invalid = (!empty && !value.match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]*)?$/));
+
+        this.dom.removeClass('valid');
+        this.dom.removeClass('invalid');
+        this.input.first().setCustomValidity("");
+        if (invalid) {
           this.input.first().setCustomValidity("invalid");
-        }
-        //this.input.first().value = this.input.first().value.replace(/[^0-9eE.]/, '');
-
-        if (this.input.first().checkValidity()) {
-          this.dom.addClass('valid');
-          this.dom.removeClass('invalid');
-        } else {
           this.dom.addClass('invalid');
-          this.dom.removeClass('valid');
+        } else if (!empty) {
+          this.dom.addClass('valid');
         }
       });
 
@@ -784,7 +783,7 @@ function buildComputeCalculator(hardwareDataUrl) {
             </div>
         `));
 
-        let div = u('<div style="display: flex; align-items: center;">');
+        let div = u('<div style="display: flex; align-items: flex-end;">');
         hardwareContainer.append(div);
 
         div.append(u('<div class="input-wrapper" style="flex: 0 0 7em; margin-right: 0.5em;">').html(`
@@ -801,7 +800,7 @@ function buildComputeCalculator(hardwareDataUrl) {
             </div>
         `));
 
-        div.append(u('<div class="input-wrapper" style="flex: 1 0 10%">').html(`
+        div.append(u('<div class="input-wrapper" style="flex: 1 0 9em; padding-bottom: 5px;">').html(`
             <span id="peakFlopSChecker" class="quiet-text" style="margin-top: 15px; min-width: 7em"></span>
         `));
 
