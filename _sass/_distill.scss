@@ -35,6 +35,9 @@ d-article {
   a, h1, h2, hr, table, table th, table td {
     border-bottom-color: var(--global-divider-color) !important;
   }
+  a {
+    border-bottom-color: rgba(0, 0, 0, 0.7) !important;
+  }
   a:hover {
     border-bottom-color: var(--global-hover-color) !important;
   }

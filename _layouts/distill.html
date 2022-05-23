@@ -79,7 +79,7 @@
       {% endif %}
 
       <d-article>
-        {% if page.toc -%}
+        {% if page.toc and page.toc != 'none' -%}
         <d-contents>
           <nav class="l-text figcaption">
           <h3>Contents</h3>
