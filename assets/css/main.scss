@@ -1,6 +1,7 @@
 ---
 ---
 
+$on-palm: 600px;
 $max-content-width: 984px;
 $max-article-content-width: 704px;
 $hovered-link-color: #aaa;
@@ -80,15 +81,17 @@ body {
 
 .site-nav {
   font-weight: bold;
-  
+
   .page-link {
     color: #fff;
+    //margin-left: 0;
   }
 
   .current-menu-item {
     color: #bbb;
   }
 }
+  
 
 // Site footer
 
@@ -218,13 +221,20 @@ body {
   margin-left: auto;
 }
 
-$on-palm: 600px;
 @media (max-width: $on-palm) {
   .site-nav {
     z-index: 1;
+
     .page-link {
       color: black;
+      margin-left: 0;
     }
+
+    input:checked ~ .trigger {
+      min-width: 110px;
+    }
+
+    border: 1px solid grey;
   }
 }
 
