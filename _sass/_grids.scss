@@ -1,5 +1,5 @@
 .research-grid {
-  grid-template-columns: repeat(auto-fit, 320px);
+  grid-template-columns: repeat(auto-fit, calc(min(100%, 320px)));
   grid-gap: 10px !important;
   justify-content: left;
 
@@ -9,6 +9,8 @@
     width: 100%;
     background-color: #f7f7f7;
     border-radius: 5px;
+    box-sizing: border-box;
+    border-style: none !important;
 
     text-decoration: none;
     overflow: hidden;
@@ -67,7 +69,8 @@
   .box-item {
     vertical-align: top;
     color: #111;
-    border: 2px solid gray;
+    border: 2px solid #b9b9b9;
+    border-radius: 5px;
     padding: 10px 10px 10px 30px;
     margin-bottom: 10px;
 
@@ -82,6 +85,9 @@
 
   .right-column {
     flex: 0 0 41%;
-    min-width: 300px;
+    @media (max-width: 750px) {
+      flex-basis: 0;
+    }
+    //min-width: 300px;
   }
 }

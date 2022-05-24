@@ -69,5 +69,5 @@ Bear in mind that **you don't need to know about all of these things to be a str
 # Open Positions
 
 {% assign list = site.data.jobs %}
-{% include box_list.html button="Learn more and apply" sameRowHeight=true %}
+{% include box_list.html button="Apply" sameRowHeight=true %}
 

@@ -9,8 +9,6 @@ Our mission is to answer key questions about the drivers of AI progress and the 
 {% assign list = site.research %}
 {% include box_list.html button="Learn more" %}
 
----
-
 # Publications
 
 {% include research_grid.html %}

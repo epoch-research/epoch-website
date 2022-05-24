@@ -70,9 +70,16 @@ permalink: /blog
       order: 1;
     }
 
-    .post.external .post-date:after {
+    /*
+    .post.external .post-name:after {
       content: url(http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png);
       margin: 0 0 0 5px;
+    }
+    */
+
+    .external-icon {
+      font-size: 0.6em;
+      vertical-align: 0.5em;
     }
 
 		.post-authors {
@@ -119,7 +126,6 @@ permalink: /blog
         width: 100%;
       }
     }
-
 	</style>
 </head>
 
@@ -146,7 +152,7 @@ permalink: /blog
     </div>
     <div class="post-thumbnail"><img src="{{item.image | relative_url }}"></div>
     <div class="post-meat">
-      <h2 class="post-name">{{item.title}}</h2>
+      <h2 class="post-name">{{item.title}} {% if item.external %}<i class="bi bi-box-arrow-up-right external-icon"></i>{% endif %}</h2>
       <p class="post-authors">{{item.authors | map: 'name' | better_join: ", ", ", and "}}</p>
       <p class="post-abstract">{% if item.description %} {{item.description}} {% else %} {{item.excerpt}} {% endif %}</p>
     </div>
