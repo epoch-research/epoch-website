@@ -437,6 +437,8 @@ function buildComputeCalculator(hardwareDataUrl) {
     max;
     exponentialFormatOptions;
     normalFormatOptions
+    showButtons = false;
+    enableUpDownArrows = false;
     lastRawValue = '';
 
     constructor(options = {}) {
@@ -455,13 +457,12 @@ function buildComputeCalculator(hardwareDataUrl) {
       this.allowExponents = (options.type == 'scientific');
 
       let defaultValue = ('defaultValue' in options) ? options.defaultValue : 0;
-      this.min = ('min' in options) ? options.min : null;
-      this.max = ('max' in options) ? options.max : null;
+      this.min = ('min' in options) ? options.min : -Infinity;
+      this.max = ('max' in options) ? options.max : +Infinity;
 
       let inputOptions = "";
-      if (this.min != null) inputOptions += " min=" + this.min;
-      if (this.max != null) inputOptions += " max=" + this.max;
-      //if (options.required) inputOptions += " required";
+      if (this.min != -Infinity) inputOptions += " min=" + this.min;
+      if (this.max != +Infinity) inputOptions += " max=" + this.max;
 
       let classes = 'scientific-input';
       if (options.classes) classes += ' ' + options.classes;
@@ -469,33 +470,41 @@ function buildComputeCalculator(hardwareDataUrl) {
       let inputClasses = '';
       if (options.inputClasses) inputClasses = options.inputClasses;
 
-      this.dom         = u(`<div class="scientific-input ${classes}">`);
-      this.minusButton = u('<div class="bi bi-dash minus-button">');
-      this.plusButton  = u('<div class="bi bi-plus plus-button">');
+      this.dom = u(`<div class="scientific-input ${classes}">`);
       this.input = u(`<input type='${this.allowExponents ? "text" : "number"}' class='${inputClasses}' step='any' ${inputOptions} inputmode='text' value=${defaultValue}>`);
 
-      this.dom.append(this.minusButton);
       this.dom.append(this.input);
-      this.dom.append(this.plusButton);
+
+      if (this.showButtons) {
+        this.minusButton = u('<div class="bi bi-dash minus-button">');
+        this.plusButton  = u('<div class="bi bi-plus plus-button">');
+
+        this.dom.append(this.minusButton);
+        this.dom.append(this.plusButton);
+
+        this.minusButton.on('click', () => {
+          this.stepDown();
+        });
+
+        this.plusButton.on('click', () => {
+          this.stepUp();
+        });
+      } else {
+        this.dom.addClass('no-buttons');
+      }
 
       if (options.inputId) this.input.first().id = options.inputId;
       if (options.container) u(options.container).append(this.dom);
 
-      this.minusButton.on('click', () => {
-        this.stepDown();
-      });
-
-      this.plusButton.on('click', () => {
-        this.stepUp();
-      });
-
-      this.input.on('keydown', (e) => {
-        if (e.key == 'ArrowUp' || e.key == 'ArrowDown') {
-          if (e.key == 'ArrowUp') this.stepUp();
-          if (e.key == 'ArrowDown') this.stepDown();
-          e.preventDefault();
-        }
-      });
+      if (this.enableUpDownArrows) {
+        this.input.on('keydown', (e) => {
+          if (e.key == 'ArrowUp' || e.key == 'ArrowDown') {
+            if (e.key == 'ArrowUp') this.stepUp();
+            if (e.key == 'ArrowDown') this.stepDown();
+            e.preventDefault();
+          }
+        });
+      }
 
       this.input.on('input', (e) => {
         //if (!this.input.first().value.match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]*)?$/)) {
@@ -509,6 +518,10 @@ function buildComputeCalculator(hardwareDataUrl) {
 
         let empty = (value == "");
         let invalid = (!empty && !value.match(/^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]*)?$/));
+        if (!empty && !invalid) {
+          let x = parseFloat(value);
+          invalid = (x < this.min || x > this.max);
+        }
 
         this.dom.removeClass('valid');
         this.dom.removeClass('invalid');
@@ -603,8 +616,6 @@ function buildComputeCalculator(hardwareDataUrl) {
 
   }
 
-  //u('h1').after(new ScientificInput({min: 0}).dom);
-
   class ComputeCalculator {
     static renderMethod1(container) {
       let method = new Method(container, 'Method 1: Counting the number of arithmetic operations');
@@ -635,75 +646,33 @@ function buildComputeCalculator(hardwareDataUrl) {
 
         // Custom time input block
 
-        let timeBlock = u('<div>');
-        timeBlock.append('<input id="trainingTime" type="hidden" class="method-input">');
-        timeBlock.append('<input type="text" autocomplete="off" id="trainingTimeAmount" value="10d" class="small">');
-        timeBlock.append('<select id="trainingTimeUnit" value="hour" style="display: none">');
-        timeBlock.append('<span id="trainingTimeChecker" class="quiet-text" style="margin-left: 1em">');
-        timeBlock.children('#trainingTimeUnit')
+        let timeBlock = u('<div class="input-set">');
+
+        let trainingTime = u('<input id="trainingTime" type="hidden" class="method-input">');
+        timeBlock.append(trainingTime);
+
+        let trainingTimeAmountWrapper = new ScientificInput({min: 0, inputId: 'trainingTimeAmount', classes: 'small', inputClasses: 'method-input', required: true});
+        timeBlock.append(u('<div class="input-wrapper">').append(trainingTimeAmountWrapper.dom));
+        let trainingTimeAmount = trainingTimeAmountWrapper.input;
+
+        let trainingTimeUnit = u('<select id="trainingTimeUnit" value="hour">')
           .append('<option value="hour">Hours')
           .append('<option value="day" selected>Days')
           .append('<option value="year">Years');
-
-        // Parse strings such as '20d', '1e40s' or '2 years'
-        function parseTimeString(str) {
-          str = str.replace(/[\s,]/g, '');
-          let m = str.match(/^\s*(?<amount>\+?[0-9]*\.?[0-9]*(e[+-]?[0-9]*)?)\s*(?<unit>\w+)?$/i);
-
-          let parseResult = null;
-
-          if (m) {
-            let amount = (m.groups.amount.length == 0) ? 0 : parseFloat(m.groups.amount);
-            let unitStr = m.groups.unit || "hour";
-
-            let unitToSeconds = {
-              "years":  86400*365,
-              "days":   86400,
-              "hours":  3600,
-              "seconds": 1,
-            };
-
-            let selectedUnit = null;
-            for (let unit in unitToSeconds) {
-              if (unit.startsWith(unitStr)) {
-                selectedUnit = unit;
-                break
-              }
-            }
-
-            if (selectedUnit) {
-              parseResult = {};
-              parseResult.seconds = amount * unitToSeconds[selectedUnit];
-              parseResult.str = `${Utils.formatReal(amount, 10000)} ${selectedUnit}`;
-            }
-          }
-
-          return parseResult;
-        }
-
-        let trainingTimeAmount  = timeBlock.children('#trainingTimeAmount');
-        let trainingTimeUnit    = timeBlock.children('#trainingTimeUnit');
-        let trainingTime        = timeBlock.children('#trainingTime');
-        let trainingTimeChecker = timeBlock.children('#trainingTimeChecker');
+        timeBlock.append(u('<div class="input-wrapper">').append(trainingTimeUnit));
 
         [trainingTimeAmount, trainingTimeUnit].forEach(x => x.on('input', () => {
-          let trainingTimeStr = trainingTimeAmount.first().value;
-          let parseResult = parseTimeString(trainingTimeStr);
-          if (parseResult) {
-            trainingTime.first().value = parseResult.seconds;
-            trainingTime.trigger('input', {target: trainingTime.first()});
-            trainingTimeChecker.html('(' + parseResult.str + ')');
-            trainingTimeAmount.first().setCustomValidity("");
-            if (trainingTimeStr != "") {
-              trainingTimeAmount.addClass("valid");
-            } else {
-              trainingTimeAmount.removeClass("valid");
-            }
-          } else {
-            trainingTimeChecker.html('');
-            trainingTimeAmount.first().setCustomValidity("invalid");
-            trainingTimeAmount.removeClass("valid");
-          }
+          let trainingTimeInUnits = trainingTimeAmount.first().value;
+          let unit = trainingTimeUnit.first().value;
+
+          console.log(trainingTimeAmount.first().value, trainingTimeUnit.first().value);
+
+          let unitInSeconds = 1;
+          if (unit == 'hour') unitInSeconds = 60 * 60;
+          if (unit == 'day')  unitInSeconds = 60 * 60 * 24;
+          if (unit == 'year') unitInSeconds = 60 * 60 * 24 * 365;
+
+          trainingTime.first().value = trainingTimeInUnits * unitInSeconds;
 
           /*
           u('#trainingTime').first().value = 
@@ -928,7 +897,7 @@ function buildComputeCalculator(hardwareDataUrl) {
         },
       });
 
-      method.addBlock('Training time <span class="quiet-text">(e.g., <i>10h</i>, <i>20d</i>, <i>0.8y</i>)</span>', {block: timeBlock});
+      method.addBlock('Training time', {block: timeBlock});
       method.addBlock('Number of cores', {defaultValue: 1, inputType: 'normal'});
       method.addBlock(peakFlopSTitle, {block: flopSBlock, info: flopSBlockInfo}).addClass('full-flex');
       method.addBlock('Utilization rate', {defaultValue: 33, min: 0, max: 100, units: '%', inputType: 'normal'});

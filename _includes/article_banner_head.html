@@ -1,5 +1,7 @@
 {% assign image_position = 'left' %}
 
+{% include scripts/tippy.html %}
+
 {% if banner.image_position %}
   {% assign image_position = banner.image_position %}
 {% endif %}
@@ -170,5 +172,4 @@
       order: 2;
     }
   }
-
 </style>

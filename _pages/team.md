@@ -1,6 +1,6 @@
 ---
-title: About
-permalink: /about
+title: Team
+permalink: /team
 ---
 
 <head>

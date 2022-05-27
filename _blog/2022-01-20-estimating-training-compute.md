@@ -40,6 +40,32 @@ authors:
   <script src="/assets/bundles/compute-calculator/libs/umbrella.min.js"></script>
 
   <link rel="stylesheet" href="/assets/bundles/compute-calculator/main.css">
+
+  <style>
+    .calculator-method-container {
+      display: flex;
+      flex-flow: wrap;
+      grid-column: 1/15;
+      padding-left: var(--nav-bar-margin);
+      padding-right: var(--nav-bar-margin);
+    }
+
+    .calculator-method-container .method {
+      width: 600px;
+      max-width: calc(100% - 50px);
+      display: flex;
+    }
+
+    .output-separator {
+      margin-top: auto;
+    }
+
+    @media (max-width: 700px) {
+      .calculator-method-container {
+        display: block;
+      }
+    }
+  </style>
 </head>
 
 {% assign docUrl = 'https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit' %}
@@ -68,8 +94,7 @@ Other parts of interest of this article include:
 * We compare both methods and conclude they result in similar estimates. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.cvy3rx7nvrkh).
 * We discuss the use of profilers to measure compute. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.wee32i38js1o).
 
-<script src="https://unpkg.com/@popperjs/core@{{ site.popper.version }}"></script>
-<script src="https://unpkg.com/tippy.js@{{ site.tippy.version }}"></script>
+{% include scripts/tippy.html %}
 
 <script src="/assets/bundles/compute-calculator/calculator.js"></script>
 

@@ -158,9 +158,9 @@ body {
   }
 
   .input-wrapper {
-    flex: 30%;
     //margin-top: 0.2em;
     margin-top: 0;
+    margin-right: 0.5em;
 
     .input-label {
       font-size: 0.8em;
@@ -220,6 +220,7 @@ body {
     //transition: border-color 0.5s ease, outline-color 0.5s ease;
     border-width: 1px;
     outline-width: 1px;
+    border-radius: 5px;
 
     &:focus:not(:invalid):not(.valid) {
       outline-color: var(--input-neutral-color);
@@ -558,6 +559,11 @@ body {
     height: 100%;
     box-sizing: border-box;
   }
+
+  &.no-buttons input {
+    border-radius: 5px;
+  }
+
 }
 
 // Disable spinners

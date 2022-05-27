@@ -12,9 +12,18 @@
 
   {% capture link %}
     {% if url %}
-      <a href="{{url | prepend: 'about/#' | relative_url}}">{{author.name}}</a>
+      {% for _resource in member.resources %}
+        {% assign resource = _resource | first %}
+        {% assign resource_name = resource[0] %}
+        {% assign resource_url = resource[1] %}
+        {% if resource_name == 'mail' %}
+          {% assign mail = resource_url %}
+        {% endif %}
+      {% endfor %}
+
+      <span class="author" href="{{url | prepend: 'team#' | relative_url}}" data-member-mail="{{mail}}" data-member-name="{{member.name}}" data-member-role="{{member.role}}" data-member-id="{{member.id}}">{{author.name}}</span>
     {% else %}
-      {{author.name}}
+      <span class="author">{{author.name}}</span>
     {% endif %}
   {% endcapture %}
 
@@ -22,3 +31,61 @@
 {% endfor %}
 
 {{processedAuthors | better_join: ", ", " and "}}
+
+<script src="/assets/bundles/compute-calculator/libs/umbrella.min.js"></script>
+<style>
+  .author {
+    cursor: pointer;
+  }
+
+  .tippy-content {
+    width: 180px;
+  }
+
+  .mug {
+    width: 180px;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .member a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .member-info {
+    padding: 4px;
+    width: 180px;
+  }
+
+  .member-name, .member-role {
+    margin-bottom: 2px;
+  }
+</style>
+<script>
+  for (let author of document.getElementsByClassName('author')) {
+    tippy(author, {
+      allowHTML: true,
+      theme: 'calculator',
+      placement: 'top',
+      arrow: false,
+      interactive: true,
+      maxWidth: '200px',
+      trigger: 'click',
+      content:
+        `
+        <div class="member">
+          <div class="mug" style="background-image: url('/assets/images/team/${author.dataset.memberId}.jpg')"></div>
+          <div class="member-info">
+            <h3 class="member-name">${author.dataset.memberName}</h3>
+            <h4 class="member-role">${author.dataset.memberRole}</h4>
+            <div class="member-resources">
+              <a class="" href="${author.dataset.memberMail}"><i class="bi bi-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+        `,
+    });
+  }
+</script>
