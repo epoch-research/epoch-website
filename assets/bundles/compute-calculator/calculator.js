@@ -1,5 +1,7 @@
 'use strict';
 
+console.log("I wouldn't look at the current code");
+
 function buildComputeCalculator(hardwareDataUrl) {
   let showFillOptions = true;
   let showFillInMessage = false;
