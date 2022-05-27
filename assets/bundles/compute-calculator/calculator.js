@@ -898,7 +898,7 @@ function buildComputeCalculator(hardwareDataUrl) {
 
       let flopSBlockInfo = `
         <p>Consult the hardware details database <a href="https://docs.google.com/spreadsheets/d/1iX9ltegY0Ba1ElaLXlxcEi-Je7Qdr1slXju2Ns9XXzg/edit#gid=0">here</a>.</p>
-        <p>You can suggest changes or additions filling <a href="example.com">this form.</a></p>
+        <p>You can suggest changes to the database by filling <a href="https://docs.google.com/forms/d/e/1FAIpQLSd0ANDeYf9truvkPn1HR1Z3I1fy8O2AZOF7hpK8iMHr3H2sZw/viewform?usp=sf_link">this form</a> or additions by filling <a href="https://docs.google.com/forms/d/e/1FAIpQLSexq86cydEh36zA_A1FT0xT7gZCdazFS7Qi2GCFVLnO985iwQ/viewform?usp=sf_link">this one</a>.</p>
       `;
 
       let dropdown = makeDropdown(u('#hardwareType', flopSBlock.first()).first());
