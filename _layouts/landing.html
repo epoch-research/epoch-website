@@ -39,9 +39,9 @@
       height: 100%;
       background-color: var(--footer-color); /* while the background image is loading */
       background-image: url('{{ page.image | relative_url }}');
-      background-size: cover;
-      background-position-x: center;
-      background-position-y: top;
+      background-size: {{ page.image_size }};
+      background-position-x: {{ page.image_position_x }};
+      background-position-y: {{ page.image_position_y }};
       background-repeat: no-repeat;
     }
 

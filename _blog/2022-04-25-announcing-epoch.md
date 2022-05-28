@@ -2,9 +2,12 @@
 layout: article
 title: "Announcing Epoch: A research initiative monitoring the road to transformative AI"
 subtitle: Subtitle
-image: assets/images/epoch-logo.png
+image: assets/images/epoch-logo.svg
 description: We're a new research initiative working on monitoring AI developments and forecasting the developments of AI. Come join us!
 tags: announcements
+
+banner:
+  fullscreen: false
 
 toc: auto
 
@@ -12,9 +15,7 @@ date: 2022-04-26
 
 authors:
   - name: The Epoch Team
-    url: ""
-    affiliations:
-      name: 
+
 ---
 
 # Summary

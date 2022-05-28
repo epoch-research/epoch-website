@@ -4,19 +4,22 @@ title: Compute Trends Across Three Eras of Machine Learning
 subtitle: Subtitle
 image: assets/images/posts/2022/compute-trends.png
 description: We've compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward. 
-tags: paper peer-reviewed
+tags: paper
 
 banner:
   fullscreen: false
   resources:
     - label: Paper
       url: https://arxiv.org/abs/2202.05924
+      tooltipImageUrl: /assets/images/lab/shots/shot-1653763479-310.png
       icon: file-text
     - label: Visualization
       url: /mlinputs/visualization
+      tooltipImageUrl: /assets/images/lab/shots/shot-1653763484-737.png
       icon: graph-up
     - label: Dataset
       url: /mlinputs/data
+      tooltipImageUrl: /assets/images/lab/shots/shot-1653763491-147.png
       icon: table
 
 toc: auto
@@ -178,7 +181,7 @@ Of course, it would be infeasible for us to gather this data for *all* ML system
 This selection process lets us focus on the most important systems, helping us understand the key drivers of the state-of-the-art. 
 
 # Results
-Using these techniques, we yielded a [dataset](https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/edit#gid=0) with training compute for over 120 milestone ML systems, the largest such dataset yet. We have chosen to make this and our [interactive data visualisation](https://colab.research.google.com/drive/11m0AfSQnLiDijtE1fsIPqF-ipbTQcsFp) publicly available, in order to facilitate further research along the same lines. 
+Using these techniques, we yielded a [dataset](https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/edit#gid=0) with training compute for over 120 milestone ML systems, the largest such dataset yet. We have chosen to make this and our [interactive data visualisation](/mlinputs/visualization) publicly available, in order to facilitate further research along the same lines. 
 
 <div id="trends-graph-wrapper">
   <div id="trends-graph">

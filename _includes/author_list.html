@@ -21,7 +21,7 @@
         {% endif %}
       {% endfor %}
 
-      <span class="author" href="{{url | prepend: 'team#' | relative_url}}" data-member-mail="{{mail}}" data-member-name="{{member.name}}" data-member-role="{{member.role}}" data-member-id="{{member.id}}">{{author.name}}</span>
+      <span class="author {% if mail %}tooltiped{% endif %}" data-member-mail="{{mail}}" data-member-name="{{member.name}}" data-member-role="{{member.role}}" data-member-id="{{member.id}}">{{author.name}}</span>
     {% else %}
       <span class="author">{{author.name}}</span>
     {% endif %}
@@ -34,12 +34,13 @@
 
 <script src="/assets/bundles/compute-calculator/libs/umbrella.min.js"></script>
 <style>
-  .author {
+  .author.tooltiped {
     cursor: pointer;
   }
 
   .tippy-content {
     width: 180px;
+    padding: 5px;
   }
 
   .mug {
@@ -64,7 +65,38 @@
   }
 </style>
 <script>
-  for (let author of document.getElementsByClassName('author')) {
+/*
+    // Fixed tooltip
+    tippy(document.querySelector('.summary-authors'), {
+      content: 'foobar',
+      triggerTarget: [...document.querySelectorAll('.author.tooltiped')],
+      theme: 'calculator',
+      allowHTML: true,
+      interactive: true,
+      arrow: false,
+      maxWidth: '200px',
+      placement: 'top',
+      onTrigger: (instance, e) => {
+        let author = e.target;
+        instance.setProps({
+          content: 
+            `
+            <div class="member">
+              <div class="mug" style="border-radius: 5px; background-image: url('/assets/images/team/${author.dataset.memberId}.jpg')"></div>
+              <div class="member-info">
+                <h3 class="member-name">${author.dataset.memberName}</h3>
+                <h4 class="member-role">${author.dataset.memberRole}</h4>
+                <div class="member-resources">
+                  <a class="" href="${author.dataset.memberMail}"><i class="bi bi-envelope"></i></a>
+                </div>
+              </div>
+            </div>
+            `,
+        });
+      },
+    });
+*/
+  for (let author of document.querySelectorAll('.author.tooltiped')) {
     tippy(author, {
       allowHTML: true,
       theme: 'calculator',
@@ -72,11 +104,14 @@
       arrow: false,
       interactive: true,
       maxWidth: '200px',
-      trigger: 'click',
+      trigger: 'mouseenter click',
+      onShow: () => {
+        tippy.hideAll();
+      },
       content:
         `
         <div class="member">
-          <div class="mug" style="background-image: url('/assets/images/team/${author.dataset.memberId}.jpg')"></div>
+          <div class="mug" style="border-radius: 5px; background-image: url('/assets/images/team/${author.dataset.memberId}.jpg')"></div>
           <div class="member-info">
             <h3 class="member-name">${author.dataset.memberName}</h3>
             <h4 class="member-role">${author.dataset.memberRole}</h4>

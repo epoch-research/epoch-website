@@ -4,8 +4,8 @@ title: Parameter Counts in Machine Learning
 subtitle: Subtitle
 image: assets/images/posts/2022/parameter-counts.png
 description: Compiling a large dataset of Machine Learning models to determine changes in the parameters counts of systems since 1952.
-#external: true
-#external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/GzoWcYibWYwJva8aL
+external: true
+external_url: https://www.alignmentforum.org/s/T9pBzinPXYB3mxSGi/p/GzoWcYibWYwJva8aL
 tags: report
 
 toc: auto
@@ -27,5 +27,3 @@ authors:
       name: Epoch
 
 ---
-
-flksjadfl

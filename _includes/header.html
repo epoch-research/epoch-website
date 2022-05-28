@@ -48,4 +48,47 @@
       }
     });
   </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          theme: 'calculator',
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
 </header>

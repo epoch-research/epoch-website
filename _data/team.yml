@@ -23,16 +23,16 @@
   id: anson-ho
   resources:
     - mail: mailto:anson@epochai.org
-    - website: https://ansonwhho.github.io/
     - github: https://github.com/ansonwhho
+    - website: https://ansonwhho.github.io/
 - name: Lennart Heim
   role: Research Fellow and Strategy Specialist
   description: Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.
   id: lennart-heim
   resources:
     - mail: mailto:lennart@epochai.org
-    - website: https://heim.xyz
     - twitter: https://twitter.com/ohlennart
+    - website: https://heim.xyz
 - name: Marius Hobbhahn
   role: Research Fellow
   description: Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.

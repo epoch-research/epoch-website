@@ -110,6 +110,10 @@ body {
 
   .footer-icons {
     margin-left: auto;
+    i {
+      font-size: 1.3em;
+      margin-left: 0.5em;
+    }
     img {
       width: 21px;
     }
@@ -342,7 +346,7 @@ body {
   }
 }
 
-a.button {
+.button {
   color: black;
   font-size: 1.0rem;
   border-radius: 10px;
@@ -358,8 +362,9 @@ a.button {
 
   &:hover {
     text-decoration: none;
-    background-color: #5BC2ED;
-    color: black;
+    //background-color: #5BC2ED;
+    background-color: #558;
+    color: white;
     border-color: transparent;
   }
 }

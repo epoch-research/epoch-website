@@ -1,6 +1,6 @@
 ---
 title: Research
-permalink: /research
+permalink: /lab/research
 ---
 
 # Research
@@ -8,8 +8,8 @@ permalink: /research
 Our current research focuses on three main directions, which have a strong degree of overlap and interaction. 
 
 {% assign list = site.research %}
-{% include box_list.html button="Learn more" %}
+{% include lab/box_list.html button="Click to learn more" %}
 
 # Publications
 
-{% include research_grid.html %}
+{% include lab/research_grid.html %}

@@ -27,7 +27,7 @@
         {% if banner.resources %}
           <div class="article-resources">
             {% for resource in banner.resources %}
-            <a class="article-resource" href="{{resource.url | relative_url}}">{% if resource.icon %}<i class="bi bi-{{resource.icon}}"></i>{% endif %}{{resource.label}}</a>
+            <a class="article-resource" data-tooltip-image="{{resource.tooltipImageUrl | relative_url}}" href="{{resource.url | relative_url}}">{% if resource.icon %}<i class="bi bi-{{resource.icon}}"></i>{% endif %}{{resource.label}}</a>
             {% endfor %}
           </div>
         {% endif %}

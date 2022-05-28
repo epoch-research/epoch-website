@@ -17,6 +17,7 @@ permalink: /blog
 			vertical-align: top;
 			color: #111;
       height: 100%;
+      padding-top: 2em;
       padding-bottom: 15px;
       margin-bottom: 15px;
       border-bottom: 1px solid var(--global-divider-color);
