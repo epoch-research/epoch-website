@@ -2,94 +2,62 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
+   width="52.905025mm"
+   height="52.905025mm"
+   viewBox="0 0 52.905025 52.905025"
    version="1.1"
-   id="svg2"
-   xml:space="preserve"
-   width="533.33331"
-   height="533.33331"
-   viewBox="0 0 533.33331 533.33331"
-   sodipodi:docname="Epoch Icon.svg"
+   id="svg5"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04, custom)"
-   inkscape:export-filename="/home/edu/.tmp/trash/epoch-icon-small.png"
-   inkscape:export-xdpi="7.2000003"
-   inkscape:export-ydpi="7.2000003"
+   sodipodi:docname="epoch-logo.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"><defs
-     id="defs6"><linearGradient
-       x1="0"
-       y1="0"
-       x2="1"
-       y2="0"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(400,400,400,-400,0,0)"
-       spreadMethod="pad"
-       id="linearGradient28"><stop
-         style="stop-opacity:1;stop-color:#5bc2ee"
-         offset="0"
-         id="stop22" /><stop
-         style="stop-opacity:1;stop-color:#00a6b5"
-         offset="0.509541"
-         id="stop24" /><stop
-         style="stop-opacity:1;stop-color:#009b4c"
-         offset="1"
-         id="stop26" /></linearGradient><clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath2601"><rect
-         style="fill:#000000;fill-opacity:0.188621;stroke-width:2.1685;paint-order:stroke fill markers;stop-color:#000000"
-         id="rect2603"
-         width="400"
-         height="400"
-         x="-75.741203"
-         y="-209.1749"
-         ry="41.039703"
-         rx="41.039703"
-         transform="scale(1,-1)" /></clipPath><clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath2605"><rect
-         style="fill:#000000;fill-opacity:0.188621;stroke-width:2.1685;paint-order:stroke fill markers;stop-color:#000000"
-         id="rect2607"
-         width="400"
-         height="400"
-         x="0"
-         y="-400"
-         ry="41.039703"
-         rx="41.039703"
-         transform="scale(1,-1)" /></clipPath></defs><sodipodi:namedview
-     id="namedview4"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
      pagecolor="#ffffff"
      bordercolor="#666666"
      borderopacity="1.0"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
      showgrid="false"
-     inkscape:snap-center="true"
-     inkscape:zoom="0.58544167"
-     inkscape:cx="-19.643289"
-     inkscape:cy="301.48178"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.54787458"
+     inkscape:cx="314.85308"
+     inkscape:cy="81.222969"
      inkscape:window-width="1366"
      inkscape:window-height="750"
      inkscape:window-x="0"
      inkscape:window-y="18"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g8" /><g
-     id="g8"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     inkscape:label="Epoch Icon"
-     transform="matrix(1.3333333,0,0,-1.3333333,0,533.33333)"><g
-       id="g10"
-       clip-path="url(#clipPath2605)"><g
-         id="g12"><g
-           id="g18"><g
-             id="g20"><path
-               d="M 0,0 H 400 V 400 H 0 Z"
-               style="fill:url(#linearGradient28);stroke:none"
-               id="path30" /></g></g></g></g><g
-       id="g32"
-       transform="translate(75.7412,190.8251)"
-       clip-path="url(#clipPath2601)"><path
-         d="M 0,0 V -56.849 L 259.195,74.275 v 56.849 z M 234.51,-25.43 V 31.579 L 0,-88.691 V -145.7 Z M 0,30.12 v 57.337 l 125.109,65.915 V 96.035 Z"
+     id="layer1"
+     transform="translate(-67.638639,-130.24666)">
+    <g
+       id="g66"
+       transform="matrix(0.35277777,0,0,-0.35277777,116.31033,183.15168)">
+      <path
+         d="m 0,0 h -125.967 c -6.6,0 -12,5.4 -12,12 v 125.967 c 0,6.6 5.4,12 12,12 H 0 c 6.6,0 12,-5.4 12,-12 V 12 C 12,5.4 6.6,0 0,0"
+         style="fill:#5bc2ee;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="path68" />
+    </g>
+    <g
+       id="g70"
+       transform="matrix(0.35277777,0,0,-0.35277777,77.656364,157.91268)">
+      <path
+         d="M 0,0 V -21.314 L 97.177,27.847 V 49.161 Z M 87.922,-9.534 V 11.839 L 0,-33.252 V -54.625 Z M 0,11.293 V 32.789 L 46.906,57.502 V 36.005 Z"
          style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
-         id="path34" /></g></g></svg>
+         id="path72" />
+    </g>
+  </g>
+</svg>

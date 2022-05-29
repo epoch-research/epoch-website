@@ -100,6 +100,7 @@ permalink: /blog
 
     .post-thumbnail img {
       width: 100%;
+      margin-bottom: 2.5em;
     }
 
     @media (max-width: 750px) {
@@ -121,6 +122,7 @@ permalink: /blog
 
       .post-thumbnail {
         width: 100%;
+        margin-top: 1.5em;
       }
 
       .post-meat {

@@ -24,8 +24,13 @@ defaults:
 title: Epoch
 theme: minima
 
-plugins:
-  - jekyll-toc
+# Blog posts URLs
+collections:
+  blog:
+    output: true
+    permalink: /:collection/:title
+  research:
+    output: true
 
 url: epochai.org
 baseurl: /
@@ -39,6 +44,13 @@ sass:
   load_paths:
     - _sass
     - assets/bundles/compute-calculator
+
+exclude:
+  - CNAME
+  - firebase-dev.json
+  - firebase.json
+  - README.md
+  - coming_soon
 
 bootstrap:
   version: "4.6.1"
@@ -61,12 +73,8 @@ popper:
 tippy:
   version: "6.2.6"
 
-exclude:
-  - CNAME
-  - firebase-dev.json
-  - firebase.json
-  - README.md
-  - coming_soon
+plugins:
+  - jekyll-toc
 
 # To make GitHub Pages work with our domain
 #include: [CNAME]

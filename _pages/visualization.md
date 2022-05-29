@@ -1,13 +1,10 @@
 ---
 layout: full_screen_app
-title: Visualization
+title: ML input trends visualization
 permalink: /mlinputs/visualization
-
-# Uncomment the lines below and remove everything else for a redirection to the Colab notebook
-#layout: 'redirect'
-#permalink: /mlinputs/visualization
-#redir_to: 'https://colab.research.google.com/drive/11m0AfSQnLiDijtE1fsIPqF-ipbTQcsFp#scrollTo=8RNjdCJ1Nd1I'
 ---
+
+{% include head.html %}
 
 <head>
   <!-- Jesus -->
@@ -45,9 +42,15 @@ permalink: /mlinputs/visualization
   <script src="/assets/bundles/trends/database.js"></script>
 
   <style>
+    body {
+      height: 100vh;
+    }
+
+    * { transition none !important; }
+
     .graph-wrapper {
       width: 100%;
-      height: 100vh;
+      height: 100%;
       padding: 5px;
       box-sizing: border-box;
     }
@@ -77,11 +80,16 @@ permalink: /mlinputs/visualization
   </style>
 </head>
 
+{% include header.html %}
+
 <div class="graph-wrapper">
   <div id="trends-graph">
   </div>
 </div>
 
+{% include footer.html %}
+
 <script>
   buildTrendsGraph("#trends-graph", database, {linkParamsToUrl: true});
 </script>
+

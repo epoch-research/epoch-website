@@ -6,22 +6,22 @@ permalink: /team
 <head>
   <style>
     .team-grid {
-      grid-gap: 10px !important;
-      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 1.3rem !important;
+      grid-template-columns: repeat(auto-fill, 230px);
     }
 
     .member {
-      max-width: 350px;
+      max-width: 250px;
       width: 100%;
     }
 
     @media (max-width: 800px) {
-      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      //.team-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 550px) {
       .team-grid {
-        grid-template-columns: repeat(1, 1fr);
+        //grid-template-columns: repeat(1, 1fr);
         justify-items: center;
       }
 
@@ -34,7 +34,7 @@ permalink: /team
 		.mug {
       padding-top: 100%;
       margin-bottom: 10px;
-      box-shadow: 0 0 10px 0 rgb(0 0 0 / 20%);
+      box-shadow: 0 0 4px 1px rgb(0 0 0 / 55%);
       background-size: cover;
       background-position: center;
     }
@@ -48,6 +48,10 @@ permalink: /team
       padding: 4px;
     }
 
+    .member-role {
+      font-size: 13px !important;
+    }
+
     .member-name, .member-role {
       margin-bottom: 2px;
     }
@@ -55,6 +59,7 @@ permalink: /team
 
     .member-description {
       margin-top: 15px;
+      display: none;
     }
 
     /* Helps directing the attention when jumping to the miniprofile of a member */
@@ -92,6 +97,7 @@ We are a research initiative working to support AI governance and improve foreca
         {% endfor %}
       </div>
       <p class="member-description">{{member.description}}</p>
+      <a style="font-size: 0.9rem; cursor: pointer;">Read more</a>
     </div>
   </div>
   {% endfor %}

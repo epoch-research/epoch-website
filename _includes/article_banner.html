@@ -2,7 +2,7 @@
   <div class="article-head-content">
     <div class="banner">
       <div class="banner-img-wrapper">
-        <img src="{{ page.image | relative_url }}"/>
+        <img src="{% if banner.image %}{{ banner.image | relative_url }}{% else %}{{ page.image | relative_url }}{% endif %}"/>
       </div>
     </div>
     <div class="summary">

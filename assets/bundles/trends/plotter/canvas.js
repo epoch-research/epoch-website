@@ -43,14 +43,14 @@
       let self = this;
 
       let onResize = () => {
-        self._cachedBoundingRect = rect({x: 0, y: 0, w: this.node.clientWidth, h: this.node.clientHeight});
+        this._cachedBoundingRect = rect({x: 0, y: 0, w: this.node.clientWidth, h: this.node.clientHeight});
 
-        self.node.width = mlp.devicePixelRatio * self.bounds().w;
-        self.node.height = mlp.devicePixelRatio * self.bounds().h;
+        this.node.width = mlp.devicePixelRatio * this.node.clientWidth;
+        this.node.height = mlp.devicePixelRatio * this.node.clientHeight;
 
         this.fire('resize');
-        self.render(); // Sorry, but using requestRenderAll makes things less smooth, here
-        self.dirty = false;
+        this.render(); // Sorry, but using requestRenderAll makes things less smooth, here
+        this.dirty = false;
       }
 
       let resizeObserver = new ResizeObserver(onResize);

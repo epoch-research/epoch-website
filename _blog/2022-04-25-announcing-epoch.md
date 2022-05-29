@@ -8,6 +8,7 @@ tags: announcements
 
 banner:
   fullscreen: false
+  image: assets/images/epoch-logo-white-text.svg
 
 toc: auto
 
