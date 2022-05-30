@@ -1,10 +1,11 @@
 .research-grid {
-  grid-template-columns: repeat(auto-fit, calc(min(100%, 320px)));
+  grid-template-columns: repeat(auto-fit, calc(min(100%, 310px)));
   grid-gap: 1.5em !important;
   justify-content: left;
 
   .member {
     padding: 10px;
+    min-height: 400px;
     max-width: 300px;
     width: 100%;
     background-color: #e7e7e7;

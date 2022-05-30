@@ -10,6 +10,6 @@ Our current research focuses on three main directions, which have a strong degre
 {% assign list = site.research %}
 {% include box_list.html button="Learn more" %}
 
-# Publications
+---
 
-{% include research_grid.html %}
+{% include research_grid.html title="Publications" %}

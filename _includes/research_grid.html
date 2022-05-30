@@ -1,22 +1,37 @@
+{% assign publications = "" | split: ',' %}
+
+{% for branch in site.data.publications %}
+  {% unless include.branch and include.branch != branch.name %}
+    {% for item in branch.publications %}
+      {% assign publications = publications | push: item %}
+    {% endfor %}
+  {% endunless %}
+{% endfor %}
+
+{% if publications.size > 0 %}
+---
+# {{include.title}}
+
 <div class="collection-grid research-grid">
-  {% for item in site.data.research %}
-  {% assign typename = item.type %}
-  {% assign icon = site.data.research_types | find_exp: 'type','type.name == typename' | map: 'icon' %}
-  <a href="{{item.url}}" class="member shadow-on-hover{% if item.description %} show-description-on-hover{%endif%}">
-    <div class="member-info">
-      <h4 class="uppercase">{{item.domain}}</h4>
-      <h3>{{item.name}}</h3>
-      <h4 class="uppercase type">{% if icon %}<i class="bi bi-{{icon}}"></i> {% endif %}{{item.type}}</h4>
-      <div class="info-cdr">
-        <div class="unhovered-text">
-          <p>{{item.date | date: "%b. %d, %Y"}}</p>
-          <p>{{item.authors}}</p>
-        </div>
-        <div class="hovered-text">
-          <p>{{item.description | truncatewords: 30}}</p>
-        </div>
-      </div>
-    </div>
-  </a>
+  {% for item in publications %}
+        {% assign typename = item.type %}
+        {% assign icon = site.data.research_types | find_exp: 'type','type.name == typename' | map: 'icon' %}
+        <a href="{{item.url}}" class="member shadow-on-hover{% if item.description %} show-description-on-hover{%endif%}">
+          <div class="member-info">
+            <h4 class="uppercase">{{item.domain}}</h4>
+            <h3>{{item.name}}</h3>
+            <h4 class="uppercase type">{% if icon %}<i class="bi bi-{{icon}}"></i> {% endif %}{{item.type}}</h4>
+            <div class="info-cdr">
+              <div class="unhovered-text">
+                <p>{{item.date | date: "%b. %d, %Y"}}</p>
+                <p>{{item.authors}}</p>
+              </div>
+              <div class="hovered-text">
+                <p>{{item.description | truncatewords: 30}}</p>
+              </div>
+            </div>
+          </div>
+        </a>
   {% endfor %}
 </div>
+{% endif %}

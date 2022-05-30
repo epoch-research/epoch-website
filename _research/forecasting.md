@@ -12,7 +12,4 @@ This involves:
 - Making concrete, tractable, and strategically relevant forecasting questions
 - Reducing uncertainty about what a future with advanced AI will look like
 
----
-# Prior work
-
-{% include research_grid.html %}
+{% include research_grid.html branch="forecasting" title="Prior work" %}

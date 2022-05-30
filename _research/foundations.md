@@ -13,7 +13,4 @@ This involves:
 
 This work is critical because it helps decision makers develop a high-level understanding of how AI works. These decision makers generally do not have the time to learn about AI, and synthesizing large amounts of information is crucial for narrowing the gap between technical developments and AI governance. 
 
----
-# Prior work
-
-{% include research_grid.html %}
+{% include research_grid.html branch="foundations" title="Prior work" %}

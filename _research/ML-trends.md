@@ -12,7 +12,4 @@ This involves:
 - Creating measuring tools 
 - Analysing data trends
 
----
-# Prior work
-
-{% include research_grid.html %}
+{% include research_grid.html branch="ml-trends" title="Prior work" %}
