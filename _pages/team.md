@@ -41,7 +41,7 @@ permalink: /team
     }
 
     .member-resource, .member-resource:hover {
-      color: black;
+      color: black !important;
       margin-right: 0.4em;
     }
 
@@ -54,7 +54,7 @@ permalink: /team
     }
 
     .member a {
-      color: black;
+      color: black !important;
       text-decoration: none;
     }
 
