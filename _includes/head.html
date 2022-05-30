@@ -8,9 +8,8 @@
     {% include tags.html %}
   {% endif %}
 
-  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ '/assets/css/micromodal.css' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
   <link rel="icon" type="image/svg+xml" href="{{ "/assets/images/favicon.svg" | relative_url }}" >
   <link rel="shortcut icon" type="image/png" href="{{ "/assets/images/favicon.png" | relative_url }}" >
@@ -27,4 +26,5 @@
     });
   </script>
   <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  <script src="{{ '/assets/js/micromodal.min.js' | relative_url }}"></script>
 </head>

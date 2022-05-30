@@ -238,8 +238,10 @@ body {
   //margin-left: auto;
   //margin-left: var(--nav-bar-margin);
   //margin-right: var(--nav-bar-margin);
-
   //padding: 0;
+
+  padding-left: var(--nav-bar-margin);
+  padding-right: var(--nav-bar-margin);
 }
 
 @media (max-width: $on-palm) {

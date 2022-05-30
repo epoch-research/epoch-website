@@ -19,6 +19,12 @@ authors:
 
 ---
 
+<style>
+  .banner-img-wrapper img {
+    border-radius: 0px;
+  }
+</style>
+
 # Summary
 - We are a new research initiative working on monitoring AI developments and forecasting the development of transformative AI (TAI)
 - Our mission is to narrow the gap between technical AI developments and AI governance, and inform key decision makers in AI safety (e.g. grantmakers)
