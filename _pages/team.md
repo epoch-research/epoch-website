@@ -26,6 +26,10 @@ permalink: /team
       }
     }
 
+    .member {
+      padding: 5px;
+    }
+
 		.member .mug {
       padding-top: 100%;
       margin-bottom: 10px;
@@ -35,7 +39,11 @@ permalink: /team
       display: block;
     }
 
-		.member .mug:hover {
+		.member:not(.mouse-over-resources):hover {
+      cursor: pointer;
+    }
+
+		.member:not(.mouse-over-resources):hover {
       box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
     }
 
@@ -144,7 +152,7 @@ We are a research initiative working to support AI governance and improve foreca
 <div class="collection-grid team-grid">
   {% for member in site.data.team %}
   <div class="member" id="{{member.id}}">
-    <a class="mug" data-micromodal-trigger="modal-1" data-member-id="{{member.id}}" href="javascript:void(0)" style="background-image: url('{{member.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}')"></a>
+    <div class="mug" style="background-image: url('{{member.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}')"></div>
     <div class="member-info">
       <h3 class="member-name">{{member.name}}</h3>
       <h4 class="member-role">{{member.role}}</h4>
@@ -164,9 +172,9 @@ We are a research initiative working to support AI governance and improve foreca
 </div>
 
 <!-- Member modal -->
-<div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+<div class="modal micromodal-slide" id="member-modal" aria-hidden="true">
   <div class="modal-overlay" tabindex="-1" data-micromodal-close>
-    <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+    <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="member-modal-title">
       <header class="modal-header">
         <div>
           <h2 class="modal-title">
@@ -196,19 +204,44 @@ We are a research initiative working to support AI governance and improve foreca
   document.addEventListener("DOMContentLoaded", function() {
     MicroModal.init({
       awaitCloseAnimation: true,
-      onShow: function(modal, trigger) {
-        let member = members[trigger.dataset.memberId];
-        modal.querySelector('.modal-title').innerHTML = member.name;
-        modal.querySelector('.member-role').innerHTML = member.role;
-        modal.querySelector('.description').innerHTML = member.description;
-        modal.querySelector('.mug').src = member.imageUrl;
-        modal.querySelector('.modal-container').scrollTop = 0;
-
-        modal.querySelector('.modal-footer').innerHTML = '';
-        for (let resource of member.resources) {
-          modal.querySelector('.modal-footer').appendChild(u(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`).first());
-        }
-      },
     });
+
+    function showModal(member) {
+      let modal = document.querySelector('#member-modal');
+
+      modal.querySelector('.modal-title').innerHTML = member.name;
+      modal.querySelector('.member-role').innerHTML = member.role;
+      modal.querySelector('.description').innerHTML = member.description;
+      modal.querySelector('.mug').src = member.imageUrl;
+      modal.querySelector('.modal-container').scrollTop = 0;
+
+      modal.querySelector('.modal-footer').innerHTML = '';
+      for (let resource of member.resources) {
+        let resourceDom = u(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`).first();
+        modal.querySelector('.modal-footer').appendChild(resourceDom);
+      }
+
+      MicroModal.show('member-modal', {
+        onShow: () => {
+          // For some reason, the resources get focused when the modal is shown
+          document.activeElement.blur();
+        },
+      });
+    }
+
+    for (let member of document.querySelectorAll('.member')) {
+      let mug = member.querySelector('.mug');
+      let resources = member.querySelector('.member-resources');
+
+      resources.addEventListener('mouseenter', () => member.classList.add('mouse-over-resources'));
+      resources.addEventListener('mouseleave', () => member.classList.remove('mouse-over-resources'));
+
+      member.addEventListener('click', (e) => {
+        if (e.target != resources && !resources.contains(e.target)) {
+          showModal(members[member.id]);
+        }
+      });
+    }
   });
 </script>
+
