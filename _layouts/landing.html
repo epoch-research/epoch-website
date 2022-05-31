@@ -11,6 +11,11 @@
       border: 0;
     }
 
+    .super-wrapper {
+      height: 100%;
+      min-height: 100vh;
+    }
+
     .facade {
       height: 100%;
       min-height: 100vh;
@@ -77,6 +82,10 @@
       box-sizing: border-box;
     }
 
+    .site-footer * {
+      color: grey ;
+    }
+
     .site-header, {
       top: 0;
     }
@@ -85,8 +94,22 @@
       bottom: 0;
     }
 
-    @media (min-width: $on-palm) .site-nav .page-link {
-      color: white !important;
+    @media (min-width: $on-palm) {
+      .site-nav .page-link {
+        color: white !important;
+      }
+    }
+
+    /* 600px: palm size */
+    @media (max-width: 600px) {
+      .site-footer {
+        position: unset;
+        background-color: black;
+      }
+
+      .facade {
+        padding-bottom: 110px;
+      }
     }
 
     .site-header a:hover {
@@ -110,34 +133,26 @@
   </style>
 
   <body>
-    {%- include header.html -%}
+    <div class="super-wrapper">
+      {%- include header.html -%}
 
-    <div id="facade" class="facade">
-      <div class="cover-wrapper">
-        <div class="cover"></div>
-      </div>
-      {% if page.cover_text %}
-      <div class="text-container">
-        <div class="wrapper">
-          <div class="cover-text">
-            <p>{{ page.cover_text }}</p>
-            <a class="button" href="{{page.featured_url | relative_url}}">{{page.featured_url_text}}</a>
+      <div id="facade" class="facade">
+        <div class="cover-wrapper">
+          <div class="cover"></div>
+        </div>
+        {% if page.cover_text %}
+        <div class="text-container">
+          <div class="wrapper">
+            <div class="cover-text">
+              <p>{{ page.cover_text }}</p>
+              <a class="button" href="{{page.featured_url | relative_url}}">{{page.featured_url_text}}</a>
+            </div>
           </div>
         </div>
+        {% endif %}
       </div>
-      {% endif %}
+
+      {%- include footer.html -%}
     </div>
-
-    {% assign content = content | strip_newlines %}
-    {% if content != "" %}
-    <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        {{ content }}
-      </div>
-    </main>
-    {% endif %}
-
-    {%- include footer.html -%}
-
   </body>
 </html>

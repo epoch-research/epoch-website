@@ -106,16 +106,25 @@ body {
   padding-left: var(--nav-bar-margin);
 
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 
-  .footer-icons {
+  .footer-icons-container {
     margin-left: auto;
+
     i {
       font-size: 1.3em;
       margin-left: 0.5em;
     }
+
     img {
       width: 21px;
+    }
+
+    @media (max-width: 670px) {
+      & {
+        margin-right: auto;
+      }
     }
   }
 
