@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04, custom)"
-   sodipodi:docname="epoch-logo.svg"
+   sodipodi:docname="epoch-icon.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,9 +27,9 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:zoom="0.54787458"
-     inkscape:cx="314.85308"
-     inkscape:cy="81.222969"
+     inkscape:zoom="0.85538985"
+     inkscape:cx="6.4298168"
+     inkscape:cy="119.8284"
      inkscape:window-width="1366"
      inkscape:window-height="750"
      inkscape:window-x="0"
@@ -45,10 +45,11 @@
      transform="translate(-67.638639,-130.24666)">
     <g
        id="g66"
-       transform="matrix(0.35277777,0,0,-0.35277777,116.31033,183.15168)">
+       transform="matrix(0.35277777,0,0,-0.35277777,116.31033,183.15168)"
+       style="fill:#00a5a6;fill-opacity:1">
       <path
          d="m 0,0 h -125.967 c -6.6,0 -12,5.4 -12,12 v 125.967 c 0,6.6 5.4,12 12,12 H 0 c 6.6,0 12,-5.4 12,-12 V 12 C 12,5.4 6.6,0 0,0"
-         style="fill:#5bc2ee;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#00a5a6;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="path68" />
     </g>
     <g

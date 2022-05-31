@@ -37,7 +37,7 @@
       right: 0;
       width: 100%;
       height: 100%;
-      background-color: var(--footer-color); /* while the background image is loading */
+      background-color: black;
       background-image: url('{{ page.image | relative_url }}');
       background-size: {{ page.image_size }};
       background-position-x: {{ page.image_position_x }};
@@ -67,14 +67,22 @@
       z-index: 1;
     }
 
-    .site-header {
+    .site-header, .site-footer {
       z-index: 2;
       position: absolute;
-      top: 0;
       left: 0;
       border-bottom: 0 !important;
       width: 100%;
       background-color: #0000;
+      box-sizing: border-box;
+    }
+
+    .site-header, {
+      top: 0;
+    }
+
+    .site-footer {
+      bottom: 0;
     }
 
     @media (min-width: $on-palm) .site-nav .page-link {
