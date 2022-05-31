@@ -1,6 +1,6 @@
 ---
 title: Team
-permalink: /team
+permalink: /lab/shadow-team
 ---
 
 <head>
@@ -35,7 +35,7 @@ permalink: /team
       display: block;
     }
 
-		.member .mug:hover {
+		.member:not(.mouse-over-resources):hover .mug {
       box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
     }
 
@@ -146,8 +146,8 @@ We are a research initiative working to support AI governance and improve foreca
   <div class="member" id="{{member.id}}">
     <a class="mug" data-micromodal-trigger="modal-1" data-member-id="{{member.id}}" href="javascript:void(0)" style="background-image: url('{{member.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}')"></a>
     <div class="member-info">
-      <h3 class="member-name">{{member.name}}</h3>
-      <h4 class="member-role">{{member.role}}</h4>
+      <h3 class="member-name"><a href="javascript:void(0)" data-micromodal-trigger="modal-1" data-member-id="{{member.id}}">{{member.name}}</a></h3>
+      <h4 class="member-role"><a href="javascript:void(0)" data-micromodal-trigger="modal-1" data-member-id="{{member.id}}">{{member.role}}</a></h4>
       <div class="member-resources">
         {% for _resource in member.resources %}
           {% assign resource = _resource | first %}
@@ -211,4 +211,13 @@ We are a research initiative working to support AI governance and improve foreca
       },
     });
   });
+
+  for (let member of document.querySelectorAll('.member')) {
+    let mug = member.querySelector('.mug');
+    let resources = member.querySelector('.member-resources');
+
+    resources.addEventListener('mouseenter', () => member.classList.add('mouse-over-resources'));
+    resources.addEventListener('mouseleave', () => member.classList.remove('mouse-over-resources'));
+  }
 </script>
+
