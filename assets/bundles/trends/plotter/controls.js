@@ -131,12 +131,12 @@
         }
       }
       return array;
-      console.log("Hurray!!");
-      //return this.checkbox.checked;
     },
 
     setValue: function(value) {
-      //this.checkbox.checked = value;
+      for (let checkbox of this.checkboxes) {
+        checkbox.dom.checked = ((this.reverse && !value.includes(checkbox.param.key)) || (!this.reverse && value.includes(checkbox.param.key)));
+      }
     },
   });
 

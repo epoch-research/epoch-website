@@ -107,6 +107,8 @@ function buildTrendsGraph(container, database, args) {
           value = (value == "true") ? true : false;
         } else if (options[key] instanceof Date) {
           value = deserializeDate(value);
+        } else if (Array.isArray(options[key])) {
+          value = value.split(',');
         } else {
           value = (options[key].constructor)(value);
         }
