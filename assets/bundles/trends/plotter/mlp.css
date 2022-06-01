@@ -126,6 +126,7 @@ body.disabled *:focus {
 
 .plotter-container .options > * {
   width: 300px;
+  margin-left: 15px;
 }
 
 .plotter-container .option {
@@ -135,6 +136,7 @@ body.disabled *:focus {
 .plotter-container .options .optionsHeader {
   display: inline-block;
   margin-bottom: 10px;
+  margin-top: 10px;
   width: 200px;
 }
 
