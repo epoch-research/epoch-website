@@ -438,7 +438,7 @@ function buildTrendsGraph(container, database, args) {
   for (let domain in domainStyles) {
     checkSetParams.push({label: domain, key: domain});
   }
-  v.addControl(mlp.newCheckSetControl('Split domain regressions by era', 'domainsToNotSplit', checkSetParams, true));
+  v.addControl(mlp.newCheckSetControl('Split regressions by era', 'domainsToNotSplit', checkSetParams, true));
 
   if (presets.length > 0 ) {
     v.setOptions(presets[0].params);
