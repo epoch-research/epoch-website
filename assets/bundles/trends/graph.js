@@ -56,7 +56,6 @@ function buildTrendsGraph(container, database, args) {
     'Speech':       ['#ff9e27', 'triangle-down'],
     'Other':        ['#e5ae38', 'diamond'],
     'Large Scale':  ['#fc4f30', 'triangle'],
-    'All':          ['#30a2da', 'circle'],
     'Outlier':      ['#56cc60', 'triangle-left'],
     'Record':       ['#bfc11b', 'triangle-up'],
     'AlphaGo Zero': ['#ff9e27', drawStar],
@@ -68,6 +67,9 @@ function buildTrendsGraph(container, database, args) {
     'Multimodal':     ['#ff0000', drawStar],
     'Search':         ['#00ff00', drawStar],
     'Robotics':       ['#0000ff', drawStar],
+
+    // All
+    'All':          ['#30a2da', 'circle'],
   };
 
   /////////////////////////////////////////////////////
@@ -228,6 +230,7 @@ function buildTrendsGraph(container, database, args) {
     if (xAxis == 'Publication date') {
       let d = mlp.julianDateToDate(p.x);
       for (let era of result.eras) {
+        if (era.Era == 'All') continue;
         if (era.start <= d && d < era.stop) {
           eraUnderPointer = era;
           break;
@@ -238,7 +241,7 @@ function buildTrendsGraph(container, database, args) {
     let slopeInfo = null;
     for (let row of result.regressionInfoTable) {
       if (row.domain == domain) {
-        if (xAxis != 'Publication date' || row.era == eraUnderPointer.Era) {
+        if (xAxis != 'Publication date' || row.era == 'All' || row.era == eraUnderPointer.Era) {
           slopeInfo = row;
           break;
         }
@@ -427,6 +430,13 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newCheckControl("Adjust for estimate uncertainty", "adjustForEstimateUncertainty", true));
 
   v.addControl(mlp.newTextControl("Filter by text", "filterText"));
+
+  // Temporary regression options
+  let checkSetParams = [];
+  for (let domain in domainStyles) {
+    checkSetParams.push({label: domain, key: domain});
+  }
+  v.addControl(mlp.newCheckSetControl('Split domain regressions by era', 'domainsToNotSplit', checkSetParams, true));
 
   if (presets.length > 0 ) {
     v.setOptions(presets[0].params);
@@ -657,7 +667,6 @@ function buildTrendsGraph(container, database, args) {
       }
     }
 
-
     if (linkParamsToUrl) setUrlParams(params);
 
     result = generateGraph(database, params);
@@ -762,6 +771,7 @@ function buildTrendsGraph(container, database, args) {
       let eraColorIndex = 0;
 
       for (let era of result.eras) {
+        if (era.Era == 'All') continue;
         let textColor = eraColors[eraColorIndex];
         let backgroundColor = eraColors[eraColorIndex] + "22"; // era color with transparency
         addEra(era, textColor, backgroundColor);
@@ -794,7 +804,7 @@ function buildTrendsGraph(container, database, args) {
           stroke: color,
         });
 
-        // TODO Make this better!
+        // TODO Make this better, less hacky!
         for (let i = 0; i < points.length - 1; i++) {
           let p = {...points[i]};
           let q = {...points[i + 1]};

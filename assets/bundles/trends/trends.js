@@ -39,6 +39,8 @@ let params = {
 
   splitDomains: [,], // ['Language', 'Vision', 'Games', 'Other', 'All']
 
+  domainsToNotSplit: ['Vision'],
+
   splitDlEra: true,
   splitLargeScaleEra: true,
 
@@ -177,6 +179,7 @@ function generateGraph(database, params) {
 
   // Define eras
   eras = [
+    {Era:                   'All', start: params.startDate,          stop: params.endDate},
     {Era: 'Pre Deep Learning Era', start: params.startDate,          stop: params.startDlEra},
     {Era:     'Deep Learning Era', start: params.startDlEra,         stop: params.startLargeScaleEra},
     {Era:       'Large Scale Era', start: params.startLargeScaleEra, stop: params.endDate},
@@ -363,12 +366,12 @@ function addEraInfo(rows, eras, params) {
   if (eras.length == 0) return;
 
   // Add era labels to each domain
-  let currentEraIndex = 0;
+  let currentEraIndex = 1; // skip the 'All' era
   let era = "Machine Learning Era";
   for (let row of rows) {
     if (row.deleted) continue;
 
-    while (currentEraIndex < eras.length && !(eras[currentEraIndex].start <= row["Publication date"] && row["Publication date"] <= eras[currentEraIndex].stop)) {
+    while (currentEraIndex < eras.length && (eras[currentEraIndex].Era == 'All' || !(eras[currentEraIndex].start <= row["Publication date"] && row["Publication date"] <= eras[currentEraIndex].stop))) {
       currentEraIndex++;
     }
 
@@ -380,6 +383,10 @@ function addEraInfo(rows, eras, params) {
 
     if (era == "Large Scale Era" && !params.splitLargeScaleEra) {
       era = 'Deep Learning Era';
+    }
+
+    if (params.domainsToNotSplit.includes(row._Domain)) {
+      era = 'All';
     }
 
     row.Era = era;

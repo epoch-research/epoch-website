@@ -87,6 +87,59 @@
     },
   });
 
+  mlp.CheckSetControl = mlp.createClass(mlp.Control, {
+    checkboxes: null,
+    reverse: false,
+
+    initialize: function(options) {
+      this.callSuper('initialize', options);
+
+      this.checkboxes = [];
+      this.reverse = options.reverse;
+
+      let node = mlp.html(`<div class="optionWrapper" style="margin-top: 1em">${this.label}</div>`);
+
+      for (let param of options.subParams) {
+        let defaultValue = true;
+
+        let optionNode = mlp.html('<div class="option"><label class="optionLabel" for="' + param.key + '">' + param.label + '</label></div>');
+        let checkboxWrapper = mlp.html('<div class="checkboxWrapper"><input type="checkbox" '+ (true ? "checked" : "") +' class="optionValue" id="' + param.key + '"></input></div>');
+
+        let checkbox = checkboxWrapper.querySelector("input");
+        optionNode.appendChild(checkboxWrapper);
+        node.appendChild(optionNode);
+
+        let self = this;
+        checkbox.addEventListener("input", () => {
+          self.fire('change');
+        });
+
+        this.checkboxes.push({
+          dom: checkbox,
+          param: param,
+        });
+      }
+
+      this.node = node;
+    },
+
+    getValue: function() {
+      let array = [];
+      for (let checkbox of this.checkboxes) {
+        if ((this.reverse && !checkbox.dom.checked) || (!this.reverse && checked.dom.checked)) {
+          array.push(checkbox.param.key);
+        }
+      }
+      return array;
+      console.log("Hurray!!");
+      //return this.checkbox.checked;
+    },
+
+    setValue: function(value) {
+      //this.checkbox.checked = value;
+    },
+  });
+
   mlp.NumberControl = mlp.createClass(mlp.Control, {
     input: null,
 
@@ -153,6 +206,10 @@
 
   mlp.newCheckControl = function(label, param, defaultValue) {
     return new mlp.CheckControl({label, param, defaultValue});
+  }
+
+  mlp.newCheckSetControl = function(label, param, subParams, reverse) {
+    return new mlp.CheckSetControl({label, param, subParams, reverse});
   }
 
   mlp.newNumberControl = function(label, param, defaultValue) {
