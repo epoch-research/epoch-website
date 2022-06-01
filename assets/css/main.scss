@@ -314,16 +314,16 @@ body {
   padding-right: var(--nav-bar-margin);
 }
 
-@media (max-width: $on-palm) {
+@media (max-width: $hamburguer-menu-activation) {
   :root {
     --nav-bar-margin: #{$nav-bar-margin-palm};
   }
 
   .site-nav {
-    z-index: 1;
+    z-index: 100;
 
-    .page-link {
-      color: black;
+    .page-link:not(.current-menu-item) {
+      color: #555;
       margin-left: 0;
     }
 
