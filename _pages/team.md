@@ -43,7 +43,7 @@ permalink: /team
       cursor: pointer;
     }
 
-		.member:not(.mouse-over-resources):hover {
+		.member:not(.mouse-over-resources):hover, .member.selected {
       box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
     }
 
@@ -206,7 +206,7 @@ We are a research initiative working to support AI governance and improve foreca
       awaitCloseAnimation: true,
     });
 
-    function showModal(member) {
+    function showModal(memberDom, member) {
       let modal = document.querySelector('#member-modal');
 
       modal.querySelector('.modal-title').innerHTML = member.name;
@@ -222,9 +222,15 @@ We are a research initiative working to support AI governance and improve foreca
       }
 
       MicroModal.show('member-modal', {
+
         onShow: () => {
+          memberDom.classList.add('selected');
+
           // For some reason, the resources get focused when the modal is shown
           document.activeElement.blur();
+        },
+        onClose: () => {
+          memberDom.classList.remove('selected');
         },
       });
     }
@@ -238,7 +244,7 @@ We are a research initiative working to support AI governance and improve foreca
 
       member.addEventListener('click', (e) => {
         if (e.target != resources && !resources.contains(e.target)) {
-          showModal(members[member.id]);
+          showModal(member, members[member.id]);
         }
       });
     }
