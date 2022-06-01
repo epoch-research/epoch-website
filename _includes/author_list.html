@@ -21,7 +21,7 @@
         {% endif %}
       {% endfor %}
 
-      <span class="author {% if mail %}tooltiped{% endif %}" data-member-mail="{{mail}}" data-member-name="{{member.name}}" data-member-role="{{member.role}}" data-member-id="{{member.id}}">{{author.name}}</span>
+      <span class="author {% if mail %}tooltiped{% endif %}" data-member-id="{{member.id}}">{{author.name}}</span>
     {% else %}
       <span class="author">{{author.name}}</span>
     {% endif %}
@@ -32,7 +32,7 @@
 
 {{processedAuthors | better_join: ", ", " and "}}
 
-<script src="/assets/bundles/compute-calculator/libs/umbrella.min.js"></script>
+<script src="/assets/js/umbrella.min.js"></script>
 <style>
   .author.tooltiped {
     cursor: pointer;
@@ -55,6 +55,10 @@
     text-decoration: none;
   }
 
+  .member-resource {
+    margin-right: 5px;
+  }
+
   .member-info {
     padding: 4px;
     width: 180px;
@@ -64,39 +68,19 @@
     margin-bottom: 2px;
   }
 </style>
+
+{% include scripts/team_members.html %}
+
 <script>
-/*
-    // Fixed tooltip
-    tippy(document.querySelector('.summary-authors'), {
-      content: 'foobar',
-      triggerTarget: [...document.querySelectorAll('.author.tooltiped')],
-      theme: 'calculator',
-      allowHTML: true,
-      interactive: true,
-      arrow: false,
-      maxWidth: '200px',
-      placement: 'top',
-      onTrigger: (instance, e) => {
-        let author = e.target;
-        instance.setProps({
-          content: 
-            `
-            <div class="member">
-              <div class="mug" style="border-radius: 5px; background-image: url('/assets/images/team/${author.dataset.memberId}.jpg')"></div>
-              <div class="member-info">
-                <h3 class="member-name">${author.dataset.memberName}</h3>
-                <h4 class="member-role">${author.dataset.memberRole}</h4>
-                <div class="member-resources">
-                  <a class="" href="${author.dataset.memberMail}"><i class="bi bi-envelope"></i></a>
-                </div>
-              </div>
-            </div>
-            `,
-        });
-      },
-    });
-*/
   for (let author of document.querySelectorAll('.author.tooltiped')) {
+    let member = teamMembers[author.dataset.memberId];
+    if (!member) continue;
+
+    let resources = [];
+    for (let resource of member.resources) {
+      resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+    }
+
     tippy(author, {
       allowHTML: true,
       placement: 'top',
@@ -110,12 +94,12 @@
       content:
         `
         <div class="member">
-          <div class="mug" style="border-radius: 5px; background-image: url('/assets/images/team/${author.dataset.memberId}.jpg')"></div>
+          <div class="mug" style="border-radius: 5px; background-image: url('${member.imageUrl}')"></div>
           <div class="member-info">
-            <h3 class="member-name">${author.dataset.memberName}</h3>
-            <h4 class="member-role">${author.dataset.memberRole}</h4>
+            <h3 class="member-name">${member.name}</h3>
+            <h4 class="member-role">${member.role}</h4>
             <div class="member-resources">
-              <a class="" href="${author.dataset.memberMail}"><i class="bi bi-envelope"></i></a>
+              ${resources.join('\n')}
             </div>
           </div>
         </div>

@@ -122,27 +122,7 @@ permalink: /team
   </script>
 </head>
 
-<script>
-  let members = {
-    {% for member in site.data.team %}
-      '{{member.id}}': {
-        name: '{{member.name}}',
-        description: '{{member.description}}',
-        role: '{{member.role}}',
-        imageUrl: '{{member.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}',
-        resources: [
-        {% for _resource in member.resources %}
-          {% assign resource = _resource | first %}
-          {% assign resource_name = resource[0] %}
-          {% assign resource_url = resource[1] %}
-          {% assign type = site.data.resource_types | where: "name", resource_name | first %}
-          {name: '{{resource_name}}', icon: '{{type.icon}}', url: '{{resource_url}}'},
-        {% endfor %}
-        ],
-      },
-    {% endfor %}
-  };
-</script>
+{% include scripts/team_members.html %}
 
 # About us
 We are a research initiative working to support AI governance and improve forecasts around the development of advanced AI systems. Our mission is to narrow the gap between technical AI developments and AI governance, and inform key decision makers in AI safety.
@@ -244,7 +224,7 @@ We are a research initiative working to support AI governance and improve foreca
 
       member.addEventListener('click', (e) => {
         if (e.target != resources && !resources.contains(e.target)) {
-          showModal(member, members[member.id]);
+          showModal(member, teamMembers[member.id]);
         }
       });
     }

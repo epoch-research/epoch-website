@@ -1,0 +1,22 @@
+<script>
+  let teamMembers = {
+    {% for member in site.data.team %}
+      '{{member.id}}': {
+        id: '{{member.id}}',
+        name: '{{member.name}}',
+        description: '{{member.description}}',
+        role: '{{member.role}}',
+        imageUrl: '{{member.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}',
+        resources: [
+        {% for _resource in member.resources %}
+          {% assign resource = _resource | first %}
+          {% assign resource_name = resource[0] %}
+          {% assign resource_url = resource[1] %}
+          {% assign type = site.data.resource_types | where: "name", resource_name | first %}
+          {name: '{{resource_name}}', icon: '{{type.icon}}', url: '{{resource_url}}'},
+        {% endfor %}
+        ],
+      },
+    {% endfor %}
+  };
+</script>
