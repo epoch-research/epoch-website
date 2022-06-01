@@ -589,7 +589,7 @@
 
       let openOptions = mlp.html('<div class="openOptions over-button">☰</div>');
       openOptions.addEventListener("click", function() {
-        resizeOptions(300);
+        resizeOptions(330);
       });
       this.nodes.graph.appendChild(openOptions);
 
