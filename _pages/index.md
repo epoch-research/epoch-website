@@ -9,5 +9,5 @@ image_size: cover
 image_position_x: center
 image_position_y: center
 
-image: https://live.staticflickr.com/8511/29111597174_32f4b8f352_6k.jpg
+image: /assets/images/geforce_gtx_970.jpg
 ---

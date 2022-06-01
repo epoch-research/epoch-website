@@ -50,6 +50,7 @@ exclude:
   - firebase-dev.json
   - firebase.json
   - README.md
+  - assets/images/README.md
   - coming_soon
 
 bootstrap:
