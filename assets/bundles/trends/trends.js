@@ -740,19 +740,3 @@ function julianDateToDate(julianDate) {
 
   return date;
 }
-
-///////////////////////////////////////////////////////////////////////////////
-// Testing
-//////////////////////////////////////////////////////////////////////////////
-
-/*
-preprocessDatabase(database);
-
-let t0 = Date.now();
-
-let iterationCount = 1;
-let rows = generateGraph(database, params);
-
-let t1 = Date.now();
-//print((t1 - t0)/iterationCount);
-*/

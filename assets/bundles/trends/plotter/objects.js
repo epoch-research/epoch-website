@@ -145,11 +145,17 @@
 
     visible: true,
 
+    group: null,
+
+    cursor: 'auto',
+
     initialize: function(options) {
       this.interactive = ('interactive' in options) ? options.interactive : true;
       this.visible = ('visible' in options) ? options.visible : true;
       this.area = options.area;
       this.plotter = options.plotter;
+      this.group = options.group;
+      this.cursor = options.cursor || 'auto';
     },
 
     canvasDistanceToPoint: function(canvasPoint) {

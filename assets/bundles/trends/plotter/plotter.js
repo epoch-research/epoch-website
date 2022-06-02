@@ -148,6 +148,9 @@
     canvas: undefined,
 
     objectTooltip: undefined,
+    objectTooltipped: undefined,
+    objectTooltipCursor: 'auto',
+    tooltipPinned: false,
     objectTooltipBuilder: function(tooltipNode, pointer) {},
 
     mainArea:  undefined,
@@ -329,18 +332,93 @@
         let cameraBounds = rect({x0: minX - 2, y0: minY/1.2, x1: maxX + 2, y1: maxY*1.2});
       });
 
+      let rebuildTooltip = (hoveredObject, args) => {
+        // Gee
+        let objectTooltippedGroup = this.objectTooltipped ? (this.objectTooltipped.group ? this.objectTooltipped.group : this.objectTooltipped) : null;
+        let hoveredObjectGroup = hoveredObject.group ? hoveredObject.group : hoveredObject;
+
+        let tooltip;
+
+        if (hoveredObjectGroup != objectTooltippedGroup) {
+          this.tooltipPinned = false;
+
+          tooltip = this.objectTooltipBuilder(hoveredObject, args.p);
+          this.objectTooltip.innerHTML = '';
+        }
+
+        if (!tooltip) {
+          return null;
+        }
+
+        this.objectTooltip.appendChild(tooltip.dom);
+        this.objectTooltipped = hoveredObject;
+
+        if (!this.tooltipPinned) {
+          let offsetX = 10;
+          let offsetY = 10;
+
+          this.objectTooltip.style.visibility = 'visible';
+
+          this.objectTooltip.style.left = 0;
+          this.objectTooltip.style.top = 0;
+
+          let rect = this.objectTooltip.getBoundingClientRect();
+          let w = rect.width;
+          let h = rect.height;
+
+          let margin = 20;
+
+          let x = args.e.clientX + offsetX;
+          let y = args.e.clientY + offsetY;
+
+          if (x + w + margin >= window.innerWidth) {
+            x = args.e.clientX - offsetX - w;
+          }
+
+          if (y + h + margin >= window.innerHeight) {
+            y = args.e.clientY - offsetY - h;
+          }
+
+          if (x < 0) x = 0;
+          if (y < 0) y = 0;
+
+          this.objectTooltip.style.left = x + 'px';
+          this.objectTooltip.style.top = y + 'px';
+        }
+
+        return tooltip;
+      };
+
       this.canvas.on('click', args => {
         let hoveredObject = this.getObjectUnderPoint(args.p);
-        this.fire('click', {...args, object: hoveredObject});
+
+        // If clicked outside
+        if (!(this.objectTooltip && (this.objectTooltip == args.e.target || this.objectTooltip.contains(args.e.target)))) {
+          this.tooltipPinned = false;
+          this.objectTooltipped = null;
+          this.objectTooltip.style.visibility = 'hidden';
+
+          if (hoveredObject) {
+            let tooltip = rebuildTooltip(hoveredObject, args);
+            this.tooltipPinned = tooltip ? true : false;
+            this.objectTooltip.style.visibility = tooltip ? 'visible' : 'hidden';
+          }
+
+          this.fire('click', {...args, object: hoveredObject});
+        }
       });
 
       this.canvas.on('hoverStop', args => {
-        this.objectTooltip.style.visibility = 'hidden';
+        if (!this.tooltipPinned) {
+          this.objectTooltip.style.visibility = 'hidden';
+        }
+        this.canvas.node.style.cursor = 'auto';
       });
 
       this.canvas.on('hover', args => {
         if (args.state != mlp.STATE_IDLE) {
           this.objectTooltip.style.visibility = 'hidden';
+          this.canvas.node.style.cursor = 'auto';
           return;
         }
 
@@ -356,54 +434,25 @@
           hoveredObjectChanged = true;
         }
 
-        if (!hoveredObject) {
+        if (!hoveredObject && !this.tooltipPinned) {
           this.objectTooltip.style.visibility = 'hidden';
         }
+
+        this.canvas.node.style.cursor = hoveredObject ? hoveredObject.cursor : 'auto';
 
         this.fire('hover', subArgs);
         args.stopPropagation = subArgs.stopPropagation;
 
-        if (!args.stopPropagation) {
-          if (args.area != this.mainArea) return;
+        if (!this.tooltipPinned) {
+          if (!args.stopPropagation) {
+            if (args.area != this.mainArea) return;
 
-          if (hoveredObject) {
-            if (hoveredObjectChanged) {
-              this.objectTooltip.innerHTML = this.objectTooltipBuilder(hoveredObject, args.p);
+            if (hoveredObject) {
+              rebuildTooltip(hoveredObject, args);
             }
 
-            let offsetX = 10;
-            let offsetY = 10;
-
-            this.objectTooltip.style.visibility = 'visible';
-
-            this.objectTooltip.style.left = 0;
-            this.objectTooltip.style.top = 0;
-
-            let rect = this.objectTooltip.getBoundingClientRect();
-            let w = rect.width;
-            let h = rect.height;
-
-            let margin = 20;
-
-            let x = args.e.clientX + offsetX;
-            let y = args.e.clientY + offsetY;
-
-            if (x + w + margin >= window.innerWidth) {
-              x = args.e.clientX - offsetX - w;
-            }
-
-            if (y + h + margin >= window.innerHeight) {
-              y = args.e.clientY - offsetY - h;
-            }
-
-            if (x < 0) x = 0;
-            if (y < 0) y = 0;
-
-            this.objectTooltip.style.left = x + 'px';
-            this.objectTooltip.style.top = y + 'px';
+            this.objectTooltip.style.visibility = ((hoveredObject && this.objectTooltip.innerHTML) || this.tooltipPinned) ? 'visible' : 'hidden';
           }
-
-          this.objectTooltip.style.visibility = (hoveredObject && this.objectTooltip.innerHTML) ? 'visible' : 'hidden';
         }
       });
 
@@ -624,7 +673,7 @@
       for (let control of this.controls) {
         this.options[control.param] = control.getValue();
       }
-      this.fire('optionsChanged', {options: this.options, objectsUpdated: controlUpdated});
+      this.fire('optionsChanged', {options: this.options, objectsUpdated: [controlUpdated]});
     },
 
     addMultiDateSlider: function(optionNames, handles, edges, range) {
@@ -792,10 +841,10 @@
     buildTooltipTable: function(definition) {
       let html = '<table class="mlp-tooltip-table">';
       for (let row of definition) {
-        html += '<tr><td class="key">' + row.label + '</td><td class="value">' + row.value + '</td></tr>';
+        html += '<tr><td class="key">' + row.label + '</td><td class="value">' + (Number.isNaN(row.value) ? '--' : row.value) + '</td></tr>';
       }
       html += '</table>';
-      return html;
+      return mlp.html(html);
     },
 
     setCamera: function(bounds) {

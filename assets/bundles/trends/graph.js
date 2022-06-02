@@ -76,6 +76,11 @@ function buildTrendsGraph(container, database, args) {
   // Utilities
   /////////////////////////////////////////////////////
 
+  function toExponential(x) {
+    if (Number.isNaN(+x)) return '--';
+    return (+x).toExponential();
+  }
+
   function serializeDate(date) {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
@@ -186,64 +191,110 @@ function buildTrendsGraph(container, database, args) {
     if (object instanceof mlp.Point) {
       let system = objectToSystem.get(object);
       if (system) {
-        tooltip = plotter.buildTooltipTable([
+        tooltip = {};
+        tooltip.dom = plotter.buildTooltipTable([
             {label: "System",                    value: system["System"]},
             {label: "Organization(s)",           value: system["Organization(s)"]},
             {label: "Author(s)",                 value: system["Author(s)"]},
             {label: "Reference",                 value: system["Reference"]},
             {label: "Publication date",          value: system["Publication date"].toLocaleString('en-us',{month:'short', day: 'numeric', year:'numeric'})},
-            {label: "Parameters",                value: system["Parameters"].toExponential()},
-            {label: "Training compute (FLOPs)",  value: system["Training compute (FLOPs)"].toExponential()},
-            {label: "Inference compute (FLOPs)", value: ("Inference compute (FLOPs)" in system) ? system["Inference compute (FLOPs)"].toExponential() : "--"},
+            {label: "Parameters",                value: toExponential(system["Parameters"])},
+            {label: "Training compute (FLOPs)",  value: toExponential(system["Training compute (FLOPs)"])},
+            {label: "Inference compute (FLOPs)", value: toExponential(system["Inference compute (FLOPs)"])},
             {label: "Domain",                    value: system["_Domain"]},
         ]);
       }
     } else if (object instanceof mlp.Polyline || slopeTextToInfo.has(object)) {
-      let slopeInfo;
+      let dom = mlp.html('<div><div>');
+
+      let domain;
+      let p = plotter.mainArea.canvasToPaper(pointer);
+      let era;
       if (slopeTextToInfo.has(object)) {
-        slopeInfo = slopeTextToInfo.get(object);
+        let slopeInfo = slopeTextToInfo.get(object);
+        if (slopeInfo) domain = slopeInfo.domain;
+        if (slopeInfo) era = slopeInfo.era;
       } else {
-        let domain = slopeObjectToDomain.get(object);
-        slopeInfo = getSlopeInfoAtPoint(domain, plotter.mainArea.canvasToPaper(pointer), params.xAxis);
+        domain = slopeObjectToDomain.get(object);
       }
 
-      if (slopeInfo) {
-        let tableRows = [];
-        tableRows.push({label: "Slope",               value: slopeInfo.Slope});
-        if (params.xAxis == 'Publication date') {
+      function renderTooltip(dom, domain, era, p) {
+        dom.innerHTML = '';
+
+        let slopeInfo = getSlopeInfo(domain, era, params.xAxis);
+        if (!slopeInfo) {
+          slopeInfo = getClosestSlopeInfo(domain, p, params.xAxis);
+        }
+
+        if (slopeInfo) {
+          let tableRows = [];
+          tableRows.push({label: "Slope",               value: slopeInfo.Slope});
+          if (params.xAxis == 'Publication date') {
           tableRows.push({label: "Doubling time",       value: slopeInfo['Doubling time']});
           tableRows.push({label: "Era",                 value: slopeInfo.era});
-        }
-        tableRows.push({label: "Domain",              value: slopeInfo.domain});
-        tableRows.push({label: "Number of systems",   value: slopeInfo.n});
-        tableRows.push({label: "Scale (start / end)", value: slopeInfo['Scale (start / end)']});
-        tableRows.push({label: "R2",                  value: slopeInfo["R2"]});
+          }
+          tableRows.push({label: "Domain",              value: slopeInfo.domain});
+          tableRows.push({label: "Number of systems",   value: slopeInfo.n});
+          tableRows.push({label: "Scale (start / end)", value: slopeInfo['Scale (start / end)']});
+          tableRows.push({label: "R2",                  value: slopeInfo["R2"]});
 
-        tooltip = plotter.buildTooltipTable(tableRows);
+          dom.appendChild(plotter.buildTooltipTable(tableRows));
+
+          let checkboxWrapper = mlp.html('<label>Split regression by era</label>');
+          let checkbox = mlp.html(`<input type="checkbox" ${params.domainsToNotSplit.includes(slopeInfo.domain) ? '' : 'checked'}></input>`);
+          checkboxWrapper.prepend(checkbox);
+          checkbox.addEventListener('input', () => {
+            let domainsToNotSplit = [...params.domainsToNotSplit];
+            if (checkbox.checked) {
+              mlp.removeFromArray(domainsToNotSplit, slopeInfo.domain);
+            } else {
+              mlp.addToArray(domainsToNotSplit, slopeInfo.domain);
+            }
+            v.setOptions({domainsToNotSplit: domainsToNotSplit});
+            renderTooltip(dom, domain, era, p);
+          });
+
+          dom.prepend(checkboxWrapper);
+
+          return true;
+        }
+
+        return false;
+      }
+
+      if (renderTooltip(dom, domain, era, p)) {
+        tooltip = {
+          dom: dom,
+          pinnable: true,
+        }
       }
     }
 
     return tooltip;
   });
 
-  function getSlopeInfoAtPoint(domain, p, xAxis) {
-    let eraUnderPointer;
+  function getEraNameAtPoint(p, xAxis) {
+    let eraAtPoint;
 
     if (xAxis == 'Publication date') {
       let d = mlp.julianDateToDate(p.x);
       for (let era of result.eras) {
         if (era.Era == 'All') continue;
         if (era.start <= d && d < era.stop) {
-          eraUnderPointer = era;
+          eraAtPoint = era.Era;
           break;
         }
       }
     }
 
+    return eraAtPoint;
+  }
+
+  function getSlopeInfo(domain, era, xAxis) {
     let slopeInfo = null;
     for (let row of result.regressionInfoTable) {
       if (row.domain == domain) {
-        if (xAxis != 'Publication date' || row.era == 'All' || row.era == eraUnderPointer.Era) {
+        if (xAxis != 'Publication date' || row.era == 'All' || row.era == era) {
           slopeInfo = row;
           break;
         }
@@ -253,9 +304,46 @@ function buildTrendsGraph(container, database, args) {
     return slopeInfo;
   }
 
+  function getClosestSlopeInfo(domain, p, xAxis) {
+    // TODO This should change
+    let eraNameToEra = {};
+
+    for (let era of result.eras) {
+      eraNameToEra[era.Era] = era;
+    }
+
+    let minDistance = Infinity;
+    let closestSlopeInfo;
+
+    for (let row of result.regressionInfoTable) {
+      if (row.domain == domain) {
+        if (xAxis != 'Publication date') {
+          closestSlopeInfo = row;
+          break;
+        }
+
+        let d = mlp.julianDateToDate(p.x);
+        let era = eraNameToEra[row.era];
+
+        if (era.start <= d && d < era.stop) {
+          closestSlopeInfo = row;
+          break;
+        }
+
+        let distance = Math.min(Math.abs(d - era.start), Math.abs(d - era.stop));
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestSlopeInfo = row;
+        }
+      }
+    }
+
+    return closestSlopeInfo;
+  }
+
+  /*
   plotter.on('hover', args => {
     if (args.mouseLeaveObject) {
-      plotter.canvas.node.style.cursor = 'auto';
       if (args.mouseLeaveObject instanceof mlp.Point) {
         args.mouseLeaveObject.fill = '';
         plotter.requestRenderAll();
@@ -263,11 +351,13 @@ function buildTrendsGraph(container, database, args) {
     }
 
     if (args.mouseEnterObject) {
-      if (args.mouseEnterObject == plotter.xAxisLabel || args.mouseEnterObject == plotter.yAxisLabel) {
-        plotter.canvas.node.style.cursor = 'pointer';
+      if (args.mouseEnterObject instanceof mlp.Point) {
+        args.mouseEnterObject.fill = 'red';
+        plotter.requestRenderAll();
       }
     }
   });
+  */
 
   //
   // Export buttons
@@ -433,12 +523,8 @@ function buildTrendsGraph(container, database, args) {
 
   v.addControl(mlp.newTextControl("Filter by text", "filterText"));
 
-  // Temporary regression options
-  let checkSetParams = [];
-  for (let domain in domainStyles) {
-    checkSetParams.push({label: domain, key: domain});
-  }
-  v.addControl(mlp.newCheckSetControl('Split regressions by era', 'domainsToNotSplit', checkSetParams, true));
+  // Make the system aware of the domainsToNotSplit option
+  v.setOptions({domainsToNotSplit: []});
 
   if (presets.length > 0 ) {
     v.setOptions(presets[0].params);
@@ -647,8 +733,24 @@ function buildTrendsGraph(container, database, args) {
   v.canvas.on('resize', updateLegendVisibility);
   updateLegendVisibility();
 
+  v.xAxisLabel.cursor = 'pointer';
+  v.yAxisLabel.cursor = 'pointer';
+
   function onChange(args) {
     let axesUpdated = (prevParams.xAxis != args.options.xAxis) || (prevParams.yAxis != args.options.yAxis);
+    let resetCamera = false;
+
+    // If some option other than domainsToNotSplit has changed, reset the camera
+    if (args.objectsUpdated) {
+      for (let option of args.objectsUpdated) {
+        if (option != 'domainsToNotSplit') {
+          resetCamera = true;
+          break;
+        }
+      }
+    } else {
+      resetCamera = true;
+    }
 
     prevParams = {...params};
     params = {...params, ...args.options};
@@ -802,8 +904,12 @@ function buildTrendsGraph(container, database, args) {
 
         let points = domainToPoints[domain];
 
+        let objectGroup = 'regression-' + domain;
+
         let poly = v.addPolyline(points, {
           stroke: color,
+          group: objectGroup,
+          cursor: 'pointer',
         });
 
         // TODO Make this better, less hacky!
@@ -822,7 +928,7 @@ function buildTrendsGraph(container, database, args) {
           let cx = 0.5 * (px + qx);
           let cy = 0.5 * (py + qy);
 
-          let slopeInfo = getSlopeInfoAtPoint(domain, {x: cx, y: cy}, params.xAxis);
+          let slopeInfo = getSlopeInfo(domain, getEraNameAtPoint({x: cx, y: cy}, params.xAxis), params.xAxis);
           if (!slopeInfo) continue;
 
           cx = plotter.xAxis.paperToData(cx);
@@ -832,6 +938,8 @@ function buildTrendsGraph(container, database, args) {
             position: {x: cx, y: cy},
             normalizedBasePoint: {x: 0.5, y: 0},
             fill: color,
+            group: objectGroup,
+            cursor: 'pointer',
           });
 
           slopeTextToInfo.set(text, slopeInfo);
@@ -892,7 +1000,7 @@ function buildTrendsGraph(container, database, args) {
     // Camera stuff
     //
 
-    if (true || axesUpdated) {
+    if (resetCamera) {
       let minX = Infinity;
       let maxX = -Infinity;
       let minY = Infinity;

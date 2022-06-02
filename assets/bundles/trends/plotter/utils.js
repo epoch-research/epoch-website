@@ -514,5 +514,18 @@
     step();
   }
 
+  mlp.removeFromArray = function(array, value) {
+    var idx = array.indexOf(value);
+    if (idx !== -1) {
+      array.splice(idx, 1);
+    }
+    return array;
+  }
+
+  mlp.addToArray = function(array, value) {
+    if (value && !array.includes(value)) array.push(value);
+    return array;
+  }
+
   mlp.createEnum = (definition) => Object.freeze(definition);
 })();

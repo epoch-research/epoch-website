@@ -222,7 +222,7 @@
       let currentPoint = {x: e.clientX - rect.left, y: e.clientY - rect.top};
 
       if (prevActivePointerCount != activePointerCount) {
-        if (prevActivePointerCount == 1) this.stopOnePointerAction(activeEvents[0], currentPoint);
+        if (prevActivePointerCount == 1) this.stopOnePointerAction(e, currentPoint);
         if (prevActivePointerCount == 2) this.stopTwoPointerAction([activeEvents[0], e], [activePoints[0], currentPoint]);
 
         if (activePointerCount == 1) this.startOnePointerAction(activeEvents[0], activePoints[0]);
