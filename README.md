@@ -1,3 +1,3 @@
 # Epoch
 
-This is the source for the website of the Epoch group.
+This is the (right now, messy) source for the website of the Epoch group.
