@@ -147,6 +147,7 @@
   mlp.Plotter = mlp.createClass(mlp.Observable, {
     canvas: undefined,
 
+    tooltip: undefined,
     objectTooltip: undefined,
     objectTooltipped: undefined,
     objectTooltipCursor: 'auto',
@@ -334,23 +335,22 @@
 
       let rebuildTooltip = (hoveredObject, args) => {
         // Gee
+
         let objectTooltippedGroup = this.objectTooltipped ? (this.objectTooltipped.group ? this.objectTooltipped.group : this.objectTooltipped) : null;
         let hoveredObjectGroup = hoveredObject.group ? hoveredObject.group : hoveredObject;
-
-        let tooltip;
 
         if (hoveredObjectGroup != objectTooltippedGroup) {
           this.tooltipPinned = false;
 
-          tooltip = this.objectTooltipBuilder(hoveredObject, args.p);
+          this.tooltip = this.objectTooltipBuilder(hoveredObject, args.p);
           this.objectTooltip.innerHTML = '';
         }
 
-        if (!tooltip) {
+        if (!this.tooltip) {
           return null;
         }
 
-        this.objectTooltip.appendChild(tooltip.dom);
+        this.objectTooltip.appendChild(this.tooltip.dom);
         this.objectTooltipped = hoveredObject;
 
         if (!this.tooltipPinned) {
@@ -386,7 +386,7 @@
           this.objectTooltip.style.top = y + 'px';
         }
 
-        return tooltip;
+        return this.tooltip;
       };
 
       this.canvas.on('click', args => {
