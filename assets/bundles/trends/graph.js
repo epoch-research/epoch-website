@@ -113,7 +113,11 @@ function buildTrendsGraph(container, database, args) {
         } else if (options[key] instanceof Date) {
           value = deserializeDate(value);
         } else if (Array.isArray(options[key])) {
-          value = value.split(',');
+          let values = [];
+          for (let field of value.split(',')) {
+            values.push(parseFloat(field));
+          }
+          value = values;
         } else {
           value = (options[key].constructor)(value);
         }
@@ -133,7 +137,7 @@ function buildTrendsGraph(container, database, args) {
       urlFields.push(option + "=" + value);
     }
 
-    // TODO There is a bug in Chrome that causes the cursor to blink when moving the multislider handles if you call replaceState?
+    // TODO There is a bug in Chrome that causes the cursor to blink when moving the multislider handles if you call replaceState.
     // It's pretty annoying. Is there a workaround?
     let urlSearchParams = urlFields.join("&");
     window.history.replaceState('page', 'Title', "?" + urlSearchParams);
@@ -446,7 +450,7 @@ function buildTrendsGraph(container, database, args) {
   //
 
   let presetSelector = new mlp.SelectControl({
-    label: "preset",
+    label: "Preset",
     param: "preset",
   });
 
@@ -518,8 +522,20 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newSelectControl("Big AlphaGo",    "bigAlphagoAction",    "ignore", ["ignore", "label", "remove"]));
   v.addControl(mlp.newSelectControl("Record setters", "recordSettersAction", "ignore", ["ignore", "label", "isolate"]));
 
+  // Bootstrapping
+
   v.addControl(mlp.newNumberControl("Bootstrap sample size", "bootstrapSampleSize", 10));
   v.addControl(mlp.newCheckControl("Adjust for estimate uncertainty", "adjustForEstimateUncertainty", true));
+
+  // Ranges filter
+
+  v.addControl(mlp.newNumberRangeControl("Parameters range",                        "parametersRange"));
+  v.addControl(mlp.newNumberRangeControl("Training compute range",                  "trainingComputeRange"));
+  v.addControl(mlp.newNumberRangeControl("Inference compute range",                 "inferenceComputeRange"));
+  v.addControl(mlp.newNumberRangeControl("Inference compute per parameter range",   "inferenceComputePerParameterRange"));
+  v.addControl(mlp.newNumberRangeControl("Inference compute times parameter range", "inferenceComputeTimesParameterRange"));
+
+  // Misc filters
 
   v.addControl(mlp.newTextControl("Filter by text", "filterText"));
 
@@ -770,6 +786,23 @@ function buildTrendsGraph(container, database, args) {
         button.classList.remove("selected");
       }
     }
+
+    // Sigh
+
+    params.ranges['Parameters'][0] = args.options.parametersRange[0];
+    params.ranges['Parameters'][1] = args.options.parametersRange[1];
+
+    params.ranges['Training compute (FLOPs)'][0] = args.options.trainingComputeRange[0];
+    params.ranges['Training compute (FLOPs)'][1] = args.options.trainingComputeRange[1];
+
+    params.ranges['Inference compute (FLOPs)'][0] = args.options.inferenceComputeRange[0];
+    params.ranges['Inference compute (FLOPs)'][1] = args.options.inferenceComputeRange[1];
+
+    params.ranges['Inference compute per parameter (FLOPs)'][0] = args.options.inferenceComputePerParameterRange[0];
+    params.ranges['Inference compute per parameter (FLOPs)'][1] = args.options.inferenceComputePerParameterRange[1];
+
+    params.ranges['Inference compute times parameters'][0] = args.options.inferenceComputeTimesParameterRange[0];
+    params.ranges['Inference compute times parameters'][1] = args.options.inferenceComputeTimesParameterRange[1];
 
     if (linkParamsToUrl) setUrlParams(params);
 
@@ -1024,10 +1057,12 @@ function buildTrendsGraph(container, database, args) {
       }
 
       // TODO TMP Is this OK?
+      /*
       if (params.xAxis == "Publication date") {
         minX = params.startDate;
         maxX = params.endDate;
       }
+      */
 
       if (minX instanceof Date) {
         let minTime = minX.getTime();

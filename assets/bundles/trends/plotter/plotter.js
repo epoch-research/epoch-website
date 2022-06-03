@@ -636,29 +636,39 @@
       // Options buttons
       //
 
-      let openOptions = mlp.html('<div class="openOptions over-button">☰</div>');
-      openOptions.addEventListener("click", function() {
-        resizeOptions(340);
-      });
-      this.nodes.graph.appendChild(openOptions);
+      function openOptions(instantenous) {
+        resizeOptions(340, instantenous);
+      }
 
-      let closeOptions = mlp.html('<button class="closeOptions">&times;</button>');
-      closeOptions.addEventListener("click", function() {
-        resizeOptions(0);
-      });
-      this.nodes.options.querySelector(".optionsHeader").appendChild(closeOptions);
+      function closeOptions(instantenous) {
+        resizeOptions(0, instantenous);
+      }
 
-      function resizeOptions(targetWidth) {
+      let openOptionsButton = mlp.html('<div class="openOptions over-button">☰</div>');
+      openOptionsButton.addEventListener("click", openOptions);
+      this.nodes.graph.appendChild(openOptionsButton);
+
+      let closeOptionsButton = mlp.html('<button class="closeOptions">&times;</button>');
+      closeOptionsButton.addEventListener("click", closeOptions);
+      this.nodes.options.querySelector(".optionsHeader").appendChild(closeOptionsButton);
+
+      function resizeOptions(targetWidth, instantenous) {
         let optionsNode = self.nodes.options;
         optionsNode.style.height = container.offsetHeight + 'px';
-        closeOptions.style.right = 0;
+        closeOptionsButton.style.right = 0;
 
         let computedStyle = getComputedStyle(optionsNode);
 
-        mlp.lerp(0.1, parseFloat(computedStyle.width), targetWidth, (w) => {
-          optionsNode.style.width = w + 'px';
-        });
+        if (instantenous) {
+          optionsNode.style.width = targetWidth + 'px';
+        } else {
+          mlp.lerp(0.1, parseFloat(computedStyle.width), targetWidth, (w) => {
+            optionsNode.style.width = w + 'px';
+          });
+        }
       }
+
+      openOptions(true);
     },
 
     addControl: function(control) {

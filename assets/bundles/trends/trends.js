@@ -41,6 +41,14 @@ let params = {
 
   domainsToNotSplit: ['Vision'],
 
+  ranges: {
+    'Parameters':                              [-Infinity, +Infinity],
+    'Training compute (FLOPs)':                [-Infinity, +Infinity],
+    'Inference compute (FLOPs)':               [-Infinity, +Infinity],
+    'Inference compute per parameter (FLOPs)': [-Infinity, +Infinity],
+    'Inference compute times parameters':      [-Infinity, +Infinity],
+  },
+
   splitDlEra: true,
   splitLargeScaleEra: true,
 
@@ -141,6 +149,26 @@ function generateGraph(database, params) {
 
     // By zeroes/NaNs
     if (isNaN(row[params.xAxis]) || isNaN(row[params.yAxis]) || row[params.yAxis] == 0 || (params.xAxis != "Publication date" && row[params.xAxis] == 0)) {
+      continue;
+    }
+
+    // By ranges
+    let passesRangeFilter = true;
+    for (let param in params.ranges) {
+      let range = params.ranges[param];
+
+      if (Number.isFinite(range[0]) && row[param] < range[0]) {
+        passesRangeFilter = false;
+        break;
+      }
+
+      if (Number.isFinite(range[1]) && row[param] >= range[1]) {
+        passesRangeFilter = false;
+        break;
+      }
+    }
+
+    if (!passesRangeFilter) {
       continue;
     }
 

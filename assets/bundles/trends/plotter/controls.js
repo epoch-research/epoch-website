@@ -1,6 +1,10 @@
 (function () {
   'use strict';
 
+  function formatReal(x) {
+    return x.toExponential(1).replace('e+', 'e');
+  }
+
   mlp.Control = mlp.createClass(mlp.Observable, {
     label: null,
     param: null,
@@ -65,7 +69,7 @@
       let inputId = this.param;
 
       let node = mlp.html('<div class="option"><label class="optionLabel" for="' + inputId + '">' + this.label + '</label></div>');
-      let checkboxWrapper = mlp.html('<div class="checkboxWrapper"><input type="checkbox" '+ (this.defaultValue ? "checked" : "") +' class="optionValue" id="' + inputId+ '"></input></div>');
+      let checkboxWrapper = mlp.html('<div class="checkboxWrapper"><label class="checkbox-hit-area"><input type="checkbox" '+ (this.defaultValue ? "checked" : "") +' class="optionValue" id="' + inputId+ '"></input></label></div>');
       let checkbox = checkboxWrapper.querySelector("input");
       node.appendChild(checkboxWrapper);
 
@@ -171,6 +175,81 @@
     },
   });
 
+  mlp.NumberRangeControl = mlp.createClass(mlp.Control, {
+    inputs: null,
+
+    initialize: function(options) {
+      this.callSuper('initialize', options);
+      if (this.defaultValues == null) this.defaultValues = [-Infinity, +Infinity];
+      this.params = options.params;
+
+      this.inputs = [];
+
+      let node = mlp.html('<div class="option"><label class="optionLabel">' + this.label + '</label></div>');
+      let inputWrapper = mlp.html('<div class="range-container"></div>');
+
+      for (let i = 0; i < 2; i++) {
+        let value = (Number.isFinite(this.defaultValues[i]) ? formatReal(this.defaultValues[i]) : '');
+        this.inputs[i] = mlp.html('<input type="number" value="' + value
+          + '" class="optionValue" ' + (this.type == "natural" ? "step=1 min=0" : "") + '"></input>');
+
+        let self = this;
+
+        this.inputs[i].addEventListener("input", () => {
+          self.fire('change');
+        });
+
+        this.inputs[i].addEventListener('keydown', (e) => {
+          if (e.key == 'ArrowUp' || e.key == 'ArrowDown') {
+            if (e.key == 'ArrowUp') this.stepUp(this.inputs[i]);
+            if (e.key == 'ArrowDown') this.stepDown(this.inputs[i]);
+            e.preventDefault();
+          }
+        });
+
+        inputWrapper.appendChild(this.inputs[i]);
+
+        if (i == 0) {
+          inputWrapper.appendChild(mlp.html('<span class="range-separator"> - </span>'));
+        }
+      }
+
+      node.appendChild(inputWrapper);
+
+      this.node = node;
+    },
+
+    stepUp: function(input) {
+      let x = parseFloat(input.value);
+      x *= 10;
+
+      console.log(x, formatReal(x));
+
+      input.value = formatReal(x);
+      input.dispatchEvent(new Event('input'));
+      input.dispatchEvent(new Event('change'));
+    },
+
+    stepDown: function(input) {
+      let x = parseFloat(input.value);
+      x /= 10;
+
+      input.value = formatReal(x);
+      input.dispatchEvent(new Event('input'));
+      input.dispatchEvent(new Event('change'));
+    },
+
+    getValue: function() {
+      return [parseFloat(this.inputs[0].value), parseFloat(this.inputs[1].value)];
+    },
+
+    setValue: function(values) {
+      for (let i = 0; i < 2; i++) {
+        this.inputs[i].value = Number.isFinite(values[i]) ? formatReal(values[i]) : '';
+      }
+    },
+  });
+
   mlp.TextControl = mlp.createClass(mlp.Control, {
     input: null,
 
@@ -214,6 +293,10 @@
 
   mlp.newNumberControl = function(label, param, defaultValue) {
     return new mlp.NumberControl({label, param, defaultValue});
+  }
+
+  mlp.newNumberRangeControl = function(label, param, options) {
+    return new mlp.NumberRangeControl({label, param, ...options});
   }
 
   mlp.newSelectControl = function(label, param, defaultValue, values) {
