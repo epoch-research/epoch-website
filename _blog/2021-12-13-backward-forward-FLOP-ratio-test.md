@@ -24,8 +24,7 @@ authors:
 ---
 
 
-**Summary:**
-------------
+# Summary
 
 1.  *Classic settings*, i.e. deep networks with convolutional layers and large batch sizes, ***almost always have backward-forward FLOP ratios close to 2:1***.
 2.  Depending on the following criteria we can encounter **ratios between 1:1 and 3:1**
@@ -36,8 +35,7 @@ authors:
 
 <table><tbody><tr><td style="border:1pt solid #000000;padding:5pt"><p><strong>Compute-intensity of the weight update</strong></p></td><td style="border:1pt solid #000000;padding:5pt"><p><strong>Most compute-intensive layers</strong></p></td><td style="border:1pt solid #000000;padding:5pt"><p><strong>Backward-forward ratio</strong></p></td></tr><tr><td style="border:1pt solid #000000;padding:5pt" rowspan="2"><p>Large batch size OR compute-intensive convolutional layer</p></td><td style="border:1pt solid #000000;padding:5pt"><p>First layer</p></td><td style="border:1pt solid #000000;padding:5pt"><p>1:1</p></td></tr><tr><td style="border:1pt solid #000000;padding:5pt"><p>Other layers</p></td><td style="border:1pt solid #000000;padding:5pt" rowspan="2"><p>2:1</p></td></tr><tr><td style="border:1pt solid #000000;padding:5pt" rowspan="2"><p>Small batch size AND no compute-intensive convolutional layers</p></td><td style="border:1pt solid #000000;padding:5pt"><p>First layer</p></td></tr><tr><td style="border:1pt solid #000000;padding:5pt"><p>Other layers</p></td><td style="border:1pt solid #000000;padding:5pt"><p>3:1</p></td></tr></tbody></table>
 
-**Introduction:**
------------------
+# Introduction
 
 How many more floating-point operations (FLOP) does it take to compute a backward pass than a forward pass in a neural network? We call this the backward-forward FLOP ratio. 
 
@@ -45,8 +43,7 @@ This ratio is useful to estimate the total amount of training compute from the f
 
 In this post, we first provide a theoretical analysis of the ratio, and we then corroborate our findings empirically.
 
-**Theory:**
------------
+# Theory
 
 To understand where the differences in ratios come from, we need to look at the classical [equations of backpropagation](http://neuralnetworksanddeeplearning.com/chap2.html#:~:text=The%20backpropagation%20equations%20provide%20us,%3D%CF%83(zl).). 
 
@@ -90,8 +87,7 @@ This leads us to four possible cases:
 
 In short, our theoretical analysis predicts that the backward-forward FLOP ratio will be between **1:1 and 3:1**, with **2:1** being the typical case.
 
-**Empirical results:**
-----------------------
+# Empirical results
 
 To corroborate our analysis we use [NVIDIA’s pyprof profiler](https://docs.nvidia.com/deeplearning/frameworks/pyprof-user-guide/profile.html) to audit the amount of FLOP in each layer during the backward and forward pass.
 
@@ -109,7 +105,7 @@ In a [previous post](https://www.lesswrong.com/posts/jJApGWG95495pYM7C/how-to-me
 
 We have tried to correct them as much as possible. In particular, we eliminate some operations which we believe are double-counted, and we add the operations corresponding to multiplication by the learning rate which we believe are not counted in stochastic gradient descent.
 
-### **Backward and forward FLOP in the first and the rest of the layers:**
+## Backward and forward FLOP in the first and the rest of the layers
 
 We can investigate this empirically by looking at a simple linear network (code in appendix).
 
@@ -119,7 +115,7 @@ It results in the following FLOP counts:
 
 We can see that the first layer (red) has the same flop count for forward and backward pass while the other layers (blue, green) have a ratio of 2:1. The final weight update (yellow) is 2x the number of parameters of the network. 
 
-### **Type of layer:**
+## Type of layer
 
 The number of FLOP is different for different types of layers.
 
@@ -133,13 +129,13 @@ To show this empirically, we look at the profiler FLOP counts of a small CNN (co
 
 Similar to the linear network, we can confirm that the backward-forward ratio for the first layer is 1:1 and that of all others 2:1. However, the number of FLOP in layers (red, blue, green) is much larger than for the weight update (yellow).
 
-### **Batch size:**
+## Batch size
 
 Gradients are aggregated before the weight update. Thus, the FLOP for weight updates stays the same for different batch sizes (yellow) while the FLOP for all other operations scales with the batch size (blue, green, red). As a consequence, larger batch sizes make the FLOP from weight updates negligibly small. 
 
 ![](https://lh3.googleusercontent.com/qexSxYBU7611GHCUuC-AvtT0dJW1jJuBrGPNmMhhJGe-Uy21ysXufOQGRCjnJrFzGOsQ5eCiweLpq0s3GC-y6e-947ZmxJEmEmtTXyi0nR0bkXUIEHjVBHg5xii5Z1aFqup6k9PQ)
 
-### **Depth:**
+## Depth
 
 Depth, i.e. the number of layers only has an indirect influence. This stems from the fact that the first layer has a ratio of 1:1 while further layers have a ratio of 2:1. Thus, the true influence comes from FLOP in the first layer vs. every other layer.
 
@@ -155,7 +151,7 @@ Most common deep learning CNN architectures are deep enough that the first layer
 
 *Backward-forward FLOP ratio in different architectures. Read the labels as architecture_batchsize.*
 
-### **Combining all above:**
+## Combining all above
 
 There are interdependencies of batch size, type of layer and depth which we want to explore in the following. We compare the small CNN and the linear network that were already used before with a network we call OneNet (code in appendix). OneNet has only one input neuron and a larger second and third layer. Thus, the ratio between the first and other layers is very small and we can see that the theoretical maximum for the backward-forward ratio of 3:1 can be observed in practice. 
 
@@ -165,8 +161,7 @@ We see that LinearNet converges to a backward-forward ratio of 1:1 for larger ba
 
 ![](https://lh6.googleusercontent.com/Ca92ne5fQoSKPiBJqsiI-7ESLybkkslhTus5vH8b7cuCYin54mmLTbFlbs42e9Y-f_2Y4m5Skk2rDuY_LcNZlFiKfyp4n7n3oZuP-GwgsLXRQQEmI5zT8CwqF3ADepXyr_B-L-lW)
 
-**Conclusion:**
----------------
+# Conclusion
 
 We have reasoned that the backward-forward FLOP ratio in Neural Networks will typically be between 1:1 and 3:1, and most often close to 2:1.
 
@@ -174,14 +169,13 @@ The ratio depends on the batch size, how much computation happens in the first l
 
 We have confirmed this in practice. However, we have used a profiler with some problems, so we cannot completely rule out a mistake.
 
-**Acknowledgments**
--------------------
+# Acknowledgment
 
 The experiments have been conducted by Marius Hobbhahn. The text was written by MH and Jaime Sevilla.
 
 Lennart Heim helped greatly with discussion and support. We also thank Danny Hernandez and Girish Sastry for discussion.
 
-### **Appendix A: Code for all networks**
+# Appendix A: Code for all networks
 
     ### linear network with large first layer and small later layers
     class LinearNet(nn.Module):
@@ -263,7 +257,7 @@ Lennart Heim helped greatly with discussion and support. We also thank Danny Her
             x = self.fc1(x)
             return x
 
-### **Appendix B: Using other optimizers**
+# Appendix B: Using other optimizers
 
 Through this post we have assumed stochastic gradient descent (SGD) for the weight update. SGD involves multiplying the gradient by a learning rate and adding the result to the current weights. That is, it requires 2 FLOP per parameter.
 

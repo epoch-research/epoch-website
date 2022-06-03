@@ -43,7 +43,7 @@ permalink: /team
       cursor: pointer;
     }
 
-		.member:not(.mouse-over-resources):hover, .member.selected {
+		.member:hover, .member.selected {
       box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
     }
 
