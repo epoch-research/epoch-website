@@ -668,7 +668,7 @@
         }
       }
 
-      openOptions(true);
+      //openOptions(true);
     },
 
     addControl: function(control) {
