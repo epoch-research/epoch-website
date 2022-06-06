@@ -39,6 +39,32 @@ permalink: /team
       display: block;
     }
 
+    #jaime-sevilla .mug {
+      background-size: 135%, 100%;
+      background-position: -40px -3px, 0px 0px;
+    }
+
+    #tamay-besiroglu .mug {
+      background-size: 148%, 100%;
+      background-position: -48px -8px, 0 0;
+    }
+
+    #pablo-villalobos .mug {
+      background-size: 163%, 100%;
+      background-position: -82px -51px, 0 0;
+    }
+
+    #anson-ho .mug {
+      background-size: 141%, 100%;
+      background-position: -56px -56px, 0 0;
+    }
+
+    #eduardo-infante-roldan .mug {
+      background-size: 140%, 100%;
+      background-position: -44px -23px, 0 0;
+    }
+
+
 		.member:not(.mouse-over-resources):hover {
       cursor: pointer;
     }
@@ -186,6 +212,8 @@ We are a research initiative working to support AI governance and improve foreca
       awaitCloseAnimation: true,
     });
 
+    let backgroundImage = null;
+
     function showModal(memberDom, member) {
       let modal = document.querySelector('#member-modal');
 
@@ -194,6 +222,10 @@ We are a research initiative working to support AI governance and improve foreca
       modal.querySelector('.description').innerHTML = member.description;
       modal.querySelector('.mug').src = member.imageUrl;
       modal.querySelector('.modal-container').scrollTop = 0;
+
+      if (backgroundImage) {
+        modal.querySelector('.mug').style.backgroundImage = `url(${backgroundImage})`;
+      }
 
       modal.querySelector('.modal-footer').innerHTML = '';
       for (let resource of member.resources) {
@@ -227,6 +259,68 @@ We are a research initiative working to support AI governance and improve foreca
         }
       });
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - -
+    // Start secret code. LOOK NO FURTHER.
+
+    let secretPassword = [
+      'tamay-besiroglu',
+      'eduardo-infante-roldan',
+      'anson-ho',
+      'marius-hobbhahn',
+
+      'tamay-besiroglu',
+      'anson-ho',
+      'lennart-heim',
+      'anson-ho',
+      'marius-hobbhahn',
+      'anson-ho',
+      'jaime-sevilla',
+
+      'pablo-villalobos',
+    ];
+
+    let introducedPassword = [];
+
+    function enterMember(member) {
+      if (introducedPassword.length >= secretPassword.length) return;
+
+      introducedPassword.push(member.id);
+      if (introducedPassword.length == secretPassword.length) {
+        let correctPassword = true;
+        console.log(introducedPassword);
+        for (let i = 0; i < secretPassword.length; ++i) {
+          if (introducedPassword[i] !== secretPassword[i]) {
+            correctPassword = false;
+            break;
+          }
+        }
+
+        if (correctPassword) {
+          backgroundImage = '/assets/images/team/transparent/bahamas.png';
+
+          // The password is correct. Activate Team Bahamas
+          for (let dom of document.querySelectorAll('.member')) {
+            let m = teamMembers[dom.id];
+            m.imageUrl = `/assets/images/team/transparent/${m.id}.png`;
+            dom.querySelector('.mug').style.backgroundImage = `url(${m.imageUrl}), url(${backgroundImage})`;
+          }
+        }
+      }
+    }
+
+    let inTouchDevice = matchMedia('(hover: none)').matches;
+
+    for (let member of document.querySelectorAll('.member')) {
+      if (inTouchDevice) {
+        member.addEventListener('click', (e) => enterMember(teamMembers[member.id]));
+      } else {
+        member.addEventListener('mouseenter', (e) => enterMember(teamMembers[member.id]));
+      }
+    }
+
+    // End of secret code.
+    // - - - - - - - - - - - - - - - - - - - - - - -
   });
 </script>
 
