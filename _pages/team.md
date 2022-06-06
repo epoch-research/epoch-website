@@ -288,7 +288,6 @@ We are a research initiative working to support AI governance and improve foreca
       introducedPassword.push(member.id);
       if (introducedPassword.length == secretPassword.length) {
         let correctPassword = true;
-        console.log(introducedPassword);
         for (let i = 0; i < secretPassword.length; ++i) {
           if (introducedPassword[i] !== secretPassword[i]) {
             correctPassword = false;
