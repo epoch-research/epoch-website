@@ -202,7 +202,6 @@ We are a research initiative working to support AI governance and improve foreca
       }
 
       MicroModal.show('member-modal', {
-
         onShow: () => {
           memberDom.classList.add('selected');
 

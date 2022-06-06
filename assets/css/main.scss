@@ -19,8 +19,8 @@ $nav-bar-margin-palm: 15px;
   "variables",
   "themes",
   "layout",
-  "base",
-  "distill"
+  "distill",
+  "base"
 ;
 
 :root {
@@ -29,6 +29,8 @@ $nav-bar-margin-palm: 15px;
   --footer-color: #{$footer-color};
   --nav-bar-height: #{$nav-bar-height};
   --nav-bar-margin: #{$nav-bar-margin};
+  --global-theme-color: #00A5A6;
+  --global-hover-color: #00A5A6;
 }
 
 body {
@@ -42,6 +44,7 @@ body {
   background-color: $header-color;
   min-height: 54px;
   border-bottom: 0;
+  padding-top: 1px;
 }
 
 .site-header a:hover, .site-header a:hover * {
@@ -368,6 +371,13 @@ body {
   margin-top: auto;
 }
 
+p.centered {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
 .grid {
   display: grid;
 }
@@ -441,6 +451,30 @@ body {
     border-color: transparent;
   }
 }
+
+figure {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+figure img {
+  max-width: 100%;
+  width: auto;
+}
+
+a {
+  word-break: break-word;
+}
+
+d-article {
+  overflow: unset; // To make the "position: sticky" of the TOC work
+}
+
+/*
+html {
+	scroll-behavior: smooth;
+}
+*/
 
 // Post-imports
 @import

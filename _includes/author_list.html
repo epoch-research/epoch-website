@@ -1,6 +1,7 @@
 {% assign processedAuthors = '' | split: '' %}
 {% for author in authors %}
 
+  {% assign url = %}
   {% if author.url %}
     {% assign url = author.url %}
   {% else %}
@@ -12,6 +13,7 @@
 
   {% capture link %}
     {% if url %}
+      {% assign mail = %}
       {% for _resource in member.resources %}
         {% assign resource = _resource | first %}
         {% assign resource_name = resource[0] %}

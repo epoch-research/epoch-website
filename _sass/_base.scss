@@ -12,12 +12,30 @@ hr {
   border-top: 1px solid var(--global-divider-color);
 }
 
-table {
+d-article table {
     td, th {
       color: var(--global-text-color);
     }
+
+    tr, th, td {
+      border: 1px solid black !important;
+    }
+
     td {
       font-size: 1rem;
+    }
+
+    th {
+      font-size: 1rem;
+      background-color: transparent;
+    }
+
+    tr:nth-child(even) {
+      background-color: transparent;
+    }
+
+    td p {
+      margin-bottom: 0;
     }
 }
 
@@ -58,6 +76,15 @@ blockquote {
   margin-top: 0.75rem;
   margin-bottom: 1.5rem;
   text-align: center;
+
+  --fade-color: #333;
+
+  &, * {
+    color: var(--fade-color) !important;
+    a {
+      border-bottom-color: var(--fade-color) !important;
+    }
+  }
 }
 
 // Card
@@ -539,7 +566,8 @@ pre {
 }
 
 code {
-  color: var(--global-theme-color);
+  color: #222;
+  font-size: 0.8rem;
   background-color: var(--global-code-bg-color);
   border-radius: 3px;
   padding: 3px 3px;

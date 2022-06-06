@@ -67,3 +67,64 @@
   </body>
 
 </html>
+
+<script>
+  // As seen here: https://www.bram.us/2020/01/10/smooth-scrolling-sticky-scrollspy-navigation/
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling
+
+    if (window.getComputedStyle(document.documentElement).scrollBehavior !== 'smooth') {
+      document.querySelectorAll('a[href^="#"]').forEach(internalLink => {
+        const targetElement = document.querySelector(internalLink.getAttribute('href').replaceAll(':', '\\:'));
+        if (targetElement) {
+          internalLink.addEventListener('click', (e) => {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+            });
+            e.preventDefault();
+          });
+        }
+      });
+    }
+
+    // Highlight TOC on scroll
+
+    let headers = [];
+    for (let header of document.querySelectorAll('h1[id]')) {
+      let subHeaders = [];
+      for (let subHeader of document.querySelectorAll('h2[id]')) {
+        subHeaders.push(subHeader);
+      }
+      headers.push[{
+        dom: header,
+        subHeaders: subHeaders,
+      }];
+    }
+
+    document.addEventListener('scroll', function(e) {
+      let currentHeader;
+
+      let headers = document.querySelectorAll('h1[id], h2[id], h3[id]');
+      let middleY = document.documentElement.clientHeight/2;
+      for (let i = 0; i < headers.length; i++) {
+        let p0 = headers[i].getBoundingClientRect().top;
+        let p1 = (i < headers.length - 1) ? headers[i+1].getBoundingClientRect().top : 999999;
+
+        if (p0 <= middleY && p1 > middleY) {
+          currentHeader = headers[i];
+          break;
+        }
+      }
+
+      if (currentHeader) {
+        let id = currentHeader.id;
+        document.querySelectorAll(`d-contents nav li a:not([href="#${id}"])`).forEach(node => node.classList.remove('active'));
+        document.querySelector(`d-contents nav li a[href="#${id}"]`).classList.add('active');
+      } else {
+        document.querySelectorAll(`d-contents nav li a`).forEach(node => node.classList.remove('active'));
+      }
+    });
+    
+  });
+</script>
