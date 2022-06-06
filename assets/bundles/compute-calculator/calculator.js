@@ -312,9 +312,9 @@ function buildComputeCalculator(hardwareDataUrl) {
       let units         = options.units;
       let info          = options.info;
       let subtitle      = options.subtitle;
-      let defaultValue  = ('defaultValue' in options) ? options.defaultValue : 0;
-      let min  = ('min' in options) ? options.min : 0;
-      let max  = ('max' in options) ? options.max : Infinity;
+      let value         = ('value' in options) ? options.value : 0;
+      let min           = ('min' in options) ? options.min : 0;
+      let max           = ('max' in options) ? options.max : Infinity;
 
       let id = Utils.camelize(label);
 
@@ -339,7 +339,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       if (customContent) {
         inputDiv.append(customContent);
       } else {
-        inputDiv.append(new ScientificInput({min: min, max: max, inputId: id, classes: 'small', inputClasses: 'method-input', type: inputType, defaultValue: defaultValue}).dom);
+        inputDiv.append(new ScientificInput({min: min, max: max, inputId: id, classes: 'small', inputClasses: 'method-input', type: inputType, value: value}).dom);
       }
       if (units) {
         inputDiv.append(`<span class="units">${units}`)
@@ -456,7 +456,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       this.type = ('type' in options) ? options.type : 'scientific';
       this.allowExponents = (options.type == 'scientific');
 
-      let defaultValue = ('defaultValue' in options) ? options.defaultValue : 0;
+      let value = ('value' in options) ? options.value : 0;
       this.min = ('min' in options) ? options.min : -Infinity;
       this.max = ('max' in options) ? options.max : +Infinity;
 
@@ -471,7 +471,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       if (options.inputClasses) inputClasses = options.inputClasses;
 
       this.dom = u(`<div class="scientific-input ${classes}">`);
-      this.input = u(`<input type='${this.allowExponents ? "text" : "number"}' class='${inputClasses}' step='any' ${inputOptions} inputmode='text' value=${defaultValue}>`);
+      this.input = u(`<input type='${this.allowExponents ? "text" : "number"}' class='${inputClasses}' step='any' ${inputOptions} inputmode='text' value=${value}>`);
 
       this.dom.append(this.input);
 
@@ -648,7 +648,7 @@ function buildComputeCalculator(hardwareDataUrl) {
 
         let timeBlock = u('<div class="input-set">');
 
-        let trainingTime = u('<input id="trainingTime" type="hidden" class="method-input">');
+        let trainingTime = u('<input id="trainingTime" value="0" type="hidden" class="method-input" required>');
         timeBlock.append(trainingTime);
 
         let trainingTimeAmountWrapper = new ScientificInput({min: 0, inputId: 'trainingTimeAmount', classes: 'small', inputClasses: 'method-input', required: true});
@@ -665,24 +665,15 @@ function buildComputeCalculator(hardwareDataUrl) {
           let trainingTimeInUnits = trainingTimeAmount.first().value;
           let unit = trainingTimeUnit.first().value;
 
-          console.log(trainingTimeAmount.first().value, trainingTimeUnit.first().value);
-
           let unitInSeconds = 1;
           if (unit == 'hour') unitInSeconds = 60 * 60;
           if (unit == 'day')  unitInSeconds = 60 * 60 * 24;
           if (unit == 'year') unitInSeconds = 60 * 60 * 24 * 365;
 
           trainingTime.first().value = trainingTimeInUnits * unitInSeconds;
-
-          /*
-          u('#trainingTime').first().value = 
-              Utils.parseFloat(u('#trainingTimeAmount').first().value) *
-              Utils.parseFloat(u('#trainingTimeUnit').first().value);
-          u('#trainingTime').trigger('input', {target: u('#trainingTime').first()});
-          */
         }));
 
-        timeBlock.children('#trainingTimeAmount').trigger('input');
+        //u(trainingTimeAmount).trigger('input');
 
         // Custom Peak FLOP/s block
         let flopSBlock = u('<div class="input-set">');
@@ -709,11 +700,8 @@ function buildComputeCalculator(hardwareDataUrl) {
 
         let peakFlopSInput = u('<div class="input-wrapper invisible" id="peakFlopSWrapper" style="flex: 1 0 10%">').html(`
             <label for="peakFlopS" class="input-label">Peak FLOP/s</label>
-            <!--
-            <input id="peakFlopS" class="small method-input" type="number" min=0 required></input>
-            -->
         `);
-        peakFlopSInput.append(new ScientificInput({min: 0, inputId: 'peakFlopS', classes: 'small', inputClasses: 'method-input', required: true}).dom);
+        peakFlopSInput.append(new ScientificInput({min: 0, inputId: 'peakFlopS', classes: 'small', inputClasses: 'method-input', required: true, value: null}).dom);
 
         flopSBlock.append(peakFlopSInput);
         //peakFlopSInput.addClass("invisible");
@@ -736,7 +724,7 @@ function buildComputeCalculator(hardwareDataUrl) {
         let div = u('<div style="display: flex; align-items: flex-end;">');
         hardwareContainer.append(div);
 
-        div.append(u('<div class="input-wrapper" style="flex: 0 0 7em; margin-right: 0.5em;">').html(`
+        div.append(u('<div class="input-wrapper" style="flex: 0 0 7em; margin-right: 0.2em;">').html(`
             <label for="hardwarePrecision" class="input-label">Precision</label>
             <div class="dropdown-wrapper">
               <!--
@@ -750,7 +738,7 @@ function buildComputeCalculator(hardwareDataUrl) {
             </div>
         `));
 
-        div.append(u('<div class="input-wrapper" style="flex: 1 0 9em; padding-bottom: 5px;">').html(`
+        div.append(u('<div class="input-wrapper" style="flex: 1 0 9em; padding-bottom: 1px; font-size: 0.9em">').html(`
             <span id="peakFlopSChecker" class="quiet-text" style="margin-top: 15px; min-width: 7em"></span>
         `));
 
@@ -898,16 +886,16 @@ function buildComputeCalculator(hardwareDataUrl) {
       });
 
       method.addBlock('Training time', {block: timeBlock});
-      method.addBlock('Number of cores', {defaultValue: 1, inputType: 'normal'});
+      method.addBlock('Number of cores', {value: 1, inputType: 'normal'});
       method.addBlock(peakFlopSTitle, {block: flopSBlock, info: flopSBlockInfo}).addClass('full-flex');
-      method.addBlock('Utilization rate', {defaultValue: 33, min: 0, max: 100, units: '%', inputType: 'normal'});
+      method.addBlock('Utilization rate', {value: 33, min: 0, max: 100, units: '%', inputType: 'normal'});
 
       method.computeCompute = (inputs => {
         return inputs.trainingTime * inputs.numberOfCores * inputs.peakFlopS * inputs.utilizationRate/100;
       });
 
       method.update();
-      method.dom.trigger('input');
+      //method.dom.trigger('input');
     }
   }
 
