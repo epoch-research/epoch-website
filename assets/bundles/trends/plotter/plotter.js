@@ -645,11 +645,11 @@
       }
 
       let openOptionsButton = mlp.html('<div class="openOptions over-button">☰</div>');
-      openOptionsButton.addEventListener("click", openOptions);
+      openOptionsButton.addEventListener("click", () => openOptions());
       this.nodes.graph.appendChild(openOptionsButton);
 
       let closeOptionsButton = mlp.html('<button class="closeOptions">&times;</button>');
-      closeOptionsButton.addEventListener("click", closeOptions);
+      closeOptionsButton.addEventListener("click", () => closeOptions());
       this.nodes.options.querySelector(".optionsHeader").appendChild(closeOptionsButton);
 
       function resizeOptions(targetWidth, instantenous) {
@@ -667,8 +667,6 @@
           });
         }
       }
-
-      //openOptions(true);
     },
 
     addControl: function(control) {
