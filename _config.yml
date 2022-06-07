@@ -34,6 +34,7 @@ collections:
 
 url: epochai.org
 baseurl: /
+domain: epochai.org
 
 # Top level pages
 include:

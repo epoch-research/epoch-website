@@ -618,9 +618,13 @@ function buildComputeCalculator(hardwareDataUrl) {
   }
 
   class ComputeCalculator {
+    static formatRealForSummary(x) {
+      if (Number.isNaN(x)) return '--';
+      return (x < 10) ? x : x.toExponential(1);
+    }
+
     static renderMethod1(container) {
       let method = new Method(container, 'Method 1: Counting the number of arithmetic operations');
-      //method.setFormula('compute = 2 × # of connections × 3 × # of training examples × # of epochs');
 
       method.setFormula('<span>compute</span> = <span id="opPerForwardPass" class="formula-block">2 × # of connections</span> × <span id="backForAdjustment" class="formula-block">3</span> × <span id="numberOfPasses" class="formula-block"># of training examples × # of epochs</span>');
 
@@ -673,7 +677,7 @@ function buildComputeCalculator(hardwareDataUrl) {
 
         let method1PaperSummary = document.querySelector('#method1-paper-summary');
 
-        let summary = `Our model uses ${formatReal(forwardPassCompute)} FLOP on each forward pass, was trained on ${formatReal(inputs.numberOfTrainingExamples)} datapoints and used ${formatReal(compute)} FLOP during training.`;
+        let summary = `Our model uses ${this.formatRealForSummary(forwardPassCompute)} FLOP on each forward pass, was trained on ${this.formatRealForSummary(inputs.numberOfTrainingExamples)} datapoints and used ${this.formatRealForSummary(compute)} FLOP during training.`;
 
         return summary;
       };
@@ -982,7 +986,7 @@ function buildComputeCalculator(hardwareDataUrl) {
           summary += ` on a ${inputs.hardwareType}`;
         } else if (inputs.peakFlopS) {
         }
-        summary += ` for ${timeStr}, and in total used ${formatReal(compute)} FLOP during training.`;
+        summary += ` for ${timeStr}, and in total used ${this.formatRealForSummary(compute)} FLOP during training.`;
 
         return summary;
       };

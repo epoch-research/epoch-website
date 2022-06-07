@@ -1,58 +1,69 @@
 <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    for (let pre of document.querySelectorAll('pre')) {
-      let button = document.createElement('button');
-      pre.parentElement.appendChild(button);
-      pre.parentElement.classList.add('copiable-wrapper');
-      pre.classList.add('copy-target');
-      button.classList.add('copy-button');
-      button.innerHTML = '<i class="bi-clipboard"></i>';
-    }
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
 
-    for (let boxedText of document.querySelectorAll('.boxed-text')) {
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
       let wrapper = document.createElement('div');
       wrapper.classList.add('copiable-wrapper');
-      boxedText.parentNode.insertBefore(wrapper, boxedText);
-      wrapper.appendChild(boxedText);
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
 
-      let button = document.createElement('button');
-      boxedText.parentElement.appendChild(button);
-      boxedText.parentElement.classList.add('copiable-wrapper');
-      boxedText.classList.add('copy-target');
-      button.classList.add('copy-button');
-      button.innerHTML = '<i class="bi-clipboard"></i>';
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
     }
 
-    let clipboard = new ClipboardJS('.copy-button', {
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
       target: function(trigger) {
         return trigger.parentElement.querySelector('.copy-target');
       },
     });
 
-    let copiedTooltips = [];
-
-    for (let button of document.querySelectorAll('.copy-button')) {
-      let tooltip = tippy(button, {
-        content: 'Copied',
-        trigger: 'manual',
-        placement: 'left',
-        appendTo: button,
-        arrow: false,
-        offset: [1, -1],
-      });
-      copiedTooltips.push(tooltip);
-    }
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
 
     clipboard.on('success', function(e) {
       e.clearSelection();
 
-      let tooltip = copiedTooltips.find(t => t.reference == e.trigger);
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
       tooltip.show();
-      setTimeout(() => tooltip.hide(), 800);
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
     });
 
     clipboard.on('error', function(e) {
       e.clearSelection();
     });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
   });
 </script>

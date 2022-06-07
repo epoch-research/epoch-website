@@ -11,7 +11,7 @@
     {% endif %}
   {% endif %}
 
-  {% capture link %}
+  {% capture authorNode %}
     {% if url %}
       {% assign mail = %}
       {% for _resource in member.resources %}
@@ -29,7 +29,7 @@
     {% endif %}
   {% endcapture %}
 
-  {% assign processedAuthors = processedAuthors | push: link %}
+  {% assign processedAuthors = processedAuthors | push: authorNode %}
 {% endfor %}
 
 {{processedAuthors | better_join: ", ", " and "}}

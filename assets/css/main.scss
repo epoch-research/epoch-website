@@ -31,6 +31,8 @@ $nav-bar-margin-palm: 15px;
   --nav-bar-margin: #{$nav-bar-margin};
   --global-theme-color: #00A5A6;
   --global-hover-color: #00A5A6;
+  --code-color: #444;
+  --default-radius: 5px;
 }
 
 body {
@@ -436,6 +438,10 @@ p.centered {
     transition: opacity 0s;
     opacity: 1;
     background-color: transparent;
+
+    i {
+      background-color: #eef;
+    }
   }
 
   @media (hover: hover) {
@@ -516,6 +522,15 @@ a {
 
 d-article {
   overflow: unset !important; // To make the "position: sticky" of the TOC work
+}
+
+.wrappable-pre code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+code {
+  color: var(--code-color);
 }
 
 /*

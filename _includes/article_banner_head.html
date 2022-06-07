@@ -50,6 +50,32 @@
     text-transform: uppercase;
   }
 
+  .summary-title {
+    margin-bottom: 15px;
+  }
+
+  .summary-title h1 {
+    margin-bottom: 0;
+  }
+
+  .cite-us {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    font-size: 0.9rem;
+    color: white !important;
+  }
+
+  .citation-tooltip {
+    max-width: calc(100vw - 27px);
+    box-shadow: 0 0 7px 7px black;
+    border-radius: var(--default-radius);
+  }
+
+  .citation-tooltip pre * {
+    color: var(--code-color);
+  }
+
   @media (min-width: 800px) {
     .regular-banner .article-head-content {
       width: auto;
@@ -105,8 +131,24 @@
     padding-right: 1em;
   }
 
+  .summary-title, .summary-title *,
+  .summary-authors, .summary-authors *,
+  .summary-abstract, .summary-abstract *,
+  .summary-footer, .summary-footer * {
+    color: white;
+  }
+
+  /*
   .summary * {
     color: white !important;
+  }
+
+  .summary *:not(.citation-tooltip) {
+  }
+  */
+
+  .summary .copiable-wrapper i {
+    color: black;
   }
 
   .summary-footer {
@@ -141,11 +183,11 @@
   .article-resource {
     border-radius: 4px;
     background-color: rgba(var(--resource-color), 0.8);
-    padding: 9px;
+    padding: 6px 11px;
     font-size: 0.8rem;
     font-weight: bold;
     text-transform: uppercase;
-    margin: 2px;
+    margin: 5px;
     margin-top: 0.5em;
     white-space: nowrap;
   }

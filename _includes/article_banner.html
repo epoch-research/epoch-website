@@ -1,3 +1,7 @@
+{%if page.tags contains 'report' or page.tags contains 'paper' or page.enable_citation_button %}
+  {% assign enable_citation_button = true %}
+{% endif %}
+
 <div class="article-head {% if banner.type == 'regular' %}regular-banner{% endif %}">
   <div class="article-head-content">
     <div class="banner">
@@ -12,6 +16,7 @@
         {% endif %}
         <div class="summary-title">
           <h1>{{ page.title }}</h1>
+          {%if enable_citation_button %}<a class="cite-us"><i class="bi-journal-text"></i> Cite post</a>{% endif %}
         </div>
         {% if page.authors %}
         <div class="summary-authors">
@@ -41,3 +46,56 @@
   </div>
 </div>
 
+{%if enable_citation_button %}
+
+{% capture plainAuthors %}
+  {%- if page.authors.size <= 3 -%}
+    {{-page.authors | map: 'name' | better_join: ", ", " and "-}}
+  {%- else -%}
+    {{-page.authors | map: 'name' | first}} et al.
+  {%- endif -%}
+{%- endcapture %}
+
+{% capture citation_box %}
+<p style="margin-bottom: 0">Cite this work as</p>
+
+<div class="language-plaintext highlighter-rouge wrappable-pre">
+<div class="highlight">
+  <pre class="highlight"><code>{{plainAuthors}} ({{page.date | date: "%Y" }}), "{{page.title}}". <em>Published online at {{site.domain}}.</em> Retrieved from: '{{page.url | absolute_url}}' [online resource]</code></pre>
+</div>
+</div>
+
+<p style="margin-bottom: 0">BibTeX citation:</p>
+
+```
+@misc{epoch{%if page.bibtexId%}{{page.bibtexId}}{%else%}{{ page.date | date: "%Y" }}{{ page.slug | replace: '-' , ''}}{%endif%},
+  title = "{{page.title}}",
+  author = {%raw%}{{%endraw%}{{ page.authors | map: 'name' | better_join: ', ', " and " }}{%raw%}}{%endraw%},
+  year = {{ page.date | date: "%Y" }},
+  howpublished = "\\url{%raw%}{{%endraw%}{{page.url | absolute_url }}{%raw%}}{%endraw%}",
+  note = "Accessed: {{ site.time | date: "%Y-%m-%d" }}"
+}
+```
+{% endcapture %}
+
+<script>
+  let content = `
+    {{ citation_box | markdownify }}
+  `;
+
+  tippy('.cite-us', {
+    allowHTML: true,
+    placement: 'bottom-start',
+    arrow: false,
+    interactive: true,
+    maxWidth: '900px',
+    trigger: 'click',
+    content: content,
+    onShow: (instance) => {
+      instance.popper.classList.add('citation-tooltip');
+      tippy.hideAll();
+      instance.popper.querySelectorAll('pre').forEach(pre => addCopyButton(pre));
+    },
+  });
+</script>
+{% endif %}
