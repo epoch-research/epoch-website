@@ -515,7 +515,7 @@ a {
 }
 
 d-article {
-  overflow: unset; // To make the "position: sticky" of the TOC work
+  overflow: unset !important; // To make the "position: sticky" of the TOC work
 }
 
 /*
