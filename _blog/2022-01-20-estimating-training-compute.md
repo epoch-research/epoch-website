@@ -87,9 +87,4 @@ You can read more about these methods and find detailed examples in [our full re
   let {calculator, Utils} = buildComputeCalculator('/assets/bundles/compute-calculator/data/hardware_data.csv');
   let method1 = calculator.renderMethod1('.calculator-method-container');
   let method2 = calculator.renderMethod2('.calculator-method-container');
-
-  function formatReal(x) {
-    if (Number.isNaN(x)) return '--';
-    return x < 10 ? x : x.toExponential(1).replaceAll('+', '');
-  }
 </script>
