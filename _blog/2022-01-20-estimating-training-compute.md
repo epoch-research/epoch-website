@@ -67,37 +67,29 @@ authors:
 
 {% assign docUrl = 'https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit' %}
 
-**You can find the complete article [here](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit?usp=sharing). We provide a short summary below.**
+ML Models trained on more compute have better performance and more advanced capabilities (see e.g. Kaplan et al or ). Due to this, estimating and reporting compute usage is crucial to enable accurate comparisons between ML models.
+
+Compute usage is commonly measured as the number of **floating point operations (FLOPs)** required to train the final version of the system. To estimate this we can resort to two strategies: a) using information about the architecture and amount of training data, or b) using information about the hardware used and training time.
+
+Below we provide two calculators that illustrate these methods.
 
 <div class="calculator-method-container"></div>
 
-In short: To estimate the compute used to train a Deep Learning model we can either: 1) directly count the number of operations needed or 2) estimate it from GPU time.
+*Do you see a mistake or do you want to submit missing information about hardware specs? Fill [this form](https://docs.google.com/forms/d/e/1FAIpQLSexq86cydEh36zA_A1FT0xT7gZCdazFS7Qi2GCFVLnO985iwQ/viewform?usp=sf_link) and we will look into it.*
 
-We are uncertain about what utilization rate is best, but our recommendation is 30% for Large Language Models and 40% for other models.
-
-You can read more about method 1 [here](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.2mby4t3qns9s) and about method 2 [here](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.erkg6ljdb9la).
-
-Other parts of interest of this article include:
-
-* We argue that the ratio of operations of backward and forward pass of neural networks is often close to 2:1. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.w8eohir5vge4).
-* We discuss how the formula of method 1 changes for recurrent models. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.fdnj8v30m5rm).
-* We argue that dropout does not affect the number of operations per forward and backward pass. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.a2552o2358pi).
-* We have elaborated a table with parameter and operation counts for common neural network layers. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.l4gw5vkpumk5).
-* We give a detailed example of method 1. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.rp5vcfhyzosa).
-* We discuss commonly used number representation formats in ML. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.gjzi5oaefiet).
-* We share an estimate of the average performance of GPU cards each year. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.73bi8uuftsk4).
-* We share some reported GPU usages in real experiments. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.xalldzr955i3).
-* We give a detailed example of method 2. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.nr9q2lgxai4g).
-* We compare both methods and conclude they result in similar estimates. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.cvy3rx7nvrkh).
-* We discuss the use of profilers to measure compute. [More](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#heading=h.wee32i38js1o).
+You can read more about these methods and find detailed examples in [our full report](https://docs.google.com/document/d/1J2BX9jkE5nN5EA1zYRN0lHhdCf1YkiFERc_nwiYqCOA/edit#).
 
 {% include scripts/tippy.html %}
 
 <script src="/assets/bundles/compute-calculator/calculator.js"></script>
 
 <script>
-  let calculator = buildComputeCalculator('/assets/bundles/compute-calculator/data/hardware_data.csv');
-  calculator.renderMethod1('.calculator-method-container');
-  calculator.renderMethod2('.calculator-method-container');
-</script>
+  let {calculator, Utils} = buildComputeCalculator('/assets/bundles/compute-calculator/data/hardware_data.csv');
+  let method1 = calculator.renderMethod1('.calculator-method-container');
+  let method2 = calculator.renderMethod2('.calculator-method-container');
 
+  function formatReal(x) {
+    if (Number.isNaN(x)) return '--';
+    return x < 10 ? x : x.toExponential(1).replaceAll('+', '');
+  }
+</script>

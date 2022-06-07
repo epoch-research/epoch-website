@@ -88,6 +88,7 @@ body {
 
     .formula-block {
       border-bottom: 1px dashed grey;
+      cursor: pointer;
       &:hover {
         border-bottom: 1px dashed #0014ff;
       }
@@ -396,6 +397,10 @@ body {
   cursor: pointer;
   text-decoration: none;
   border: none;
+}
+
+.tippy-content >:last-child {
+  margin-bottom: 0;
 }
 
 .tippy-box[data-theme='calculator'] {

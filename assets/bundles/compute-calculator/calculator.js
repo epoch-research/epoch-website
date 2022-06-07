@@ -11,29 +11,13 @@ function buildComputeCalculator(hardwareDataUrl) {
       allowHTML: true,
       theme: 'calculator',
       placement: 'top',
+      trigger: 'click',
       //arrow: false,
       interactive: true,
-      maxWidth: '200px',
+      maxWidth: '400px',
       ...options,
     });
   }
-
-  /*
-  let metaOptions = u('<div style="margin-bottom: 1em">').html(`
-    <div><input id="showFillOptions" ${showFillOptions ? "checked" : ""} type="checkbox">Show fill options</input></div>
-    <div><input id="showFillInMessage" ${showFillInMessage ? "checked" : ""} type="checkbox">Show fill in message</input></div>
-  `);
-
-  metaOptions.on('input', () => {
-    showFillOptions = window.showFillOptions.checked;
-    showFillInMessage = window.showFillInMessage.checked;
-    u('.method-container').html('');
-    ComputeCalculator.renderMethod2('.method-container');
-    ComputeCalculator.renderMethod1('.method-container');
-  })
-
-  u('body').prepend(metaOptions);
-  */
 
   function makeDropdown(node, values) {
     let selectedResult = null;
@@ -292,6 +276,7 @@ function buildComputeCalculator(hardwareDataUrl) {
     outputId;
     title;
     computeCompute = () => {};
+    updateCallbacks = [];
 
     constructor(container, title) {
       container = u(container);
@@ -331,7 +316,6 @@ function buildComputeCalculator(hardwareDataUrl) {
 
         tooltip(infoDom.first(), {
           content: info,
-          trigger: 'click',
         });
       }
 
@@ -358,17 +342,29 @@ function buildComputeCalculator(hardwareDataUrl) {
       let inputs = {};
       let valid = true;
 
-      for (let input of this.dom.first().getElementsByTagName('input')) {
+      for (let input of this.dom.first().querySelectorAll('input, select')) {
         if (!input.classList.contains('method-input')) continue;
 
-        if (!input.checkValidity() || Number.isNaN(parseFloat(input.value))) {
+        if (!input.checkValidity() || ((input.type == 'number' || input.classList.contains('number-input')) && Number.isNaN(parseFloat(input.value)))) {
           valid = false;
           continue;
         }
-        inputs[input.id] = parseFloat(input.value);
+        inputs[input.id] = ((input.type == 'number' || input.classList.contains('number-input')) ? parseFloat(input.value) : input.value);
       }
 
-      document.getElementById(this.outputId).innerHTML = valid ? Utils.formatReal(this.computeCompute(inputs)) : "--";
+      let compute = this.computeCompute(inputs);
+      document.getElementById(this.outputId).innerHTML = valid ? Utils.formatReal(compute) : "--";
+
+      let summary = this.getPaperSummary({inputs, compute, valid});
+      this.dom.first().querySelector('.paper-summary').innerHTML = summary;
+
+      for (let callback of this.updateCallbacks) {
+        callback({
+          inputs: inputs,
+          compute: compute,
+          valid: valid,
+        });
+      }
     }
 
     render(container, title) {
@@ -389,6 +385,8 @@ function buildComputeCalculator(hardwareDataUrl) {
 
       let outputId = "result-" + Utils.camelize(title);
       dom.children('.output').html(`<div>Compute <span class="result-number"><span id="${outputId}">--</span> FLOPs</span></div>`);
+      dom.children('.output').append(u('<p style="margin-top: 0.4em; margin-bottom: 0.5em; color: #444 !important"><i>Copy and paste the following information in your paper'));
+      dom.children('.output').append(u('<div class="boxed-text paper-summary" style="background-color: #ddd; color: #444; margin-bottom: 0; border-radius: 4px">'));
 
       dom.on('input', () => this.update());
 
@@ -396,6 +394,10 @@ function buildComputeCalculator(hardwareDataUrl) {
 
       this.outputId = outputId;
       this.dom = dom;
+    }
+
+    onUpdate(callback) {
+      this.updateCallbacks.push(callback);
     }
   }
 
@@ -471,7 +473,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       if (options.inputClasses) inputClasses = options.inputClasses;
 
       this.dom = u(`<div class="scientific-input ${classes}">`);
-      this.input = u(`<input type='${this.allowExponents ? "text" : "number"}' class='${inputClasses}' step='any' ${inputOptions} inputmode='text' value=${value}>`);
+      this.input = u(`<input type='${this.allowExponents ? "text" : "number"}' class='number-input ${inputClasses}' step='any' ${inputOptions} inputmode='text' value=${value}>`);
 
       this.dom.append(this.input);
 
@@ -613,7 +615,6 @@ function buildComputeCalculator(hardwareDataUrl) {
       this.val = x;
       this.input.trigger('change');
     }
-
   }
 
   class ComputeCalculator {
@@ -627,22 +628,69 @@ function buildComputeCalculator(hardwareDataUrl) {
       let backForAdjustment = u('#backForAdjustment', method.dom.first()).first();
       let numberOfPasses    = u('#numberOfPasses', method.dom.first()).first();
 
-      tooltip(opPerForwardPass,  { content: 'Operations per forward pass', placement: 'top', appendTo: document.body, maxWidth: 'none',});
-      tooltip(backForAdjustment, { content: 'Backward-forward adjustment', placement: 'top', appendTo: document.body, maxWidth: 'none',});
-      tooltip(numberOfPasses,    { content: 'Number of passes',            placement: 'top', appendTo: document.body, maxWidth: 'none',});
+      let opPerForwardPassInfo = `
+        <p>Number of operations in a forward pass.</p>
 
-      method.addBlock('Number of connections', {info: 'For more information, click <a href="https://google.com">here</a>'});
+        <p>Typically, for each connection in the network we perform a multiplication and an addition during the forward pass. Other operations are often only applied to individual neuron layers and are orders of magnitude less compute-intensive.</p>
+
+        <p>Thus the number of operations in a forward pass is approximately equal to twice the number of connections.</p>
+      `;
+
+      let backForAdjustmentInfo = `
+        <p>Backward-forward adjustment.</p>
+
+        <p>Usually, the total number of operations in the backward pass is roughly twice (x2) the number of operations in a forward pass.</p>
+
+        <p>So the total number of operations per complete pass equals three times (x3) the number of operations per forward pass.</p>
+
+        <p>You can learn more about why this is the case and exceptions in our post on the <a href="/blog/backward-forward-FLOP-ratio">Backward-Forward FLOP ratio</a>.</p>
+      `;
+
+      tooltip(opPerForwardPass,  { content: opPerForwardPassInfo,  appendTo: method.dom.first(), maxWidth: '400px',});
+      tooltip(backForAdjustment, { content: backForAdjustmentInfo, appendTo: method.dom.first(), maxWidth: '400px',});
+      tooltip(numberOfPasses,    { content: 'Number of passes.',   appendTo: method.dom.first(), maxWidth: 'none', });
+
+      let numberOfConnectionsInfo = `
+        <p>This is the number of direct interdependencies between neurons in a neural network.</p>
+
+        <p>For example, a fully connected layer with N neurons as inputs and M neurons as output has N*M connections.</p>
+
+        <p>Typically this will be equal to the number of parameters of the model, though this is not the case when some weights are reused in different connections, as with CNNs.</p>
+
+        <p>Bias terms are comparatively fewer, and can often be ignored.</p>
+      `;
+
+      let numberOfEpochsInfo = 'Number of complete passes over the training dataset';
+
+      method.addBlock('Number of connections', {info: numberOfConnectionsInfo});
       method.addBlock('Number of training examples');
-      method.addBlock('Number of epochs');
+      method.addBlock('Number of epochs', {info: numberOfEpochsInfo});
+
       method.computeCompute = (inputs => 2 * inputs.numberOfConnections * 3 * inputs.numberOfTrainingExamples * inputs.numberOfEpochs);
+
+      method.getPaperSummary = ({inputs, compute}) => {
+        let forwardPassCompute = 2 * inputs.numberOfConnections;
+
+        let method1PaperSummary = document.querySelector('#method1-paper-summary');
+
+        let summary = `Our model uses ${formatReal(forwardPassCompute)} FLOP on each forward pass, was trained on ${formatReal(inputs.numberOfTrainingExamples)} datapoints and used ${formatReal(compute)} FLOP during training.`;
+
+        return summary;
+      };
+
       method.dom.trigger('input');
+
+      return method;
     }
 
     static renderMethod2(container) {
         let method = new Method(container, 'Method 2: Hardware details and usage');
-        method.setFormula('compute = training time × # of cores × peak FLOP/s × utilization rate');
+        method.setFormula('compute = training time × # of cores × peak FLOP/s × <span id="utilizationRate" class="formula-block">utilization rate</span>');
 
         method.dom.addClass('method2');
+
+        let utilizationRateFormulaInfo = 'Percentage of the theoretical peak FLOPS that was achieved on average during training.';
+        tooltip(u('#utilizationRate', method.dom.first()).first(), { content: utilizationRateFormulaInfo, appendTo: method.dom.first(), maxWidth: '400px',});
 
         // Custom time input block
 
@@ -655,7 +703,7 @@ function buildComputeCalculator(hardwareDataUrl) {
         timeBlock.append(u('<div class="input-wrapper">').append(trainingTimeAmountWrapper.dom));
         let trainingTimeAmount = trainingTimeAmountWrapper.input;
 
-        let trainingTimeUnit = u('<select id="trainingTimeUnit" value="hour">')
+        let trainingTimeUnit = u('<select id="trainingTimeUnit" class="method-input" value="hour">')
           .append('<option value="hour">Hours')
           .append('<option value="day" selected>Days')
           .append('<option value="year">Years');
@@ -699,8 +747,18 @@ function buildComputeCalculator(hardwareDataUrl) {
         }
 
         let peakFlopSInput = u('<div class="input-wrapper invisible" id="peakFlopSWrapper" style="flex: 1 0 10%">').html(`
-            <label for="peakFlopS" class="input-label">Peak FLOP/s</label>
+            <div>
+              <label for="peakFlopS" class="input-label" style="display: inline-block">Peak FLOP/s</label>
+              <a id="peakFlopSInfo" class="bi bi-info-circle-fill info"></a>
         `);
+
+        let peakFlopSInfo = `
+          <p>Theoretical peak FLOP/s of the system.</p>
+          <p>You can often find information about peak performance in your hardware providers' websites.</p>
+        `;
+
+        tooltip(u("#peakFlopSInfo", peakFlopSInput.first()).first(), {content: peakFlopSInfo, maxWidth: '400px',});
+
         peakFlopSInput.append(new ScientificInput({min: 0, inputId: 'peakFlopS', classes: 'small', inputClasses: 'method-input', required: true, value: null}).dom);
 
         flopSBlock.append(peakFlopSInput);
@@ -717,7 +775,7 @@ function buildComputeCalculator(hardwareDataUrl) {
         hardwareContainer.append(u('<div class="input-wrapper" style="flex: 0 1 18em; margin-right: 0.5em;">').html(`
             <label for="hardwareType" class="input-label">Hardware</label>
             <div class="dropdown-wrapper">
-              <input id="hardwareType" autocomplete="off" placeholder="Select hardware" style="width: 100%">
+              <input id="hardwareType" autocomplete="off" class="method-input" placeholder="Select hardware" style="width: 100%">
             </div>
         `));
 
@@ -725,7 +783,10 @@ function buildComputeCalculator(hardwareDataUrl) {
         hardwareContainer.append(div);
 
         div.append(u('<div class="input-wrapper" style="flex: 0 0 7em; margin-right: 0.2em;">').html(`
-            <label for="hardwarePrecision" class="input-label">Precision</label>
+            <div>
+              <label for="hardwarePrecision" class="input-label" style="display: inline-block">Precision</label>
+              <a id="precisionInfo" class="bi bi-info-circle-fill info"></a>
+            </div>
             <div class="dropdown-wrapper">
               <!--
               <input id="hardwarePrecision" value="Single (FP32)" required></input>
@@ -738,8 +799,15 @@ function buildComputeCalculator(hardwareDataUrl) {
             </div>
         `));
 
-        div.append(u('<div class="input-wrapper" style="flex: 1 0 9em; padding-bottom: 1px; font-size: 0.9em">').html(`
-            <span id="peakFlopSChecker" class="quiet-text" style="margin-top: 15px; min-width: 7em"></span>
+        let precisionInfo = `
+          <p>The number format used to represent the parameters being trained.</p>
+          <p>By default, Pytorch and Tensorflow use single precision (FP32), though they have dedicated options for half-precision (FP16) training.</p>
+        `;
+
+        tooltip(u("#precisionInfo", div.first()).first(), {content: precisionInfo, maxWidth: '400px',});
+
+        div.append(u('<div class="input-wrapper" style="flex: 1 0 9em; font-size: 0.9em">').html(`
+            <span id="peakFlopSChecker" class="quiet-text" style="min-width: 7em; line-height: 32px;"></span>
         `));
 
         u("#peakFlopSChecker", flopSBlock.first()).html('');
@@ -885,19 +953,46 @@ function buildComputeCalculator(hardwareDataUrl) {
         },
       });
 
-      method.addBlock('Training time', {block: timeBlock});
-      method.addBlock('Number of cores', {value: 1, inputType: 'normal'});
-      method.addBlock(peakFlopSTitle, {block: flopSBlock, info: flopSBlockInfo}).addClass('full-flex');
-      method.addBlock('Utilization rate', {value: 33, min: 0, max: 100, units: '%', inputType: 'normal'});
+      let utilizationRateInfo = `
+        <p>Percentage of the theoretical peak FLOPS that was achieved on average during training.</p>
+        <p>In reports and conversation with practitioners we have seen utilization rates between 25% and 62%.</p>
+        <p>We are uncertain about what utilization rate is best, but our recommendation is 30% for Large Language Models and 40% for other models.</p>
+      `;
+
+      method.addBlock('Training time',    {block: timeBlock});
+      method.addBlock('Number of cores',  {value: 1, inputType: 'normal'});
+      method.addBlock(peakFlopSTitle,     {block: flopSBlock}).addClass('full-flex');
+      method.addBlock('Utilization rate', {value: 30, min: 0, max: 100, units: '%', inputType: 'normal', info: utilizationRateInfo});
 
       method.computeCompute = (inputs => {
         return inputs.trainingTime * inputs.numberOfCores * inputs.peakFlopS * inputs.utilizationRate/100;
       });
 
+      method.getPaperSummary = ({inputs, compute}) => {
+        let trainingTimeAmount = inputs.trainingTimeAmount;
+        let trainingTimeUnit = inputs.trainingTimeUnit;
+
+        let method2PaperSummary = document.querySelector('#method2-paper-summary');
+
+        let timeStr = `${trainingTimeAmount} ${trainingTimeUnit}`;
+        if (trainingTimeAmount != 1) timeStr += 's';
+
+        let summary = 'Our model was trained';
+        if (inputs.hardwareType) {
+          summary += ` on a ${inputs.hardwareType}`;
+        } else if (inputs.peakFlopS) {
+        }
+        summary += ` for ${timeStr}, and in total used ${formatReal(compute)} FLOP during training.`;
+
+        return summary;
+      };
+
       method.update();
       //method.dom.trigger('input');
+
+      return method;
     }
   }
 
-  return ComputeCalculator;
+  return {calculator: ComputeCalculator, Utils};
 }

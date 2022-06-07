@@ -72,7 +72,7 @@ In the short term, we intend on tying up our investigation into direct inputs of
 One of our goals is to help develop new quantitative models for TAI development, and to dive into what we see as key weaknesses in existing models. We also hope to look at the outputs and capabilities of machine learning systems, e.g. by studying the role and evolution of popular AI benchmarks over time. We intend on sharing more details about these plans in the coming months. 
 
 # Hiring
-We expect to be hiring for several full-time research and management roles from May to July. Salaries range from \\$60,000 for entry roles to \\$80,000 for senior roles.
+We expect to be hiring for several full-time research and management roles from May to July. Salaries range from $60,000 for entry roles to $80,000 for senior roles.
 
 Why work with Epoch? 
 - You can work from anywhere in the world, and work will primarily be done remotely We expect to organise group retreats every 6 months to do in-person coworking, and we can help with visa applications

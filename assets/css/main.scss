@@ -218,6 +218,10 @@ body {
   font-style: normal;
   word-spacing: -1px;
 
+  nav > h3 {
+    margin-bottom: 0.5em;
+  }
+
   h1 {
     font-weight: bold;
     font-size: 30px;
@@ -414,6 +418,51 @@ p.centered {
   .small-screen-order-0 {order: 0;}
   .small-screen-order-1 {order: 1;}
   .small-screen-order-2 {order: 2;}
+}
+
+// Copy button
+
+.copiable-wrapper {
+   position: relative;
+
+  .copy-button {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    cursor: pointer;
+    border: none;
+    padding: 3px;
+    font-size: 1rem;
+    transition: opacity 0s;
+    opacity: 1;
+    background-color: transparent;
+  }
+
+  @media (hover: hover) {
+    .copy-button {
+      opacity: 0;
+    }
+  }
+
+  .copy-button .tippy-content {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.4rem;
+    color: white !important;
+  }
+
+  &:hover .copy-button {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+}
+
+.boxed-text {
+  font-family: monospace;
+  background: #eef;
+  font-size: 0.8rem;
+  padding: 6px 12px;
+  margin-bottom: 15px;
 }
 
 // Misc
