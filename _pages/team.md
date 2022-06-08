@@ -304,6 +304,8 @@ We are a research initiative working to support AI governance and improve foreca
             m.imageUrl = `/assets/images/team/transparent/${m.id}.png`;
             dom.querySelector('.mug').style.backgroundImage = `url(${m.imageUrl}), url(${backgroundImage})`;
           }
+
+          document.body.style.background = 'linear-gradient(0deg, #57C1EB 0%, #009C52 100%)';
         }
       }
     }
