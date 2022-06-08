@@ -30,11 +30,28 @@ permalink: /lab/teams
       padding: 5px;
     }
 
-    .m0 .mug {
-      background-size: cover !important;
-      background-position: center !important;
+    .mug {
+      border-radius: var(--logo-radius);
+      //background-color: white;
+      background-color: var(--global-theme-color);
     }
 
+    .team-grid-wrapper {
+      width: 100vw;
+      //background-color: var(--global-theme-color);
+      margin-left: -50vw;
+      padding-left: 50vw;
+      margin-top: -10px;
+      padding-top: 40px;
+    }
+
+    .page-content {
+      padding-bottom: 0;
+    }
+
+    .team-grid {
+      max-width: 984px;
+    }
 
     #jaime-sevilla .mug {
       background-size: 135%, 100%;
@@ -101,7 +118,11 @@ permalink: /lab/teams
     }
 
 		.member:not(.mouse-over-resources):hover, .member.selected {
-      box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
+      //box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
+
+      transform: scale(105%);
+      position: relative;
+      //top: -10px;
     }
 
     .member-resource, .member-resource:hover {
@@ -190,54 +211,28 @@ We are a research initiative working to support AI governance and improve foreca
 {% assign backgrounds = backgrounds | push: 'https://mir-s3-cdn-cf.behance.net/project_modules/fs/c7507b49671425.58bb77365c8ed.jpg' %}
 {% assign backgrounds = backgrounds | push: '/assets/images/team/transparent/bahamas.png' %}
 
+{% for index in (0..0) %}
 
-{% for index in (0..6) %}
-
-{% case index == 1 %}
+{% case index %}
 {% when 0 %}
-  {% assign subtitle = 'original' %}
+  {% assign subtitle = '1' %}
 {% when 1 %}
-  {% assign subtitle = 'zoomed in' %}
+  {% assign subtitle = '2' %}
 {% when 2 %}
-  {% assign subtitle = 'blurry approximation' %}
+  {% assign subtitle = '3' %}
 {% when 3 %}
-  {% assign subtitle = 'boring white' %}
-{% when 4 %}
-  {% assign subtitle = 'textured white' %}
-{% when 5 %}
-  {% assign subtitle = 'Bahamas' %}
-{% when 6 %}
-  {% assign subtitle = 'please, pick this one' %}
+  {% assign subtitle = '4' %}
 {% endcase %}
 
 {% assign background = '' %}
 {% assign imageDir = '/assets/images/team/transparent/' %}
 
-{% if index == 0 or index == 1%}
-  {% assign imageDir = '/assets/images/team/original/' %}
-{% endif %}
-
-{% if index == 2 %}
-  {% assign imageDir = '/assets/images/team/blurry/' %}
-{% endif %}
-
-{% if index == 4 %}
-  {% assign background = 'https://img.freepik.com/free-photo/white-texture_1160-786.jpg?w=2000' %}
-{% endif %}
-
-{% if index == 5 %}
-  {% assign background = '/assets/images/team/transparent/bahamas.png' %}
-{% endif %}
-
-{% if index == 6 %}
-  {% assign background = 'https://wallpaperaccess.com/full/3199302.jpg' %}
-{% endif %}
-
 {% assign backgroundIndex = forloop.index %}
 {% assign backgroundIndex = index %}
 
-## Our Team ({{subtitle}})
+## Our Team <!--({{subtitle}})-->
 
+<div class="team-grid-wrapper">
 <div class="collection-grid team-grid">
   {% for member in site.data.team %}
   <div class="member m{{backgroundIndex}}" id="{{member.id}}">
@@ -258,6 +253,7 @@ We are a research initiative working to support AI governance and improve foreca
     </div>
   </div>
   {% endfor %}
+</div>
 </div>
 
 <!-- Member modal -->

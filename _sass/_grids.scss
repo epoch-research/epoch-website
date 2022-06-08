@@ -70,14 +70,17 @@
   .box-item {
     vertical-align: top;
     color: #111;
-    border: 2px solid #b9b9b9;
-    border-radius: 5px;
     padding: 10px 10px 10px 30px;
-    margin-bottom: 2.5em;
+    //border: 2px solid #b9b9b9;
+    //border-radius: var(--default-radius);
 
     &:hover {
       text-decoration: none;
     }
+  }
+
+  .box-item:not(:last-child) {
+    margin-bottom: 3em;
   }
 
   .left-column {
