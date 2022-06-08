@@ -184,10 +184,10 @@ We assume that the outliers in mobilenet and efficientnet come from the profiler
 
 Ultimately, we want to estimate utilization rates. We compute them by using four different methods:
 
-*   Theory method: We get the forward pass FLOP estimate of fvcore and multiply it by 3.0 to account for the backward pass. Then, we divide it by the product of the GPU training time and the peak GPU performance of the Tesla P100.
-*   One method: We take the profiler_nvtx estimate for the forward and backward passes, and divide it by the product of the training time and maximal GPU performance.
-*   Batch method: We perform the same procedure for one batch.
-*   Epoch method: We perform the same procedure for one epoch.
+*   _Theory method_: We get the forward pass FLOP estimate of fvcore and multiply it by 3.0 to account for the backward pass. Then, we divide it by the product of the GPU training time and the peak GPU performance of the Tesla P100.
+*   _One method_: We take the profiler_nvtx estimate for the forward and backward passes, and divide it by the product of the training time and maximal GPU performance.
+*   _Batch method_: We perform the same procedure for one batch.
+*   _Epoch method_: We perform the same procedure for one epoch.
 
 <figure>
   <img src="https://lh4.googleusercontent.com/cH6b6WvmA5mrSaYzOFeMiFoIFWvb1OeYllX74AUMdK95LMZ3WHd7jymmFHg9S0zHuv_8FRsDubDHA68bMbAu74rD7BNhuAwWf-QeiSVxxQOqxqI6Fr3SCPC5BHqeG_cYsJLZbukq">
