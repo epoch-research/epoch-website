@@ -32,7 +32,7 @@ collections:
   research:
     output: true
 
-url: epochai.org
+url: https://epochai.org
 baseurl: /
 domain: epochai.org
 
