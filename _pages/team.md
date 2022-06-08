@@ -13,6 +13,7 @@ permalink: /team
     .member {
       max-width: 250px;
       width: 100%;
+      border-radius: var(--default-radius);
     }
 
     @media (max-width: 550px) {
@@ -37,6 +38,7 @@ permalink: /team
       background-size: cover;
       background-position: center;
       display: block;
+      border-radius: var(--default-radius);
     }
 
     #jaime-sevilla .mug {
@@ -84,6 +86,7 @@ permalink: /team
 
 		.modal .mug {
       width: 100%;
+      border-radius: var(--default-radius);
     }
 
     .member a {

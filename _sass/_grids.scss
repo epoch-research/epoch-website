@@ -9,7 +9,7 @@
     max-width: 300px;
     width: 100%;
     background-color: #e7e7e7;
-    border-radius: 5px;
+    border-radius: var(--default-radius);
     box-sizing: border-box;
     border-style: none !important;
 
@@ -85,6 +85,7 @@
 
   .left-column {
     flex: auto;
+    padding-right: 10px;
   }
 
   .right-column {
