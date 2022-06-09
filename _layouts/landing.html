@@ -43,10 +43,10 @@
       width: 100%;
       height: 100%;
       background-color: black;
-      background-image: url('{{ page.image | relative_url }}');
-      background-size: {{ page.image_size }};
-      background-position-x: {{ page.image_position_x }};
-      background-position-y: {{ page.image_position_y }};
+      background-image: url('{{ page.background_image.url | relative_url }}');
+      background-size: {{ page.background_image.size }};
+      background-position-x: {{ page.background_image.x }};
+      background-position-y: {{ page.background_image.y }};
       background-repeat: no-repeat;
     }
 
