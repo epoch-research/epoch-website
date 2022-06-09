@@ -7,7 +7,7 @@ featured_url: /blog
 featured_url_text: Learn more
 permalink: /
 
-image: /assets/images/epoch-logo-white.png
+image: /assets/images/epoch-logo-og-preview.png
 
 background_image:
   url: /assets/images/geforce_gtx_970.jpg
