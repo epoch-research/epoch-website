@@ -506,6 +506,7 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newCheckControl("Label eras",           "labelEras",          true));
   v.addControl(mlp.newCheckControl("Show doubling times",  "showDoublingTimes",  true));
   v.addControl(mlp.newCheckControl("Label systems",        "labelSystems",       false));
+  v.addControl(mlp.newCheckControl("Show legend",          "showLegend",         true));
 
   // Thresholds
 
@@ -743,7 +744,10 @@ function buildTrendsGraph(container, database, args) {
   onChange({options: params});
 
   function updateLegendVisibility() {
-    v.showLegend(v.mainArea.bounds().w > 500);
+    // TODO
+    if (v.mainArea.bounds().w < 500) {
+      v.setOptions({showLegend: false});
+    }
   }
 
   v.canvas.on('resize', updateLegendVisibility);
@@ -753,6 +757,8 @@ function buildTrendsGraph(container, database, args) {
   v.yAxisLabel.cursor = 'pointer';
 
   function onChange(args) {
+    v.showLegend(args.options.showLegend);
+
     let axesUpdated = (prevParams.xAxis != args.options.xAxis) || (prevParams.yAxis != args.options.yAxis);
     let resetCamera = false;
 
