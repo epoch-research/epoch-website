@@ -285,11 +285,11 @@
     render: function() {
       this.context.save();
       this.context.scale(mlp.devicePixelRatio, mlp.devicePixelRatio);
-      this.fire('beforeRender');
+      this.fire('beforeRender', {context: this.context});
       for (let area of this.areas) {
         area._render();
       }
-      this.fire('afterRender');
+      this.fire('afterRender', {context: this.context});
       this.context.restore();
     },
 

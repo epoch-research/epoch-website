@@ -395,16 +395,25 @@ function buildTrendsGraph(container, database, args) {
   });
 
   _(exportButton, "#graphDownload").addEventListener("click", function() {
-    // TODO To implement
-    if (visualizer.view) {
-      visualizer.view.toImageURL('png').then(function(url) {
-        let link = document.createElement('a');
-        link.setAttribute('href', url);
-        link.setAttribute('target', '_blank');
-        link.setAttribute('download', 'trends.png');
-        link.dispatchEvent(new MouseEvent('click'));
-      }).catch(function(error) {});
-    }
+    let padding = 5;
+    let destCanvas = document.createElement('canvas');
+    destCanvas.width  = plotter.canvas.node.width + 2*padding;
+    destCanvas.height = plotter.canvas.node.height + 2*padding;
+
+    let destContext = destCanvas.getContext('2d');
+
+    destContext.fillStyle = "white";
+    destContext.rect(0, 0, destCanvas.width, destCanvas.height);
+    destContext.fill();
+
+    destContext.drawImage(plotter.canvas.node, padding, padding);
+
+    let dataUrl = destCanvas.toDataURL();
+    let link = document.createElement('a');
+    link.setAttribute('href', dataUrl);
+    link.setAttribute('target', '_blank');
+    link.setAttribute('download', 'trends.png');
+    link.dispatchEvent(new MouseEvent('click'));
   });
 
   plotter.nodes.graph.appendChild(exportButton);
