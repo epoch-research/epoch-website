@@ -77,6 +77,7 @@ tippy:
 
 plugins:
   - jekyll-toc
+  - jekyll-seo-tag
 
 # To make GitHub Pages work with our domain
 #include: [CNAME]
