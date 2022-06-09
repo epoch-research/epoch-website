@@ -12530,7 +12530,7 @@ var database = {
       'Compute Sponsor Categorization': 'Industry',
     },
     {
-      'System': 'Denoising Diffusion Probabilistic Models (LSUN Bedroom)',
+      'System': 'Denoising Diffusion Probabilistic Models (LSUN Bedroom)',
       'Domain': 'Drawing',
       'Task': '',
       'Organization(s)': 'UC Berkeley',
