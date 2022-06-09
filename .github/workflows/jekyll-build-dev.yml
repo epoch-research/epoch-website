@@ -21,7 +21,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           target_branch: dev-build
           target_path: public
-          jekyll_build_options: --config _config_dev.yml
+          jekyll_build_options: --config _config.yml,_config_dev.yml
           post_build_commands: |
             cp "${GITHUB_WORKSPACE}/firebase-dev.json" firebase.json
   deploy:
