@@ -206,6 +206,9 @@ body {
 
   a {
     text-decoration: none;
+    &:visited {
+      color: white;
+    }
     &:hover {
       color: $hovered-link-color;
       text-decoration: none;
