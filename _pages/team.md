@@ -91,6 +91,10 @@ permalink: /team
 		.modal .mug {
       width: 100%;
       border-radius: var(--default-radius);
+      transition: 0.3s;
+
+      width: 200px;
+      height: 200px;
     }
 
     .member a {
@@ -184,6 +188,30 @@ We are a research initiative working to support AI governance and improve foreca
   {% endfor %}
 </div>
 
+## Advisor Board
+
+<div class="collection-grid team-grid">
+  {% for member in site.data.advisor_board %}
+  <div class="member" id="{{member.id}}">
+    <div class="mug" style="background-image: url('{{member.id | prepend: '/assets/images/advisors/' | append: '.jpg' | relative_url }}')"></div>
+    <div class="member-info">
+      <h3 class="member-name">{{member.name}}</h3>
+      <h4 class="member-role">{{member.role}}</h4>
+      <div class="member-resources">
+        {% for _resource in member.resources %}
+          {% assign resource = _resource | first %}
+          {% assign resource_name = resource[0] %}
+          {% assign resource_url = resource[1] %}
+          {% assign type = site.data.resource_types | where: "name", resource_name | first %}
+          <a class="member-resource" href="{{resource_url}}"><i class="bi bi-{{type.icon}}"></i></a>
+        {% endfor %}
+      </div>
+      <p class="member-description">{{member.description}}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
 <!-- Member modal -->
 <div class="modal micromodal-slide" id="member-modal" aria-hidden="true">
   <div class="modal-overlay" tabindex="-1" data-micromodal-close>
@@ -224,10 +252,12 @@ We are a research initiative working to support AI governance and improve foreca
     function showModal(memberDom, member) {
       let modal = document.querySelector('#member-modal');
 
+      modal.querySelector('.mug').src = '';
+      modal.querySelector('.mug').src = member.imageUrl;
+
       modal.querySelector('.modal-title').innerHTML = member.name;
       modal.querySelector('.member-role').innerHTML = member.role;
       modal.querySelector('.description').innerHTML = member.description;
-      modal.querySelector('.mug').src = member.imageUrl;
       modal.querySelector('.modal-container').scrollTop = 0;
 
       if (backgroundImage) {
@@ -262,7 +292,7 @@ We are a research initiative working to support AI governance and improve foreca
 
       member.addEventListener('click', (e) => {
         if (e.target != resources && !resources.contains(e.target)) {
-          showModal(member, teamMembers[member.id]);
+          showModal(member, members[member.id]);
         }
       });
     }
@@ -307,7 +337,7 @@ We are a research initiative working to support AI governance and improve foreca
 
           // The password is correct. Activate Team Bahamas
           for (let dom of document.querySelectorAll('.member')) {
-            let m = teamMembers[dom.id];
+            let m = members[dom.id];
             m.imageUrl = `/assets/images/team/transparent/${m.id}.png`;
             dom.querySelector('.mug').style.backgroundImage = `url(${m.imageUrl}), url(${backgroundImage})`;
           }
@@ -321,9 +351,118 @@ We are a research initiative working to support AI governance and improve foreca
 
     for (let member of document.querySelectorAll('.member')) {
       if (inTouchDevice) {
-        member.addEventListener('click', (e) => enterMember(teamMembers[member.id]));
+        member.addEventListener('click', (e) => enterMember(members[member.id]));
       } else {
-        member.addEventListener('mouseenter', (e) => enterMember(teamMembers[member.id]));
+        member.addEventListener('mouseenter', (e) => enterMember(members[member.id]));
+      }
+    }
+
+    // End of secret code.
+    // - - - - - - - - - - - - - - - - - - - - - - -
+  });
+</script>
+
+
+      modal.querySelector('.modal-title').innerHTML = member.name;
+      modal.querySelector('.member-role').innerHTML = member.role;
+      modal.querySelector('.description').innerHTML = member.description;
+      modal.querySelector('.mug').src = member.imageUrl;
+      modal.querySelector('.modal-container').scrollTop = 0;
+
+      if (backgroundImage) {
+        modal.querySelector('.mug').style.backgroundImage = `url(${backgroundImage})`;
+      }
+
+      modal.querySelector('.modal-footer').innerHTML = '';
+      for (let resource of member.resources) {
+        let resourceDom = u(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`).first();
+        modal.querySelector('.modal-footer').appendChild(resourceDom);
+      }
+
+      MicroModal.show('member-modal', {
+        onShow: () => {
+          memberDom.classList.add('selected');
+
+          // For some reason, the resources get focused when the modal is shown
+          document.activeElement.blur();
+        },
+        onClose: () => {
+          memberDom.classList.remove('selected');
+        },
+      });
+    }
+
+    for (let member of document.querySelectorAll('.member')) {
+      let mug = member.querySelector('.mug');
+      let resources = member.querySelector('.member-resources');
+
+      resources.addEventListener('mouseenter', () => member.classList.add('mouse-over-resources'));
+      resources.addEventListener('mouseleave', () => member.classList.remove('mouse-over-resources'));
+
+      member.addEventListener('click', (e) => {
+        if (e.target != resources && !resources.contains(e.target)) {
+          showModal(member, members[member.id]);
+        }
+      });
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - -
+    // Start secret code. LOOK NO FURTHER.
+
+    let secretPassword = [
+      'tamay-besiroglu',
+      'eduardo-infante-roldan',
+      'anson-ho',
+      'marius-hobbhahn',
+
+      'tamay-besiroglu',
+      'anson-ho',
+      'lennart-heim',
+      'anson-ho',
+      'marius-hobbhahn',
+      'anson-ho',
+      'jaime-sevilla',
+
+      'pablo-villalobos',
+    ];
+
+    let introducedPassword = [];
+
+    function enterMember(member) {
+      if (introducedPassword.length >= secretPassword.length) return;
+
+      introducedPassword.push(member.id);
+      if (introducedPassword.length == secretPassword.length) {
+        let correctPassword = true;
+        for (let i = 0; i < secretPassword.length; ++i) {
+          if (introducedPassword[i] !== secretPassword[i]) {
+            correctPassword = false;
+            break;
+          }
+        }
+
+        if (correctPassword) {
+          backgroundImage = '/assets/images/team/transparent/bahamas.png';
+
+          // The password is correct. Activate Team Bahamas
+          for (let dom of document.querySelectorAll('.member')) {
+            let m = members[dom.id];
+            m.imageUrl = `/assets/images/team/transparent/${m.id}.png`;
+            dom.querySelector('.mug').style.backgroundImage = `url(${m.imageUrl}), url(${backgroundImage})`;
+          }
+
+          document.body.style.background = 'linear-gradient(0deg, #57C1EB 0%, #009C52 100%)';
+        }
+      }
+    }
+
+    let inTouchDevice = matchMedia('(hover: none)').matches;
+
+    for (let member of document.querySelectorAll('.member')) {
+      if (inTouchDevice) {
+        member.addEventListener('click', (e) => enterMember(members[member.id]));
+      } else {
+        member.addEventListener('mouseenter', (e) => enterMember(members[member.id]));
       }
     }
 

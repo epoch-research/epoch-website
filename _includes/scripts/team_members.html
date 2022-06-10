@@ -1,12 +1,26 @@
 <script>
-  let teamMembers = {
-    {% for member in site.data.team %}
+
+  {% for index in (0..1) %}
+
+  {% case index %}
+  {% when 0 %}
+    {% assign variable = 'teamMembers' %}
+    {% assign data = site.data.team %}
+    {% assign imageDir = '/assets/images/team/' %}
+  {% when 1 %}
+    {% assign variable = 'advisors' %}
+    {% assign data = site.data.advisor_board %}
+    {% assign imageDir = '/assets/images/advisors/' %}
+  {% endcase %}
+
+  let {{variable}} = {
+    {% for member in data %}
       '{{member.id}}': {
         id: '{{member.id}}',
         name: '{{member.name}}',
         description: '{{member.description}}',
         role: '{{member.role}}',
-        imageUrl: '{{member.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}',
+        imageUrl: '{{member.id | prepend: imageDir | append: '.jpg' | relative_url }}',
         resources: [
         {% for _resource in member.resources %}
           {% assign resource = _resource | first %}
@@ -19,4 +33,8 @@
       },
     {% endfor %}
   };
+
+  {% endfor %}
+
+  let members = {...teamMembers, ...advisors};
 </script>
