@@ -1,6 +1,7 @@
 ---
 layout: full_screen_app
 title: ML input trends visualization
+image: /assets/images/posts/2022/compute-trends.png
 permalink: /mlinputs/visualization
 ---
 

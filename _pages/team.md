@@ -61,11 +61,15 @@ permalink: /team
       background-position: -56px -56px, 0 0;
     }
 
+    #tom-davidson .mug {
+      background-size: 150%;
+      background-position: -57px -33px;
+    }
+
     #eduardo-infante-roldan .mug {
       background-size: 140%, 100%;
       background-position: -44px -23px, 0 0;
     }
-
 
 		.member:not(.mouse-over-resources):hover {
       cursor: pointer;
