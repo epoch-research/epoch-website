@@ -451,7 +451,7 @@ p.centered {
     border: none;
     padding: 3px;
     font-size: 1rem;
-    transition: opacity 0s;
+    transition: opacity 0.3s ease;
     opacity: 1;
     background-color: transparent;
 
@@ -462,19 +462,18 @@ p.centered {
 
   @media (hover: hover) {
     .copy-button {
-      opacity: 0;
+      opacity: 0.2;
     }
+  }
+
+  &:hover .copy-button {
+    opacity: 1;
   }
 
   .copy-button .tippy-content {
     font-size: 0.7rem;
     padding: 0.3rem 0.4rem;
     color: white !important;
-  }
-
-  &:hover .copy-button {
-    opacity: 1;
-    transition: opacity 0.3s ease;
   }
 
 }
