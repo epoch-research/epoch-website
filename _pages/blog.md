@@ -103,6 +103,13 @@ permalink: /blog
       margin-bottom: 2.5em;
     }
 
+    .pin {
+      margin-bottom: 0;
+      margin-right: 0.5rem;
+      font-size: 0.8rem;
+      color: grey;
+    }
+
     @media (max-width: 750px) {
       .post {
         display: block;
@@ -135,30 +142,45 @@ permalink: /blog
 # Blog
 
 <div class="post-list">
-  {% assign articles = site.blog | sort: 'date' | reverse %}
-  {% for item in articles %}
-  {% if item.external %}
-  <a href="{{item.external_url}}" class="post external">
-  {% else %}
-  <a href="{{item.url | relative_url}}" class="post">
-  {% endif %}
+  {% assign posts = "" | split: ',' %}
+
+  {% assign _posts = site.blog | sort: 'date' | reverse %}
+
+  {% for post in _posts %}
+    {% if post.pinned %}
+      {% assign posts = posts | push: post %}
+    {% endif %}
+  {% endfor %}
+
+  {% for post in _posts %}
+    {% unless post.pinned %}
+      {% assign posts = posts | push: post %}
+    {% endunless %}
+  {% endfor %}
+
+  {% for post in posts %}
+  <a href="{{post.url | relative_url}}" class="post">
     <div class="post-metadata">
-      <div class="post-date">{{item.date | date: "%b. %d, %Y"}}</div>
-      {% if item.tags %}
+      {% if post.pinned %}
+        <p class="pin"><i class="bi bi-pin-angle"></i> Pinned</p>
+      {% endif %}
+      <div class="post-date">{{post.date | date: "%b. %d, %Y"}}</div>
+      {% if post.tags %}
         <div class="post-tags">
-          {% for tag in item.tags %}
-            {% assign backgroundColor = site.data.tags | find_exp: 'item','item.name == tag' | map: 'background_color' %}
+          {% for tag in post.tags %}
+            {% assign backgroundColor = site.data.tags | find_exp: 'post','post.name == tag' | map: 'background_color' %}
             <div class="post-tag {{tag}}" style="background-color: {{backgroundColor}}">{{tag}}</div>
           {% endfor %}
         </div>
       {% endif %}
     </div>
-    <div class="post-thumbnail"><img src="{{item.image | relative_url }}"></div>
+    <div class="post-thumbnail"><img src="{{post.image | relative_url }}"></div>
     <div class="post-meat">
-      <h2 class="post-name">{{item.title}} {% if item.external %}<i class="bi bi-box-arrow-up-right external-icon"></i>{% endif %}</h2>
-      <p class="post-authors">{{item.authors | map: 'name' | better_join: ", ", ", and "}}</p>
-      <p class="post-abstract">{% if item.description %} {{item.description}} {% else %} {{item.excerpt}} {% endif %}</p>
+      <h2 class="post-name">{{post.title}}</h2>
+      <p class="post-authors">{{post.authors | map: 'name' | better_join: ", ", ", and "}}</p>
+      <p class="post-abstract">{% if post.description %} {{post.description}} {% else %} {{post.excerpt}} {% endif %}</p>
     </div>
   </a>
+
   {% endfor %}
 </div>

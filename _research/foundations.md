@@ -4,13 +4,13 @@ summary: Doing foundational research to understand the inner workings of the AI 
 image: /assets/images/bioanchors-compute.png
 ---
 
-### We aim to do foundational research to understand the inner workings of the AI production function, and what impacts this will have as we head into a world with increasingly advanced AI. 
+### Investigate claims about Machine Learning
 
-This involves: 
-- Studying the interactions between different inputs and outputs of ML systems
-- Understanding what drives progress at second order, and how this will impact society over the long run
-- Working on novel research questions at the intersection of AI and economics
+There are many open questions about the evolution of Machine Learning techniques and practices. This includes questions such as: How relatively important has better hardware been compared to more and better data for driving progress in key domains? How quickly have algorithms improved? While there are aspects of these questions that are studied deeply in the field, there are some high-level issues of strategic importance that we feel are under-investigated.
 
-This work is critical because it helps decision makers develop a high-level understanding of how AI works. These decision makers generally do not have the time to learn about AI, and synthesizing large amounts of information is crucial for narrowing the gap between technical developments and AI governance. 
+We aim to rigorously study these questions, using data and a combination of econometrics, statistics, Machine Learning and causal inference techniques. We work on these questions to support policy makers and AI strategy, and connect their decisions to evidence.
+* Using datasets on Machine Learning models over time to provide rough estimates of the relative importance of key inputs, such as data and compute
+* Producing data-driven descriptive accounts of algorithmic innovation in Machine Learning
+* Small-scale ML experiments that investigate questions of strategic importance around around transfer-learning or algorithmic efficiency
 
 {% include research_grid.html branch="foundations" title="Prior work" %}

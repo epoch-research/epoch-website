@@ -4,6 +4,7 @@ title: "Announcing Epoch: A research initiative monitoring the road to transform
 subtitle: Subtitle
 image: assets/images/epoch-logo.svg
 description: We’re a new research initiative working on monitoring AI developments and forecasting the developments of AI. Come join us!
+pinned: true
 tags: announcements
 
 banner:
