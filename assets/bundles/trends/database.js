@@ -11129,7 +11129,7 @@ var database = {
       'System': 'Go-explore',
       'Domain': 'Games',
       'Task': 'Atari',
-      'Organization(s)': 'Uber AI, Open AI',
+      'Organization(s)': 'Uber AI, OpenAI',
       'Organization Categorization': 'Industry',
       'Author(s)': 'A Ecoffet, J Huizinga, J Lehman, KO Stanley, J Clune',
       'Publication date': '27/04/2020',
