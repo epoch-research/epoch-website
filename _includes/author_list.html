@@ -12,7 +12,7 @@
   {% endif %}
 
   {% capture authorNode %}
-    {% if url %}
+    {%- if url -%}
       {% assign mail = %}
       {% for _resource in member.resources %}
         {% assign resource = _resource | first %}
@@ -22,12 +22,11 @@
           {% assign mail = resource_url %}
         {% endif %}
       {% endfor %}
-
       <span class="author {% if mail %}tooltiped{% endif %}" data-member-id="{{member.id}}">{{author.name}}</span>
-    {% else %}
+    {%- else -%}
       <span class="author">{{author.name}}</span>
-    {% endif %}
-  {% endcapture %}
+    {%- endif -%}
+  {%- endcapture -%}
 
   {% assign processedAuthors = processedAuthors | push: authorNode %}
 {% endfor %}
