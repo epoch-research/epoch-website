@@ -49,22 +49,25 @@ image: /assets/images/team/epoch-team.jpg
 
 <!-- {: .tex2jax_ignore } -->
 
-## Why Work with Epoch? 
-- **You can work remotely from anywhere in the world**: We expect to organise group retreats every 6 months to do in-person coworking, and offer support with visa applications.
-- **You can work on crucial problems that directly inform AI governance and strategy**.
-- **We do not require degrees or extensive experience with AI or Economics**: Compared to other roles in AI safety, we offer a relatively easy ramp into the field of AI governance and forecasting.
-- **You can gain valuable career experience**: Going forward, we will work with prestigious organisations with which you will be affiliated, and release publications relating to our research agenda.
+# Why Work with Epoch?
 
-## What We're Looking For
-You may be an especially good fit for our team if:
-- **You're knowledgeable about economics**, especially statistics and econometrics. We spend a lot of time analysing data and trends, in order to improve our understanding of AI developments.
-- **You have experience with data science and programming**, and are comfortable gathering large amounts of data efficiently. 
-- **You're comfortable doing independent research**, and are able to think critically. 
-- **Are familiar with forecasting, recent AI developments, technical AI safety, or AI governance**.
+* You can work on crucial problems that directly inform AI governance and strategy
+* You can gain valuable career experience performing high-quality research
+* we offer a relatively easy ramp into the field of AI governance and forecasting with valuable guidance and mentoring
+* You can work remotely from anywhere in the world: We expect to organise group retreats every 6 months to do in-person coworking, and offer support with visa applications
 
-Bear in mind that **you don't need to know about all of these things to be a strong candidate**. If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway.
+# What We’re Looking For
 
-*Applications will open in late May*. 
+You may be an especially good fit for our team if you:
+
+* Have experience producing high-quality research
+* Have a background in Economics, Machine Learning, Engineering (especially Hardware or Software Engineering)
+* Are familiar with recent AI developments, technical AI safety, or AI governance
+* Are self-directed and have a desire for impact
+
+Bear in mind that you don’t need to know about all of these things to be a strong candidate. If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway.
+
+*Applications will open in June. Register your interest below to be notified.*
 
 # Open Positions
 

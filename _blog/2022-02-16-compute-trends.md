@@ -3,7 +3,7 @@ layout: article
 title: Compute Trends Across Three Eras of Machine Learning
 subtitle: Subtitle
 image: assets/images/posts/2022/compute-trends.png
-description: We've compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward. 
+description: We’ve compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward. 
 tags: paper
 
 banner:
