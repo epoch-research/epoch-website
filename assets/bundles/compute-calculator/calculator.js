@@ -620,7 +620,7 @@ function buildComputeCalculator(hardwareDataUrl) {
   class ComputeCalculator {
     static formatRealForSummary(x) {
       if (Number.isNaN(x)) return '--';
-      return (x < 10) ? x : x.toExponential(1);
+      return (x < 10) ? x : x.toExponential(1).replace('e+', 'e');
     }
 
     static renderMethod1(container) {
