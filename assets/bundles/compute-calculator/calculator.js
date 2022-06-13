@@ -689,7 +689,7 @@ function buildComputeCalculator(hardwareDataUrl) {
 
     static renderMethod2(container) {
         let method = new Method(container, 'Method 2: Hardware details and usage');
-        method.setFormula('compute = training time × # of cores × peak FLOP/s × <span id="utilizationRate" class="formula-block">utilization rate</span>');
+        method.setFormula('compute = training time × # of GPUs/TPUs × peak FLOP/s × <span id="utilizationRate" class="formula-block">utilization rate</span>');
 
         method.dom.addClass('method2');
 
@@ -963,13 +963,13 @@ function buildComputeCalculator(hardwareDataUrl) {
         <p>We are uncertain about what utilization rate is best, but our recommendation is 30% for Large Language Models and 40% for other models.</p>
       `;
 
-      method.addBlock('Training time',    {block: timeBlock});
-      method.addBlock('Number of cores',  {value: 1, inputType: 'normal'});
-      method.addBlock(peakFlopSTitle,     {block: flopSBlock}).addClass('full-flex');
-      method.addBlock('Utilization rate', {value: 30, min: 0, max: 100, units: '%', inputType: 'normal', info: utilizationRateInfo});
+      method.addBlock('Training time',       {block: timeBlock});
+      method.addBlock('Number of GPUs/TPUs', {value: 1, inputType: 'normal'});
+      method.addBlock(peakFlopSTitle,        {block: flopSBlock}).addClass('full-flex');
+      method.addBlock('Utilization rate',    {value: 30, min: 0, max: 100, units: '%', inputType: 'normal', info: utilizationRateInfo});
 
       method.computeCompute = (inputs => {
-        return inputs.trainingTime * inputs.numberOfCores * inputs.peakFlopS * inputs.utilizationRate/100;
+        return inputs.trainingTime * inputs.numberOfGpuTpu * inputs.peakFlopS * inputs.utilizationRate/100;
       });
 
       method.getPaperSummary = ({inputs, compute}) => {
