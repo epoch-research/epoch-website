@@ -969,7 +969,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       method.addBlock('Utilization rate',    {value: 30, min: 0, max: 100, units: '%', inputType: 'normal', info: utilizationRateInfo});
 
       method.computeCompute = (inputs => {
-        return inputs.trainingTime * inputs.numberOfGpuTpu * inputs.peakFlopS * inputs.utilizationRate/100;
+        return inputs.trainingTime * inputs.numberOfGpusTpus * inputs.peakFlopS * inputs.utilizationRate/100;
       });
 
       method.getPaperSummary = ({inputs, compute}) => {
