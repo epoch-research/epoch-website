@@ -45,6 +45,7 @@ let params = {
     'Parameters':                              [-Infinity, +Infinity],
     'Training compute (FLOPs)':                [-Infinity, +Infinity],
     'Inference compute (FLOPs)':               [-Infinity, +Infinity],
+    'Training dataset size (datapoints)':      [-Infinity, +Infinity],
     'Inference compute per parameter (FLOPs)': [-Infinity, +Infinity],
     'Inference compute times parameters':      [-Infinity, +Infinity],
   },
@@ -95,6 +96,7 @@ function init(database) {
     row["Publication date (julian date)"] = dateToJulianDate(row["Publication date"]);
     row["Training compute (FLOPs)"] = parseFloat(row["Training compute (FLOPs)"]);
     row["Inference compute (FLOPs)"] = parseFloat(row["Inference compute (FLOPs)"]);
+    row["Training dataset size (datapoints)"] = parseFloat(row["Training dataset size (datapoints)"]);
     row["Parameters"] = parseFloat(row["Parameters"]);
     row["Citations"] = parseFloat(row["Citations"]);
     if (isNaN(row["Citations"])) row["Citations"] = 0;

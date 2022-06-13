@@ -16,6 +16,7 @@ function buildTrendsGraph(container, database, args) {
     "Parameters",
     "Training compute (FLOPs)",
     "Inference compute (FLOPs)",
+    "Training dataset size (datapoints)",
     "Training compute per parameter (FLOPs)",
     "Training compute times parameters",
   ];
@@ -24,6 +25,7 @@ function buildTrendsGraph(container, database, args) {
     "Parameters",
     "Training compute (FLOPs)",
     "Inference compute (FLOPs)",
+    "Training dataset size (datapoints)",
     "Training compute per parameter (FLOPs)",
     "Training compute times parameters",
   ];
@@ -197,15 +199,16 @@ function buildTrendsGraph(container, database, args) {
       if (system) {
         tooltip = {};
         tooltip.dom = plotter.buildTooltipTable([
-            {label: "System",                    value: system["System"]},
-            {label: "Organization(s)",           value: system["Organization(s)"]},
-            {label: "Author(s)",                 value: system["Author(s)"]},
-            {label: "Reference",                 value: system["Reference"]},
-            {label: "Publication date",          value: system["Publication date"].toLocaleString('en-us',{month:'short', day: 'numeric', year:'numeric'})},
-            {label: "Parameters",                value: toExponential(system["Parameters"])},
-            {label: "Training compute (FLOPs)",  value: toExponential(system["Training compute (FLOPs)"])},
-            {label: "Inference compute (FLOPs)", value: toExponential(system["Inference compute (FLOPs)"])},
-            {label: "Domain",                    value: system["_Domain"]},
+            {label: "System",                             value: system["System"]},
+            {label: "Organization(s)",                    value: system["Organization(s)"]},
+            {label: "Author(s)",                          value: system["Author(s)"]},
+            {label: "Reference",                          value: system["Reference"]},
+            {label: "Publication date",                   value: system["Publication date"].toLocaleString('en-us', {month:'short', day: 'numeric', year:'numeric'})},
+            {label: "Parameters",                         value: toExponential(system["Parameters"])},
+            {label: "Training compute (FLOPs)",           value: toExponential(system["Training compute (FLOPs)"])},
+            {label: "Inference compute (FLOPs)",          value: toExponential(system["Inference compute (FLOPs)"])},
+            {label: "Training dataset size (datapoints)", value: toExponential(system["Training dataset size (datapoints)"])},
+            {label: "Domain",                             value: system["_Domain"]},
         ]);
       }
     } else if (object instanceof mlp.Polyline || slopeTextToInfo.has(object)) {
@@ -542,6 +545,7 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newNumberRangeControl("Parameters range",                        "parametersRange"));
   v.addControl(mlp.newNumberRangeControl("Training compute range",                  "trainingComputeRange"));
   v.addControl(mlp.newNumberRangeControl("Inference compute range",                 "inferenceComputeRange"));
+  v.addControl(mlp.newNumberRangeControl("Training dataset size range",             "trainingDatasetSizeRange"));
   v.addControl(mlp.newNumberRangeControl("Inference compute per parameter range",   "inferenceComputePerParameterRange"));
   v.addControl(mlp.newNumberRangeControl("Inference compute times parameter range", "inferenceComputeTimesParameterRange"));
 
@@ -812,6 +816,9 @@ function buildTrendsGraph(container, database, args) {
 
     params.ranges['Inference compute (FLOPs)'][0] = args.options.inferenceComputeRange[0];
     params.ranges['Inference compute (FLOPs)'][1] = args.options.inferenceComputeRange[1];
+
+    params.ranges['Training dataset size (datapoints)'][0] = args.options.trainingDatasetSizeRange[0];
+    params.ranges['Training dataset size (datapoints)'][1] = args.options.trainingDatasetSizeRange[1];
 
     params.ranges['Inference compute per parameter (FLOPs)'][0] = args.options.inferenceComputePerParameterRange[0];
     params.ranges['Inference compute per parameter (FLOPs)'][1] = args.options.inferenceComputePerParameterRange[1];
