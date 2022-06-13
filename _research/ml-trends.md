@@ -6,7 +6,7 @@ image: assets/images/posts/2022/compute-trends.png
 
 ### Producing datasets and analysing trends in Machine Learning
 
-Despite surging interest in Machine Learning, there has been limited work systematically curating and studying datasets about what these systems are like—how much compute they used, what datasets they were trained on, and what their architectures are like. We aim to fill that gap in collaboration with **MIT’s FutureTech project**.
+Despite surging interest in Machine Learning, there has been limited work systematically curating and studying datasets about what these systems are like—how much compute they used, what datasets they were trained on, and what their architectures are like. We aim to fill that gap in collaboration with **[MIT’s FutureTech project](https://futuretech.mit.edu/)**.
 
 This work will help us build a big picture understanding of what has happened in the field in the recent decades, and ultimately help us understand where it might go next.
 
