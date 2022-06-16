@@ -2,3 +2,7 @@
   role: Research Advisor
   description: Tom is a senior research analyst at Open Philanthropy. He’s currently working on assessing arguments that transformative AI might be developed relatively soon. Prior to joining Open Philanthropy, Tom worked as a Data Scientist for education technology startup BridgeU and taught science at a UK comprehensive school. He has a Masters in Physics and Philosophy from the University of Oxford.
   id: tom-davidson
+- name: Neil Thompson
+  role: Research Advisor
+  description: Neil is an Innovation Scholar at MIT’s Computer Science and Artificial Intelligence Lab and the Initiative on the Digital Economy where he leads the FutureTech Project. He is also an Associate Member of the Broad Institute.
+  id: neil-thompson
