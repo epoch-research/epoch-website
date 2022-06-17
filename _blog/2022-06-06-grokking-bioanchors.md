@@ -21,7 +21,8 @@ authors:
 *Notes: *
 
 *   *I give a visual explanation of Ajeya Cotra’s draft report,* [*Forecasting TAI with biological anchors (Cotra, 2020)*](https://www.alignmentforum.org/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines)*, summarising the key assumptions, intuitions, and conclusions*
-*   *The diagrams can be found* [*here*](https://docs.google.com/presentation/d/1eXutGC7VJ6Dig6wjqHVa44XYTtUllX6ZOrJJv1S1JZ4/edit) *– you can click on some of the boxes to get linked to the part of the report that you’re interested in*[^1]
+*   *The diagrams can be found [here](https://docs.google.com/presentation/d/1eXutGC7VJ6Dig6wjqHVa44XYTtUllX6ZOrJJv1S1JZ4/edit) – you can click on some of the boxes to get linked to the part of the report that you’re interested in*[^1]
+
 
 *Thanks to Michael Aird, Ashwin Acharya, and the Epoch team for suggestions and feedback! Special thanks to Jaime Sevilla and Ajeya Cotra for detailed feedback.*
 
@@ -48,7 +49,7 @@ In calculating the training compute requirements distribution, Cotra places 90% 
 
 Here’s a visual representation of how Cotra breaks down the question “How likely is the development is TAI by a given year?”:
 
-<figure markdown="1">
+<figure>
   <img src="https://lh6.googleusercontent.com/D9iOp9qPWjgbx3JpArbd8WNURZHge6wyP6JdgQRaL2J2noVuqPQtuBFdMi-AHFlhg-_Oy9Cv-4gzZsawFnLP0QrOkQXkcXrduKxB5Mk8x7-ysd2mCMFRDYyCSrMFUnYnUD2C8f5lVQjT70v1SA">
 </figure>
 
@@ -177,10 +178,10 @@ Both the evolution and lifetime anchors seem to be taking a similar approach, bu
 
 <figure>
   <img src="https://lh5.googleusercontent.com/LpAVNcoYm9H7o-DqSKwnqoyXW9le_o2UrbIiNtrN_sOiA2abOaUkvVntLTVYhshBVzqAR7xi-LHjRpPnH_VHpEP_2xoR4Odrh_SfdhjjqTiBVPmgvujiRHRb7YwD-FeLeI_qPul8bghHimRyYQ">
+  <figcaption markdown="1">
+Image source: (For the evolutionary tree) [evogeneao Tree of Life Explorer](https://www.evogeneao.com/en/explore/tree-of-life-explorer)
+  </figcaption>
 </figure>
-<div class="caption" markdown="1">
-  Image source: (For the evolutionary tree) [evogeneao Tree of Life Explorer](https://www.evogeneao.com/en/explore/tree-of-life-explorer)
-</div>
 
 If we look at the part of the evolutionary tree with neurons, then the evolution anchor includes neuron compute over the entire red area, across many different branches. On the other hand, the lifetime anchor requires us to zoom in *really* close to a small region in the bottom right, consider only humans out of all mammals, and consider only 32 years of the life of a single human out of the ~100 billion people who’ve ever lived. This isn’t even close to being visible in the diagram[^11]! 
 
@@ -303,8 +304,9 @@ I also hope that these diagrams and explanations help you get a good high-level 
 *You can play with the diagrams [here](https://docs.google.com/presentation/d/1eXutGC7VJ6Dig6wjqHVa44XYTtUllX6ZOrJJv1S1JZ4/edit) (the boxes link to the corresponding part of the report). These were rather clunkily put together using Google Slides – if you have any suggestions for better software that’s good for making these diagrams, I’d love to hear it!*
 
 ---
-[^1]: *Green boxes correspond to inputs, red boxes are assumptions or limitations, and blue boxes are classed as “other”*
-    
+
+[^1]: Green boxes correspond to inputs, red boxes are assumptions or limitations, and blue boxes are classed as “other”.
+
 [^2]: By “AI Safety”, I am referring generally to work that helps reduce global catastrophic risks from advanced AI systems, which includes both AI governance and technical AI safety.
     
 [^3]: In general, it is not necessarily the case that these transformative effects need to be precipitated by a *single* model, although making this assumption is arguably still a good proxy for when we might see transformative impacts from multiple AI systems. The report also gives a more precise definition of “impact” in terms of [GWP](https://en.wikipedia.org/wiki/Gross_world_product), but my impression is that the heavy lifting assumption-wise is done by the bioanchors, rather than the precise definition of TAI. That is, I suspect the same bioanchors would’ve been used with somewhat different definitions of TAI.

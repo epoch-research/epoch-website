@@ -499,6 +499,15 @@ p.centered {
   }
 }
 
+mjx-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+table caption {
+  caption-side: bottom;
+}
+
 .button {
   color: black;
   font-size: 1.0rem;

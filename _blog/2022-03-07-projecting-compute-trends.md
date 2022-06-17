@@ -38,10 +38,10 @@ Cotra's amount of effective compute available at year Y is broken down into fore
 
 <figure>
   <img src="https://live.staticflickr.com/65535/51921949947_e6b29982f3_k.jpg">
+  <figcaption markdown="1">
+Figure 1. Contrasting our work with that of [Cotra 2020](https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines)
+  </figcaption>
 </figure>
-<div class="caption" markdown="1">
-   Figure 1. Contrasting our work with that of [Cotra 2020](https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines)
-</div>
 
 In this post, we present projections based on previously observed trends and some basic insights about how long the current 6-month doubling time can be sustained. That is, our post answers the question of: what would current trends imply about the future if you naively extrapolate them forwards.
 
@@ -63,19 +63,19 @@ Roughly, we might say that these scenarios are represented by the following dist
 
 <figure>
   <img src="https://live.staticflickr.com/65535/51923034058_7418269584_k.jpg">
+  <figcaption markdown="1">
+Fig 2. Distributions that roughly correspond to the three scenarios that come out of our replication of [Carey, 2018](https://aiimpacts.org/interpreting-ai-compute-trends/)[^1]
+  </figcaption>
 </figure>
-<div class="caption" markdown="1">
-  Fig 2. Distributions that roughly correspond to the three scenarios that come out of our replication of [Carey, 2018](https://aiimpacts.org/interpreting-ai-compute-trends/)[^1]
-</div>
 
 We then produce a mixture of these distributions by creating a weighted linear pool where “Bearish” is assigned 0.75, “Middle of the road” is assigned 0.20, and “Bullish” 0.05, based on our best-guesses (you can apply your own weights using [this Colab notebook](https://colab.research.google.com/drive/1FasOOiA-oh7nCkd0cEtuqbA3DSCAeDI-?usp=sharing).)
 
 <figure>
   <img src="https://live.staticflickr.com/65535/51923563815_73fb46fa4d_k.jpg">
+  <figcaption markdown="1">
+Fig 3. our best-guess for a prior over reversion dates, formed by mixing the previous distributions
+  </figcaption>
 </figure>
-<div class="caption" markdown="1">
-  Fig 3. our best-guess for a prior over reversion dates, formed by mixing the previous distributions
-</div>
 
 We can use this as our prior over when the fast-trend will revert to the more historically common trend associated with Moore’s law.
 
@@ -85,10 +85,10 @@ We simulate compute paths based on (a) our estimates of the growth rates in comp
 
 <figure>
   <img src="https://live.staticflickr.com/65535/51923027296_7ff01cfd2e_k.jpg">
+  <figcaption markdown="1">
+Fig 4. 10,000 projected compute paths. Solid line represents the median projected compute at each date, and the shaded region represents 2-standard deviations around the median.
+  </figcaption>
 </figure>
-<div class="caption" markdown="1">
-  Fig 4. 10,000 projected compute paths. Solid line represents the median projected compute at each date, and the shaded region represents 2-standard deviations around the median.
-</div>
 
 Our simulations reveal the following projections about the amount of compute used to train ML models.
 

@@ -67,7 +67,7 @@ blockquote {
   padding: 0.5em 10px;
   font-size: 1.2rem;
   font-style: normal !important;
-  letter-spacing: initial;
+  letter-spacing: unset;
   font-size: 1rem;
 }
 
@@ -80,9 +80,8 @@ blockquote {
 
 // Caption
 
-.caption {
+caption, figcaption, .caption {
   font-size: 0.875rem;
-  margin-top: 0.75rem;
   margin-bottom: 1.5rem;
   text-align: center;
 

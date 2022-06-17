@@ -45,17 +45,17 @@ The structure of this article is as follows. We first describe our dataset. We p
 
 <figure>
   <img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/afce9ae98a1eeac853fb148b12b41fc6162e0fd934bdbdf8.png">
+  <figcaption markdown="1">
+Model size of popular new Machine Learning systems between 1954 and 2021. Includes n=139 datapoints. See expanded and interactive version of this graph [here]({%link _pages/visualization.md %}).
+  </figcaption>
 </figure>
-<div class="caption" markdown="1">
-  Model size of popular new Machine Learning systems between 1954 and 2021. Includes n=139 datapoints. See expanded and interactive version of this graph [here]({%link _pages/visualization.md %}).
-</div>
 
 <figure>
   <img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/c9f5006bfc9850bbc06a938271f2e17cd9056daca1eee9eb.png">
+  <figcaption markdown="1">
+Model size of popular new Machine Learning systems between 2000 and 2021. Includes n=114 datapoints. See expanded and interactive version of this graph [here]({%link _pages/visualization.md %}).
+  </figcaption>
 </figure>
-<div class="caption" markdown="1">
-  Model size of popular new Machine Learning systems between 2000 and 2021. Includes n=114 datapoints. See expanded and interactive version of this graph [here]({%link _pages/visualization.md %}).
-</div>
 
 # Features of the dataset
 

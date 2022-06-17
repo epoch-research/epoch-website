@@ -30,7 +30,7 @@ d-byline .authors-affiliations {
 d-article {
   border-top-color: var(--global-divider-color) !important;
   a, p, h1, h2, h3, h4, h5, h6, li, table {
-    color: var(--global-text-color) !important;
+    color: var(--global-text-color);
   }
   a, h1, h2, hr, table, table th, table td {
     border-bottom-color: var(--global-divider-color) !important;

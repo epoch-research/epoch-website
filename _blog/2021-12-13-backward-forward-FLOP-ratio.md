@@ -342,10 +342,10 @@ Most common deep learning CNN architectures are deep enough that the first layer
 
 <figure>
   <img src="https://lh4.googleusercontent.com/jXTwTdOotVqzG4H-ZzmYAiKIAVW79O7kAgnvYUlgC0reBqbcxvWg8S1x14Qp8pcDKCBM6IfCKNWYTJjsmoeQg-ZPuKaCKlyMApkZqvr1dYrtgcNi05uHVsLd8tTTpVs-odYuSrY9">
+  <figcaption>
+Backward-forward FLOP ratio in different architectures. Read the labels as architecture_batchsize.
+  </figcaption>
 </figure>
-<div class="caption">
-  Backward-forward FLOP ratio in different architectures. Read the labels as architecture_batchsize.
-</div>
 
 ## Combining all above
 
