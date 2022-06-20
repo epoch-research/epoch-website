@@ -297,7 +297,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       let units         = options.units;
       let info          = options.info;
       let subtitle      = options.subtitle;
-      let value         = ('value' in options) ? options.value : 0;
+      let value         = options.value;
       let min           = ('min' in options) ? options.min : 0;
       let max           = ('max' in options) ? options.max : Infinity;
 
@@ -458,7 +458,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       this.type = ('type' in options) ? options.type : 'scientific';
       this.allowExponents = (options.type == 'scientific');
 
-      let value = ('value' in options) ? options.value : 0;
+      let value = options.value;
       this.min = ('min' in options) ? options.min : -Infinity;
       this.max = ('max' in options) ? options.max : +Infinity;
 
@@ -619,7 +619,7 @@ function buildComputeCalculator(hardwareDataUrl) {
 
   class ComputeCalculator {
     static formatRealForSummary(x) {
-      if (Number.isNaN(x)) return '--';
+      if (typeof x == 'undefined' || Number.isNaN(x)) return '--';
       return (x < 10) ? x : x.toExponential(1).replace('e+', 'e');
     }
 
@@ -700,7 +700,7 @@ function buildComputeCalculator(hardwareDataUrl) {
 
         let timeBlock = u('<div class="input-set">');
 
-        let trainingTime = u('<input id="trainingTime" value="0" type="hidden" class="method-input" required>');
+        let trainingTime = u('<input id="trainingTime" type="hidden" class="method-input" required>');
         timeBlock.append(trainingTime);
 
         let trainingTimeAmountWrapper = new ScientificInput({min: 0, inputId: 'trainingTimeAmount', classes: 'small', inputClasses: 'method-input', required: true});
@@ -964,7 +964,7 @@ function buildComputeCalculator(hardwareDataUrl) {
       `;
 
       method.addBlock('Training time',       {block: timeBlock});
-      method.addBlock('Number of GPUs/TPUs', {value: 1, inputType: 'normal'});
+      method.addBlock('Number of GPUs/TPUs', {inputType: 'normal'});
       method.addBlock(peakFlopSTitle,        {block: flopSBlock}).addClass('full-flex');
       method.addBlock('Utilization rate',    {value: 30, min: 0, max: 100, units: '%', inputType: 'normal', info: utilizationRateInfo});
 
