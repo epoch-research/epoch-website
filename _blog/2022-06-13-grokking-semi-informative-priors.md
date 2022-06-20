@@ -386,7 +386,7 @@ I personally found the approach taken in this report really interesting, particu
 
 [^1]: Green boxes correspond to inputs, red boxes are assumptions or limitations, and blue boxes are classed as “other”.
 
-[^2]: I’ve written a [summary of the report](https://forum.effectivealtruism.org/s/wn8bd6mKKwGfxmv7d/p/6RcicmJCvztarka8Y) as part of [this sequence](https://forum.effectivealtruism.org/s/wn8bd6mKKwGfxmv7d), if you’re interested!
+[^2]: I’ve written a [summary of the report]({% link _blog/2022-06-06-grokking-bioanchors.md %}), if you’re interested!
     
 [^3]: One way to think about this is as a distinction between [“inside view” and “outside view”](https://forum.effectivealtruism.org/topics/inside-vs-outside-view) approaches (however see also [this post](https://www.lesswrong.com/posts/BcYfsi7vmhDvzQGiF/taboo-outside-view)). Cotra’s bioanchors report takes an inside view, roughly based on the assumption that training compute is the biggest bottleneck to building TAI, and quantifying how much we’ll need to be able to train a transformative model. Davidson’s semi-informative priors report instead specifies very little about how AI development works, leaning more heavily on reference classes from similar technologies and a general Bayesian framework.
     
@@ -404,7 +404,7 @@ I personally found the approach taken in this report really interesting, particu
     
 [^10]: This approach also applies to researcher-years and compute years, and is described more [here](https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/#:~:text=2%20%E2%80%93%2025%25.-,6.3%20Varying%20the%20number%20of%20virtual%20successes%20and%20the%20regime%20start%2Dtime,-When%20the%C2%A0).
     
-[^11]: Incidentally, this is a claim that’s central to another of [Open Philanthropy’s Worldview Investigations](https://www.openphilanthropy.org/blog/our-progress-2018-and-plans-2019#:~:text=a%20function%20tentatively%20called%20%E2%80%9Cworldview%20investigations%2C%E2%80%9D), [*Forecasting TAI with biological anchors*](https://drive.google.com/drive/u/0/folders/15ArhEPZSTYU8f012bs6ehPS6-xmhtBPP), which [I’ve discussed in another post](https://forum.effectivealtruism.org/s/wn8bd6mKKwGfxmv7d/p/6RcicmJCvztarka8Y).
+[^11]: Incidentally, this is a claim that’s central to another of [Open Philanthropy’s Worldview Investigations](https://www.openphilanthropy.org/blog/our-progress-2018-and-plans-2019#:~:text=a%20function%20tentatively%20called%20%E2%80%9Cworldview%20investigations%2C%E2%80%9D), [*Forecasting TAI with biological anchors*](https://drive.google.com/drive/u/0/folders/15ArhEPZSTYU8f012bs6ehPS6-xmhtBPP), which [I’ve discussed in another post]({% link _blog/2022-06-06-grokking-bioanchors.md %}).
     
 [^12]: Note that this doesn’t imply that there’s an infinite probability of developing AGI in the first researcher-year of effort, because it’s not true that we’re starting from the “zero” level of AI technological development. Essentially, the regime start-time is *not* about “when the level AI technological development started increasing” – [see this footnote](https://www.openphilanthropy.org/semi-informative-priors#footnote68_z33c1z5) for more on discussion.
     
