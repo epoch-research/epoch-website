@@ -304,7 +304,7 @@
   }
 
   mlp.newTextControl = function(label, param, defaultValue) {
-    if (typeof defaultValue == undefined) defaultValue = "";
+    if (typeof defaultValue == 'undefined') defaultValue = "";
     return new mlp.TextControl({label, param});
   }
 })();
