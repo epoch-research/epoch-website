@@ -24,6 +24,8 @@ defaults:
 title: Epoch
 theme: minima
 
+show_we_are_hiring: true
+
 # Blog posts URLs
 collections:
   blog:
