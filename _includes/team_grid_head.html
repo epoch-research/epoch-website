@@ -1,0 +1,159 @@
+<style>
+  .team-grid {
+    grid-gap: 1.3rem !important;
+    grid-template-columns: repeat(auto-fill, 230px);
+  }
+
+  .member {
+    max-width: 250px;
+    width: 100%;
+    border-radius: var(--default-radius);
+  }
+
+  @media (max-width: 550px) {
+    .team-grid {
+      justify-items: center;
+    }
+
+    .member {
+      max-width: 300px;
+      width: 100%;
+    }
+  }
+
+  .member {
+    padding: 5px;
+  }
+
+  .member .mug {
+    padding-top: 100%;
+    width: initial;
+    height: initial;
+    margin-bottom: 10px;
+    box-shadow: 0 0 4px 1px rgb(0 0 0 / 55%);
+    background-size: cover;
+    background-position: center;
+    display: block;
+    border-radius: var(--default-radius);
+  }
+
+  #jaime-sevilla .mug {
+    background-size: 135%, 100%;
+    background-position: -40px -3px, 0px 0px;
+  }
+
+  #tamay-besiroglu .mug {
+    background-size: 148%, 100%;
+    background-position: -48px -8px, 0 0;
+  }
+
+  #pablo-villalobos .mug {
+    background-size: 163%, 100%;
+    background-position: -82px -51px, 0 0;
+  }
+
+  #anson-ho .mug {
+    background-size: 141%, 100%;
+    background-position: -56px -56px, 0 0;
+  }
+
+  #eduardo-infante-roldan .mug {
+    background-size: 140%, 100%;
+    background-position: -44px -23px, 0 0;
+  }
+
+  #tom-davidson .mug {
+    background-size: 131%;
+    background-position: -29px -21px;
+  }
+
+  #neil-thompson .mug {
+    background-size: 123%;
+    background-position: -28px -14px;
+  }
+
+  .member:not(.mouse-over-resources):hover {
+    cursor: pointer;
+  }
+
+  .member:hover, .member.selected {
+    box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
+  }
+
+  .member-resource, .member-resource:hover {
+    color: black !important;
+    margin-right: 0.4em;
+  }
+
+  .modal .member-resource {
+    margin-right: 0.5em;
+  }
+
+  .modal .mug {
+    width: 100%;
+    border-radius: var(--default-radius);
+    transition: 0.3s;
+
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .member a {
+    color: black !important;
+    text-decoration: none;
+  }
+
+  .member-info {
+    padding: 4px;
+  }
+
+  .member-role {
+    font-weight: bold;
+    font-size: 13px !important;
+  }
+
+  .member-name, .member-role {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .member-description {
+    margin-top: 15px;
+    display: none;
+  }
+
+  .modal-header {
+    align-items: flex-start;
+  }
+
+  .modal-content {
+    display: flex;
+  }
+
+  .modal-content .description {
+    flex: 0 0 60%;
+    margin-right: 1em;
+  }
+
+  .modal-content .image {
+    width: 100%;
+  }
+
+  @media (max-width: 650px) {
+    .modal .mug {
+      display: none;
+    }
+
+    .modal .description {
+      margin-right: 0;
+    }
+
+    .modal-content {
+      display: block;
+    }
+  }
+</style>
+
+

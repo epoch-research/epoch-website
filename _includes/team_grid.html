@@ -1,0 +1,21 @@
+<div class="collection-grid team-grid">
+  {% for member in site.data.team %}
+  <div class="member" id="{{member.id}}">
+    <div class="mug" style="background-image: url('{{member.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}')"></div>
+    <div class="member-info">
+      <div class="member-name">{{member.name}}</div>
+      <div class="member-role">{{member.role}}</div>
+      <div class="member-resources">
+        {% for _resource in member.resources %}
+          {% assign resource = _resource | first %}
+          {% assign resource_name = resource[0] %}
+          {% assign resource_url = resource[1] %}
+          {% assign type = site.data.resource_types | where: "name", resource_name | first %}
+          <a class="member-resource" href="{{resource_url}}"><i class="bi bi-{{type.icon}}"></i></a>
+        {% endfor %}
+      </div>
+      <p class="member-description">{{member.description}}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>

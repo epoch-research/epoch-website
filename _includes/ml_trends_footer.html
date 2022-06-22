@@ -1,0 +1,25 @@
+
+<script>
+  buildTrendsGraph("#trends-graph", database);
+
+  let graphWrapperNode = document.getElementById("trends-graph-wrapper");
+
+  // :hover alternative for touch devices
+  document.addEventListener('click', function(e) {
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+
+    if (graphWrapperNode.contains(target)) {
+      graphWrapperNode.classList.add("active");
+    } else {
+      graphWrapperNode.classList.remove("active");
+    }
+  });
+
+  // Escape from the graph on Escape
+  document.body.addEventListener('keyup', function(e) {
+    if (e.key == "Escape") {
+      graphWrapperNode.classList.remove("active");
+    }
+  });
+</script>

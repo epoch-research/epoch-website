@@ -75,8 +75,10 @@
     // Smooth scrolling
 
     if (window.getComputedStyle(document.documentElement).scrollBehavior !== 'smooth') {
-      document.querySelectorAll('a[href^="#"]').forEach(internalLink => {
-        const targetElement = document.querySelector(internalLink.getAttribute('href').replaceAll(':', '\\:'));
+      for (let internalLink of document.querySelectorAll('a[href^="#"]')) {
+        let href = internalLink.getAttribute('href');
+        if (href == '#') continue;
+        const targetElement = document.querySelector(href.replaceAll(':', '\\:'));
         if (targetElement) {
           internalLink.addEventListener('click', (e) => {
             targetElement.scrollIntoView({
@@ -85,7 +87,7 @@
             e.preventDefault();
           });
         }
-      });
+      };
     }
 
     // Highlight TOC on scroll
