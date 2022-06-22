@@ -58,7 +58,13 @@ authors:
     justify-items: stretch;
   }
 
-  .logos > img {
+  .logos a {
+    text-decoration: none !important;
+    border: 0 !important;
+    outline: none !important;
+  }
+
+  .logos img {
     height: 105px;
   }
 </style>
@@ -88,9 +94,9 @@ Our founding team consists of seven members – Jaime Sevilla, Tamay Besiroglu, 
 Our work involves close collaboration with other organizations, such as [MIT CSAIL](https://www.csail.mit.edu/), [Open Philanthropy](https://www.openphilanthropy.org/), and [Rethink Priorities](https://rethinkpriorities.org/)’ [AI Governance and Strategy team](https://forum.effectivealtruism.org/posts/K7tjvcDurrCj72D7H/rethink-priorities-2021-impact-and-2022-strategy). We are advised by Tom Davidson from Open Philanthropy and Neil Thompson from MIT CSAIL. Rethink Priorities is also our fiscal sponsor.
 
 <div class="logos">
-  <img src="/assets/images/logos/op-logo.png">
-  <img src="/assets/images/logos/csail-logo.png">
-  <img src="/assets/images/logos/rp-logo.png">
+  <a href="https://www.openphilanthropy.org/"><img src="/assets/images/logos/op-logo.png"></a>
+  <a href="https://www.csail.mit.edu/"><img src="/assets/images/logos/csail-logo.png"></a>
+  <a href="https://rethinkpriorities.org/"><img src="/assets/images/logos/rp-logo.png"></a>
 </div>
 
 # Our mission
@@ -149,6 +155,10 @@ If you are reading this placeholder text, you are allowed to virtually punch Edu
 **We expect to be hiring for several full-time research and management roles from July to August. Salaries range from $60,000 for entry roles to $80,000 for senior roles.**
 
 If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway. Please register your interest for these roles through our [webpage]({% link _pages/careers.md %}) – **applications will open in July.**
+
+<figure>
+  <img src="/assets/images/posts/2022/founding-members.png">
+</figure>
 
 ---
 
