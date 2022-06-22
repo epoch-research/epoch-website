@@ -1,0 +1,38 @@
+[debug] [2022-06-22T17:18:42.142Z] ----------------------------------------------------------------------
+[debug] [2022-06-22T17:18:42.145Z] Command:       /usr/bin/node /usr/bin/firebase --project epoch-website emulators:start
+[debug] [2022-06-22T17:18:42.145Z] CLI Version:   10.2.2
+[debug] [2022-06-22T17:18:42.146Z] Platform:      linux
+[debug] [2022-06-22T17:18:42.146Z] Node Version:  v17.6.0
+[debug] [2022-06-22T17:18:42.146Z] Time:          Wed Jun 22 2022 19:18:42 GMT+0200 (Central European Summer Time)
+[debug] [2022-06-22T17:18:42.146Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-06-22T17:18:42.241Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-06-22T17:18:42.242Z] > authorizing via signed-in user (einroldan@gmail.com)
+[info] i  emulators: Starting emulators: hosting {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: hosting"}}
+[debug] [2022-06-22T17:18:42.262Z] [hub] writing locator at /tmp/hub-epoch-website.json
+[debug] [2022-06-22T17:18:42.278Z] >>> [apiv2][query] GET https://firebasehosting.googleapis.com/v1beta1/projects/epoch-website/sites 
+[debug] [2022-06-22T17:18:43.430Z] <<< [apiv2][status] GET https://firebasehosting.googleapis.com/v1beta1/projects/epoch-website/sites 200
+[debug] [2022-06-22T17:18:43.430Z] <<< [apiv2][body] GET https://firebasehosting.googleapis.com/v1beta1/projects/epoch-website/sites {"sites":[{"name":"projects/epoch-website/sites/epoch-website","defaultUrl":"https://epoch-website.web.app","type":"DEFAULT_SITE"}]}
+[debug] [2022-06-22T17:18:43.431Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/epoch-website/webApps/-/config [none]
+[debug] [2022-06-22T17:18:44.102Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/epoch-website/webApps/-/config 200
+[debug] [2022-06-22T17:18:44.103Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/epoch-website/webApps/-/config {"projectId":"epoch-website","storageBucket":"epoch-website.appspot.com","apiKey":"AIzaSyBfVEAsSBgkS87Mlw8XMFroy1kOzZiDvHQ","authDomain":"epoch-website.firebaseapp.com","messagingSenderId":"623562539246"}
+[info] i  hosting: Serving hosting files from: public {"metadata":{"emulator":{"name":"hosting"},"message":"Serving hosting files from: \u001b[1mpublic\u001b[22m"}}
+[info] ✔  hosting: Local server: http://localhost:5000 {"metadata":{"emulator":{"name":"hosting"},"message":"Local server: \u001b[4m\u001b[1mhttp://localhost:5000\u001b[22m\u001b[24m"}}
+[warn] ⚠  emulators: The Emulator UI requires a project ID to start. Configure your default project with 'firebase use' or pass the --project flag. {"metadata":{"emulator":{"name":"hub"},"message":"The Emulator UI requires a project ID to start. Configure your default project with 'firebase use' or pass the --project flag."}}
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+└─────────────────────────────────────────────────────────────┘
+
+┌──────────┬────────────────┐
+│ Emulator │ Host:Port      │
+├──────────┼────────────────┤
+│ Hosting  │ localhost:5000 │
+└──────────┴────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[info] i  hosting: ::1 - - [22/Jun/2022:17:18:44 +0000] "GET /lfkdsajlfksaj/lfkdasjfla HTTP/1.1" 200 2628 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"::1 - - [22/Jun/2022:17:18:44 +0000] \"GET /lfkdsajlfksaj/lfkdasjfla HTTP/1.1\" 200 2628 \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36\""}}
+[info] i  hosting: ::1 - - [22/Jun/2022:17:18:44 +0000] "GET /lfkdsajlfksaj/lfkdasjfla HTTP/1.1" 304 - "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36" {"metadata":{"emulator":{"name":"hosting"},"message":"::1 - - [22/Jun/2022:17:18:44 +0000] \"GET /lfkdsajlfksaj/lfkdasjfla HTTP/1.1\" 304 - \"-\" \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36\""}}
