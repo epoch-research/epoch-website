@@ -35,7 +35,7 @@ We measure the utilization rate of a Tesla P100 GPU for training different ML mo
   <img src="https://lh4.googleusercontent.com/cH6b6WvmA5mrSaYzOFeMiFoIFWvb1OeYllX74AUMdK95LMZ3WHd7jymmFHg9S0zHuv_8FRsDubDHA68bMbAu74rD7BNhuAwWf-QeiSVxxQOqxqI6Fr3SCPC5BHqeG_cYsJLZbukq">
   <figcaption>
 Estimated GPU utilization rates on different architectures, using four different estimation setups.
-  <figcaption>
+  </figcaption>
 </figure>
 
 # Introduction
