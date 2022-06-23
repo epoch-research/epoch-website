@@ -4,3 +4,5 @@
   icon: newspaper
 - name: Database
   icon: table
+- name: Sequence
+  icon: files

@@ -9,7 +9,7 @@ function buildComputeCalculator(hardwareDataUrl) {
   function tooltip(node, options) {
     return tippy(node, {
       allowHTML: true,
-      theme: 'calculator',
+      theme: 'white',
       placement: 'top',
       trigger: 'click',
       //arrow: false,

@@ -5,7 +5,7 @@
 
   .member {
     padding: 10px;
-    min-height: 350px;
+    min-height: 300px;
     max-width: 300px;
     width: 100%;
     background-color: #e7e7e7;
@@ -101,7 +101,7 @@
   display: grid;
   grid-gap: 32px;
   vertical-align: top;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 47.5%));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 31.5%));
   grid-auto-rows: 1fr;
   padding-bottom: 40px;
 

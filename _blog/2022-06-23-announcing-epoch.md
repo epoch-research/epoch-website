@@ -218,6 +218,5 @@ If you think you might be a good fit for us, please apply! If you’re unsure wh
 
 [^1]: Here is [a post](https://www.lesswrong.com/posts/hRohhttbtpY3SHmmD/takeoff-speeds-have-a-huge-effect-on-what-it-means-to-work-1) by Buck Shlegeris of Redwood Research which argues that takeoff speeds are highly relevant to AI Alignment research.
 
-
 {% include team_grid_footer.html %}
 {% include ml_trends_footer.html %}
