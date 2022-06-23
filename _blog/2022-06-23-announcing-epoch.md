@@ -13,7 +13,7 @@ banner:
 
 toc: auto
 
-date: 2022-04-26
+date: 2022-06-23
 
 authors:
   - name: The Epoch Team
@@ -67,14 +67,49 @@ authors:
   .logos img {
     height: 105px;
   }
+
+  .workshow {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: space-around;
+    gap: 10px;
+    margin-bottom: 1em;
+  }
+
+  .workshow .work {
+    width: 300px;
+    padding: 5px;
+    text-decoration: none !important;
+    border: none !important;
+  }
+
+  .workshow .work:hover {
+    box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
+    border-radius: var(--default-radius);
+  }
+
+  .workshow .work .thumbnail {
+    height: 200px;
+  }
+
+  .workshow .work .thumbnail img {
+    height: 100%;
+    width: 100%;
+    object-fit: scale-down;
+  }
+
+  .workshow .work .description {
+    font-size: 0.9em;
+  }
 </style>
 
 # Summary
 
 * We are a new research initiative working on investigating trends in Machine Learning and forecasting the development of Transformative Artificial Intelligence
 * This work is done in close collaboration with other organizations, like [Rethink Priorities](https://rethinkpriorities.org/), [Open Philanthropy](https://www.openphilanthropy.org/), and [MIT CSAIL](https://www.csail.mit.edu/)
-* We will be hiring for 2-4 full-time roles between June and August – more information [here](https://epochai.org/careers)
-* You can find up-to-date information about Epoch on [our website](https://epochai.org/)
+* We will be hiring for 2-4 full-time roles between June and August – more information [here]({% link _pages/careers.md %})
+* You can find up-to-date information about Epoch on [our website]({% link _pages/index.md %})
 
 <figure style="width: 60%; min-width: min(350px, 100%);">
   <img src="/assets/images/epoch-logo.svg">
@@ -144,11 +179,30 @@ More recently we have published *[Grokking “Forecasting TAI with biological an
   </figcaption>
 </figure>
 
-You can see more of our work on our blog. Here is a selection of further work by Epoch members:
+You can see more of our work on [our blog]({% link _pages/blog.md %}). Here is a selection of further work by Epoch members:
 
-```
-If you are reading this placeholder text, you are allowed to virtually punch Eduardo in his virtual stomach.
-```
+
+<div class="workshow">
+  <a href="{% link _blog/2022-03-07-projecting-compute-trends.md %}" class="work">
+    <div class="thumbnail"><img src="{% link assets/images/posts/2022/projecting-compute-trends.jpeg %}"></div>
+    <div class="description">Projecting compute trends in Machine Learning</div>
+  </a>
+
+  <a href="{% link _blog/2022-01-20-estimating-training-compute.md %}" class="work">
+    <div class="thumbnail"><img src="{% link assets/images/posts/2022/estimating-training-compute.png %}"></div>
+    <div class="description">Estimating training compute of Deep Learning models</div>
+  </a>
+
+  <a href="{% link _blog/2021-12-13-backward-forward-FLOP-ratio.md %}" class="work">
+    <div class="thumbnail"><img src="{% link assets/images/posts/2022/backward-forward-FLOP-ratio.png %}"></div>
+    <div class="description">Estimating the backward-forward FLOP ratio</div>
+  </a>
+
+  <a href="{% link _blog/2021-06-19-parameter-counts.md %}" class="work">
+    <div class="thumbnail"><img src="{% link assets/images/posts/2022/parameter-counts.png %}"></div>
+    <div class="description">Parameter counts in Machine Learning</div>
+  </a>
+</div>
 
 # Hiring
 

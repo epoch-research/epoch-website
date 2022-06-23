@@ -7,11 +7,11 @@ function Modal(element) {
 
   self.element = element;
 
-  element.classList.add("modal");
+  element.classList.add("mlp-modal");
 
   self.open = function() {
     element.classList.add("open");
-    for (let exit of element.querySelectorAll(".modal-exit")) {
+    for (let exit of element.querySelectorAll(".mlp-modal .modal-exit")) {
       exit.addEventListener("click", function (event) {
         event.preventDefault();
         self.close();

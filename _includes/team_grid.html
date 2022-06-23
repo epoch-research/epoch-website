@@ -1,4 +1,4 @@
-<div class="collection-grid team-grid">
+<div class="team-grid">
   {% for member in site.data.team %}
   <div class="member" id="{{member.id}}">
     <div class="mug" style="background-image: url('{{member.id | prepend: '/assets/images/team/' | append: '.jpg' | relative_url }}')"></div>

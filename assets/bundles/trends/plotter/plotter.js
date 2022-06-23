@@ -504,7 +504,7 @@
       this.xAxis = new mlp.Axis({area: this.xAxisArea, scaleType: mlp.ScaleType.LINEAR, direction: mlp.AxisDirection.HORIZONTAL});
       this.yAxis = new mlp.Axis({area: this.yAxisArea, scaleType: mlp.ScaleType.LOG, direction: mlp.AxisDirection.VERTICAL});
 
-      let axisFontSize = 23;
+      let axisFontSize = 21;
 
       this.yAxisLabel = this.addText("y", {
         rotation: 90,

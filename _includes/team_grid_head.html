@@ -1,10 +1,14 @@
 <style>
   .team-grid {
-    grid-gap: 1.3rem !important;
-    grid-template-columns: repeat(auto-fill, 230px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
   }
 
   .member {
+    flex: 0 1 210px;
     max-width: 250px;
     width: 100%;
     border-radius: var(--default-radius);
@@ -85,11 +89,11 @@
     margin-right: 0.4em;
   }
 
-  .modal .member-resource {
+  .profile-modal .member-resource {
     margin-right: 0.5em;
   }
 
-  .modal .mug {
+  .profile-modal .mug {
     width: 100%;
     border-radius: var(--default-radius);
     transition: 0.3s;
@@ -111,6 +115,7 @@
   .member-role {
     font-weight: bold;
     font-size: 13px !important;
+    font-height: 15px;
   }
 
   .member-name, .member-role {
@@ -142,15 +147,16 @@
   }
 
   @media (max-width: 650px) {
-    .modal .mug {
+    .profile-modal .image {
       display: none;
     }
 
-    .modal .description {
+    .profile-modal .description {
       margin-right: 0;
+      flex-grow: 1;
     }
 
-    .modal-content {
+    .profile-modal-content {
       display: block;
     }
   }

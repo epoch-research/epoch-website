@@ -2,7 +2,7 @@
 layout: article
 title: Estimating Training Compute of Deep Learning Models
 subtitle: We describe two approaches for estimating the training compute of Deep Learning systems, by counting operations and looking at GPU time. 
-image: assets/images/posts/2022/estimating-training-compute.jpeg
+image: assets/images/posts/2022/estimating-training-compute.png
 description: We describe two approaches for estimating the training compute of Deep Learning systems, by counting operations and looking at GPU time. 
 tags: report
 
