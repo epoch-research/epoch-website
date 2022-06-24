@@ -67,7 +67,7 @@ You may be an especially good fit for our team if you:
 
 Bear in mind that you don’t need to know about all of these things to be a strong candidate. If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway.
 
-*Applications will open in June. Register your interest below to be notified.*
+*Applications for the current hiring round will be open until July 31st.*
 
 # Open Positions
 
