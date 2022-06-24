@@ -130,7 +130,6 @@ Our work involves close collaboration with other organizations, such as [MIT CSA
 
 <div class="logos">
   <a href="https://www.openphilanthropy.org/"><img src="/assets/images/logos/op-logo.png"></a>
-  <a href="https://www.csail.mit.edu/"><img src="/assets/images/logos/csail-logo.png"></a>
   <a href="https://rethinkpriorities.org/"><img src="/assets/images/logos/rp-logo.png"></a>
 </div>
 
