@@ -14,7 +14,7 @@ We are a research initiative working to support AI governance and improve foreca
 
 {% include team_grid.html %}
 
-## Advisor Board
+## Advisory Board
 
 <div class="collection-grid team-grid">
   {% for member in site.data.advisor_board %}
