@@ -49,28 +49,9 @@ image: /assets/images/team/epoch-team.jpg
 
 <!-- {: .tex2jax_ignore } -->
 
-# Why Work with Epoch?
-
-* You can work on crucial problems that directly inform AI governance and strategy
-* You can gain valuable career experience performing high-quality research
-* we offer a relatively easy ramp into the field of AI governance and forecasting with valuable guidance and mentoring
-* You can work remotely from anywhere in the world: We expect to organise group retreats every 6 months to do in-person coworking, and offer support with visa applications
-
-# What We’re Looking For
-
-You may be an especially good fit for our team if you:
-
-* Have experience producing high-quality research
-* Have a background in Economics, Machine Learning, Engineering (especially Hardware or Software Engineering)
-* Are familiar with recent AI developments, technical AI safety, or AI governance
-* Are self-directed and have a desire for impact
-
-Bear in mind that you don’t need to know about all of these things to be a strong candidate. If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway.
-
-*Applications for the current hiring round will be open until July 31st.*
-
 # Open Positions
 
 {% assign list = site.data.jobs %}
-{% include box_list.html button="Apply" sameRowHeight=true %}
+{% include box_list.html button="Apply" sameRowHeight=false %}
 
+*Applications for the current hiring round will be open until July 31st.*
