@@ -657,7 +657,7 @@
 
       function resizeOptions(targetWidth, instantenous) {
         let optionsNode = self.nodes.options;
-        optionsNode.style.height = container.offsetHeight + 'px';
+        optionsNode.style.height = (container.offsetHeight - 10) + 'px';
         closeOptionsButton.style.right = 0;
 
         let computedStyle = getComputedStyle(optionsNode);
