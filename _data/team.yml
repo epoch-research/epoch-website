@@ -19,7 +19,7 @@
     - mail: mailto:pablo@epochai.org
 - name: Anson Ho
   role: Staff Researcher
-  description: Anson is a researcher and writer for Epoch. His research interests are in interpretability and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.
+  description: Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.
   id: anson-ho
   resources:
     - mail: mailto:anson@epochai.org
