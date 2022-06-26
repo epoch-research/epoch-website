@@ -59,12 +59,14 @@
 
           {{ content }}
 
-          <hr>
-
           {%- if site.show_we_are_hiring -%}
-          <p class="hiring-message">
-            We are hiring! If you want to contribute to our research, consider applying to one of <a href="/careers#open-positions">our job offers</a>.
-          </p>
+            {%- unless page.hide_hiring_ad -%}
+              <hr>
+
+              <p class="hiring-message">
+                We are hiring! If you want to contribute to our research, consider applying to one of <a href="/careers#open-positions">our job offers</a>.
+              </p>
+            {%- endunless -%}
           {%- endif -%}
         </d-article>
       </div>

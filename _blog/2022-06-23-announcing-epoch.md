@@ -5,6 +5,7 @@ subtitle: Subtitle
 image: assets/images/epoch-logo.svg
 description: We’re a new research initiative forecasting developments in AI. Come join us!
 pinned: true
+hide_hiring_ad: true
 tags: announcements
 
 banner:
@@ -108,7 +109,7 @@ authors:
 
 * We are a new research initiative working on investigating trends in Machine Learning and forecasting the development of Transformative Artificial Intelligence
 * This work is done in close collaboration with other organizations, like [Rethink Priorities](https://rethinkpriorities.org/), [Open Philanthropy](https://www.openphilanthropy.org/), and [MIT CSAIL](https://www.csail.mit.edu/)
-* We will be hiring for 2-4 full-time roles between June and August – more information [here]({% link _pages/careers.md %})
+* We will be hiring for 2-4 full-time roles this summer – more information [here]({% link _pages/careers.md %})
 * You can find up-to-date information about Epoch on [our website]({% link _pages/index.md %})
 
 <figure style="width: 60%; min-width: min(350px, 100%);">
@@ -147,7 +148,7 @@ Our work at Epoch encompasses two interconnected lines of research:
 
 * The analysis of **trends in Machine Learning**. We aim to gather data on what has been happening in the field during the last two decades, explain it, and extrapolate the results to inform our views on the future of AI.
 
-* The development of **quantitative forecasting models** related to the development of advanced AI capabilities. We seek to use techniques from economics and statistics to predict _when_ and _how fast_ AI will be developed.
+* The development of **quantitative forecasting models** related to advanced AI capabilities. We seek to use techniques from economics and statistics to predict _when_ and _how fast_ AI will be developed.
 
 These two research strands feed into each other: the analysis of trends informs the choice of parameters in quantitative models, and the development of these models brings clarity on the most important trends to analyze.
 
@@ -158,7 +159,7 @@ These two research strands feed into each other: the analysis of trends informs 
   </figcaption>
 </figure>
 
-Besides this, we also plan to opportunistically research topics important for AI governance where we are well positioned to do so. These investigations might relate to compute governance, near term advances in AI and other topics. 
+Besides this, we also plan to opportunistically research topics important for AI governance where we are well positioned to do so. These investigations might relate to compute governance, near-term advances in AI and other topics. 
 
 # Our work so far
 
@@ -205,9 +206,9 @@ You can see more of our work on [our blog]({% link _pages/blog.md %}). Here is a
 
 # Hiring
 
-**We expect to be hiring for several full-time research and management roles from July to August. Salaries range from $60,000 for entry roles to $80,000 for senior roles.**
+**We expect to be hiring for several full-time research and management roles this summer. Salaries range from $60,000 for entry roles to $80,000 for senior roles.**
 
-If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway. Please register your interest for these roles through our [webpage]({% link _pages/careers.md %}) – **applications will open in July.**
+If you think you might be a good fit for us, please apply! If you’re unsure whether this is the right role for you, we strongly encourage you to apply anyway. Please register your interest for these roles through our [webpage]({% link _pages/careers.md %}).
 
 <figure>
   <img src="/assets/images/posts/2022/founding-members.png">
