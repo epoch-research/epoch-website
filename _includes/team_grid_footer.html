@@ -57,7 +57,7 @@
       for (let resource of member.resources) {
         let resourceDom;
         if (resource.name == "mail") {
-          resourceDom = u(`<a class="member-resource" data-contact="${btoa(resource.url)}" href="#"><i class="bi bi-${resource.icon}"></i></a>`).first();
+          resourceDom = u(`<a class="member-resource" data-contact="${resource.url}" href="#"><i class="bi bi-${resource.icon}"></i></a>`).first();
           addMailDeobfuscator(resourceDom);
         } else {
           resourceDom = u(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`).first();

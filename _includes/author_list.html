@@ -80,7 +80,7 @@
     let resources = [];
     for (let resource of member.resources) {
       if (resource.name == "mail") {
-        resources.push(`<a class="member-resource" href="#" data-contact="${btoa(resource.url)}"><i class="bi bi-${resource.icon}"></i></a>`);
+        resources.push(`<a class="member-resource" href="#" data-contact="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
       } else {
         resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
       }

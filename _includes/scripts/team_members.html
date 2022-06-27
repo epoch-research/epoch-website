@@ -27,6 +27,9 @@
           {% assign resource_name = resource[0] %}
           {% assign resource_url = resource[1] %}
           {% assign type = site.data.resource_types | where: "name", resource_name | first %}
+          {% if resource_name == 'mail' %}
+            {% assign resource_url = resource_url | obfuscate_mail %}
+          {% endif %}
           {name: '{{resource_name}}', icon: '{{type.icon}}', url: '{{resource_url}}'},
         {% endfor %}
         ],
