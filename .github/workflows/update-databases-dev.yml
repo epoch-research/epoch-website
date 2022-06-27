@@ -12,6 +12,9 @@ jobs:
       - run: ./utils/update-databases.py
       - name: Commit and push
         run: |
+          git config user.name "${{github.actor}}"
+          git config user.email "${{github.actor}}@users.noreply.github.com"
+
           git add -A
           git commit -m "database update"
           git push
