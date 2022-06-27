@@ -85,4 +85,19 @@
       }
     });
   </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
 </header>

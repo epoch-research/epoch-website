@@ -11,7 +11,11 @@
           {% assign resource_name = resource[0] %}
           {% assign resource_url = resource[1] %}
           {% assign type = site.data.resource_types | where: "name", resource_name | first %}
-          <a class="member-resource" href="{{resource_url}}"><i class="bi bi-{{type.icon}}"></i></a>
+          {% if resource_name == 'mail' %}
+            <a class="member-resource" data-contact="{{resource_url | obfuscate_mail}}" href="#"><i class="bi bi-{{type.icon}}"></i></a>
+          {% else %}
+            <a class="member-resource" href="{{resource_url}}"><i class="bi bi-{{type.icon}}"></i></a>
+          {% endif %}
         {% endfor %}
       </div>
       <p class="member-description">{{member.description}}</p>

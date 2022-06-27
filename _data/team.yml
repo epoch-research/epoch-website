@@ -3,26 +3,26 @@
   description: Jaime is a researcher focused on statistics and technological forecasting. Besides his role at Epoch, he is a research affiliate of the <a href="https://www.cser.ac.uk/">Centre for the Study of Existential Risk</a> at Cambridge University and the cofounder of <a href="https://riesgoscatastroficosglobales.com/">Riesgos Catastróficos Globales</a>.
   id: jaime-sevilla
   resources:
-    - mail: mailto:jaime@epochai.org
+    - mail: jaime@epochai.org
     - twitter: https://twitter.com/Jsevillamol
 - name: Tamay Besiroglu
   role: Associate director
   description: Tamay is a researcher focusing on the Economics of Computing and big-picture trends in Machine Learning. In addition to his role at Epoch, Tamay is a researcher at the Future Tech Lab at MIT, and AI Forecasting Lead at Metaculus. Previously, he led strategy for Metaculus, consulted for the UK Government, and worked at the Future of Humanity Institute.
   id: tamay-besiroglu
   resources:
-    - mail: mailto:tamay@epochai.org
+    - mail: tamay@epochai.org
 - name: Pablo Villalobos
   role: Staff Researcher
   description: Pablo has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.
   id: pablo-villalobos
   resources:
-    - mail: mailto:pablo@epochai.org
+    - mail: pablo@epochai.org
 - name: Anson Ho
   role: Staff Researcher
   description: Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.
   id: anson-ho
   resources:
-    - mail: mailto:anson@epochai.org
+    - mail: anson@epochai.org
     - github: https://github.com/ansonwhho
     - website: https://ansonwhho.github.io/
 - name: Lennart Heim
@@ -30,7 +30,7 @@
   description: Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.
   id: lennart-heim
   resources:
-    - mail: mailto:lennart@epochai.org
+    - mail: lennart@epochai.org
     - twitter: https://twitter.com/ohlennart
     - website: https://heim.xyz
 - name: Marius Hobbhahn
@@ -38,10 +38,10 @@
   description: Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.
   id: marius-hobbhahn
   resources:
-    - mail: mailto:marius@epochai.org
+    - mail: marius@epochai.org
 - name: Eduardo Infante-Roldán
   role: Software Engineer
   description: Eduardo does some programming.
   id: eduardo-infante-roldan
   resources:
-    - mail: mailto:edu@epochai.org
+    - mail: edu@epochai.org

@@ -79,7 +79,11 @@
 
     let resources = [];
     for (let resource of member.resources) {
-      resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      if (resource.name == "mail") {
+        resources.push(`<a class="member-resource" href="#" data-contact="${btoa(resource.url)}"><i class="bi bi-${resource.icon}"></i></a>`);
+      } else {
+        resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      }
     }
 
     tippy(author, {
@@ -89,8 +93,11 @@
       interactive: true,
       maxWidth: '200px',
       trigger: 'mouseenter click',
-      onShow: () => {
+      onShow: (instance) => {
         tippy.hideAll();
+        for (let element of instance.popper.querySelectorAll('[data-contact]')) {
+          addMailDeobfuscator(element);
+        }
       },
       content:
         `
