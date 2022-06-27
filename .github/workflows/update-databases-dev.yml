@@ -20,7 +20,7 @@ jobs:
           git config user.email "${{github.actor}}@users.noreply.github.com"
 
           if [ -z "$(git status --porcelain)" ]; then
-            echo "No changes. Done."
+            echo "No changes to commit. Done."
             exit 0
           fi
 
