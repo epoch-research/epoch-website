@@ -19,6 +19,10 @@ jobs:
           git config user.name "${{github.actor}}"
           git config user.email "${{github.actor}}@users.noreply.github.com"
 
+          ls -l
+          ls -l assets/bundles/trends
+          git status
+
           git add -A
           git commit -m "database update"
           git push
