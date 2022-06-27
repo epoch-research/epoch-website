@@ -1,0 +1,17 @@
+name: Updates the databases in the development branch (currently, just the ML inputs one)
+
+on: workflow_dispatch
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with: 
+          ref: dev
+      - run: ./utils/update-databases.py
+      - name: Commit and push
+        run: |
+          git add -A
+          git commit -m "database update"
+          git push
