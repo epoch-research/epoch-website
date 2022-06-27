@@ -36,3 +36,5 @@ lines.append("};")
 
 with open(output_path, 'w') as f:
   f.write('\n'.join(lines))
+
+print('Done')
