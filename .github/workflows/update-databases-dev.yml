@@ -19,9 +19,10 @@ jobs:
           git config user.name "${{github.actor}}"
           git config user.email "${{github.actor}}@users.noreply.github.com"
 
-          ls -l
-          ls -l assets/bundles/trends
-          git status
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes. Done."
+            exit 0
+          fi
 
           git add -A
           git commit -m "database update"
