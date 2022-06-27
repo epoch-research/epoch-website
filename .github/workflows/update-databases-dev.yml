@@ -9,6 +9,8 @@ jobs:
       - uses: actions/checkout@v2
         with: 
           ref: dev
+      - name: setup python
+        uses: actions/setup-python@v4
       - run: python utils/update-databases.py
       - name: Commit and push
         run: |
