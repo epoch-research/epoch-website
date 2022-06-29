@@ -177,7 +177,7 @@ permalink: /blog
     <div class="post-thumbnail"><img src="{{post.image | relative_url }}"></div>
     <div class="post-meat">
       <h2 class="post-name">{{post.title}}</h2>
-      <p class="post-authors">{{post.authors | map: 'name' | better_join: ", ", ", and "}}</p>
+      <p class="post-authors">{{post.authors | map: 'name' | better_join: ", ", " and "}}</p>
       <p class="post-abstract">{% if post.description %} {{post.description}} {% else %} {{post.excerpt}} {% endif %}</p>
     </div>
   </a>

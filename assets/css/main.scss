@@ -482,8 +482,11 @@ mjx-container {
   overflow-y: hidden;
 }
 
-table caption {
-  caption-side: bottom;
+table.same-width-table {
+  //width: 100%;
+  td {
+    //width: 25%;
+  }
 }
 
 .button {
@@ -511,11 +514,14 @@ table caption {
 figure {
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 0;
 }
 
 figure img {
   max-width: 100%;
   width: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 a {
@@ -603,6 +609,18 @@ code {
       border-bottom-color: white;
     }
   }
+}
+
+ol ol {
+  list-style-type: lower-alpha;
+}
+
+ol ol ol {
+  list-style-type: lower-roman;
+}
+
+li {
+  margin-bottom: 6px !important;
 }
 
 // Post-imports

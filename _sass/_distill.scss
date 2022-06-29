@@ -97,6 +97,12 @@ d-article {
     }
   }
 
+  table caption {
+    margin-top: 5px;
+    caption-side: bottom;
+    line-height: 1.4em;
+  }
+
   d-footnote {
     scroll-margin-top: 66px;
   }
@@ -120,10 +126,6 @@ d-article d-contents {
   position: sticky;
   top: 2rem;
 
-  #toc {
-    margin-right: 2em;
-  }
-
   a {
     font-weight: normal;
     color: grey !important;
@@ -132,9 +134,14 @@ d-article d-contents {
   a.active {
     color: black !important;
   }
+
+  > nav {
+    width: 252px;
+    background-color: white;
+  }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1290px) {
   d-article {
     d-contents {
       position: initial;
