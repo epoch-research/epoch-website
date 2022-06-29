@@ -47,7 +47,7 @@ Using a dataset of 470 models of graphics processing units (GPUs) released betwe
   </figcaption>
 </figure>
 
-<table class="same-width-table">
+<table>
   <thead>
     <tr>
       <th><p><span>Trend</span></p></th>
@@ -144,7 +144,15 @@ The rate at which GPUs have been improving has been analyzed previously. For exa
 
 There is previous work that specifically analyzes price-performance across CPUs and GPUs (summarized in Table 1). Prior estimates of the rate of improvement vary widely (e.g. the time it takes for price-performance to increase by 10-fold ranges from ~6 to ~15 years, depending on the computing precision—see Table 2.). Due to the high variance of previous approaches and their usage of smaller datasets, we are not confident in existing estimates.[^b]
 
-<table class="same-width-table">
+<style>
+  @media (min-width: 1180px) {
+    #table-2 tr th:nth-child(2) {
+      width: 8em;
+    }
+  }
+</style>
+
+<table id="table-2">
   <thead>
     <tr>
       <th><strong>Reference</strong></th>
@@ -180,8 +188,8 @@ There is previous work that specifically analyzes price-performance across CPUs 
       <td><a href="http://www.fhi.ox.ac.uk/brain-emulation-roadmap-report.pdf">Sandberg and Bostrom, 2008</a></td>
       <td>CPU-based</td>
       <td>MIPS/$ and FLOP/$</td>
-      <td>1.7 years (MIPS)2.3 (FLOPS)</td>
-      <td>5.6 years (MIPS)7.7 years (FLOPS)</td>
+      <td>1.7 years (MIPS)<br> 2.3 (FLOPS)</td>
+      <td>5.6 years (MIPS)<br> 7.7 years (FLOPS)</td>
     </tr>
     <tr style="background-color: #d9d2e9">
       <td><a href="https://web.archive.org/web/20160222082744/http://www.econ.yale.edu/~nordhaus/homepage/prog_083001a.pdf">Nordhaus, 2001</a></td>
@@ -312,7 +320,15 @@ All trends (table & figure)
 
 To compare all the trends we highlighted above and the ones you can find in the appendix, we collected all trends, and for each, report the associated time it takes to increase 2x and 10x.
 
-<table class="same-width-table">
+<style>
+  @media (min-width: 1180px) {
+    #table-3 tr th:nth-child(2) {
+      width: 6em;
+    }
+  }
+</style>
+
+<table id="table-3">
   <thead>
     <tr>
       <th>Trend</th>
@@ -416,7 +432,7 @@ To compare all the trends we highlighted above and the ones you can find in the 
     </tr>
   </tbody>
   <caption markdown="1">
-  Table 4. Summary of our findings on GPU price-performance trends and relevant trends in the existing literature. 95% confidence intervals are displayed in square brackets.
+  Table 3. Summary of our findings on GPU price-performance trends and relevant trends in the existing literature. 95% confidence intervals are displayed in square brackets.
   </caption>
 </table>
 
@@ -497,7 +513,7 @@ In our dataset, we only look at GPUs for which we have the FLOPs and price infor
 <figure>
   <img src="{% link assets/images/posts/2022/gpu-perf/image3.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 10: empirical FLOPs with all GPUs that we have FLOPs information for
+  Figure 9: empirical FLOPs with all GPUs that we have FLOPs information for
   </figcaption>
 </figure>
 
@@ -511,28 +527,28 @@ For all the plots used in the paper, there is also a version in which we only lo
   <figure>
     <img src="{% link assets/images/posts/2022/gpu-perf/image1.png %}">
     <figcaption class="caption">
-    Figure 11: empirical FLOPs for our dataset
+    Figure 10: empirical FLOPs for our dataset
     </figcaption>
   </figure>
 
   <figure>
     <img src="{% link assets/images/posts/2022/gpu-perf/image4.png %}">
     <figcaption class="caption">
-    Figure 12: empirical FLOPs for our dataset with subset of GPUs used for ML
+    Figure 11: empirical FLOPs for our dataset with subset of GPUs used for ML
     </figcaption>
   </figure>
 
   <figure>
     <img src="{% link assets/images/posts/2022/gpu-perf/image13.png %}">
     <figcaption class="caption">
-    Figure 13: empirical FLOPs for the GPUs with the highest FLOPs value for every month
+    Figure 12: empirical FLOPs for the GPUs with the highest FLOPs value for every month
     </figcaption>
   </figure>
 
   <figure>
     <img src="{% link assets/images/posts/2022/gpu-perf/image12.png %}">
     <figcaption class="caption">
-    Figure 14: empirical FLOPs for top FLOP GPUs and ML GPUs combined
+    Figure 13: empirical FLOPs for top FLOP GPUs and ML GPUs combined
     </figcaption>
   </figure>
 </div>
@@ -542,7 +558,7 @@ For all the plots used in the paper, there is also a version in which we only lo
 <figure>
   <img src="{% link assets/images/posts/2022/gpu-perf/image8.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 15: empirical FLOPs for FP16 and FP32
+  Figure 14: empirical FLOPs for FP16 and FP32
   </figcaption>
 </figure>
 
