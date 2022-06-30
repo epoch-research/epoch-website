@@ -108,7 +108,7 @@ authors:
 # Summary
 
 * We are a new research initiative working on investigating trends in Machine Learning and forecasting the development of Transformative Artificial Intelligence
-* This work is done in close collaboration with other organizations, like [Rethink Priorities](https://rethinkpriorities.org/), [Open Philanthropy](https://www.openphilanthropy.org/), and [MIT CSAIL](https://www.csail.mit.edu/)
+* This work is done in close collaboration with other organizations, like [Rethink Priorities](https://rethinkpriorities.org/), [Open Philanthropy](https://www.openphilanthropy.org/)
 * We will be hiring for 2-4 full-time roles this summer – more information [here]({% link _pages/careers.md %})
 * You can find up-to-date information about Epoch on [our website]({% link _pages/index.md %})
 
@@ -127,7 +127,7 @@ Our founding team consists of seven members – Jaime Sevilla, Tamay Besiroglu, 
   {% include team_grid.html %}
 </div>
 
-Our work involves close collaboration with other organizations, such as [MIT CSAIL](https://www.csail.mit.edu/), [Open Philanthropy](https://www.openphilanthropy.org/), and [Rethink Priorities](https://rethinkpriorities.org/)’ [AI Governance and Strategy team](https://forum.effectivealtruism.org/posts/K7tjvcDurrCj72D7H/rethink-priorities-2021-impact-and-2022-strategy). We are advised by Tom Davidson from Open Philanthropy and Neil Thompson from MIT CSAIL. Rethink Priorities is also our fiscal sponsor.
+Our work involves close collaboration with other organizations, [Open Philanthropy](https://www.openphilanthropy.org/), and [Rethink Priorities](https://rethinkpriorities.org/)’ [AI Governance and Strategy team](https://forum.effectivealtruism.org/posts/K7tjvcDurrCj72D7H/rethink-priorities-2021-impact-and-2022-strategy). We are advised by Tom Davidson from Open Philanthropy and Neil Thompson from MIT CSAIL. Rethink Priorities is also our fiscal sponsor.
 
 <div class="logos">
   <a href="https://www.openphilanthropy.org/"><img src="/assets/images/logos/op-logo.png"></a>
