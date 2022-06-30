@@ -127,7 +127,7 @@ Our founding team consists of seven members – Jaime Sevilla, Tamay Besiroglu, 
   {% include team_grid.html %}
 </div>
 
-Our work involves close collaboration with other organizations, [Open Philanthropy](https://www.openphilanthropy.org/), and [Rethink Priorities](https://rethinkpriorities.org/)’ [AI Governance and Strategy team](https://forum.effectivealtruism.org/posts/K7tjvcDurrCj72D7H/rethink-priorities-2021-impact-and-2022-strategy). We are advised by Tom Davidson from Open Philanthropy and Neil Thompson from MIT CSAIL. Rethink Priorities is also our fiscal sponsor.
+Our work involves close collaboration with other organizations, [Open Philanthropy](https://www.openphilanthropy.org/), and [Rethink Priorities](https://rethinkpriorities.org/)’ [AI Governance and Strategy team](https://forum.effectivealtruism.org/posts/K7tjvcDurrCj72D7H/rethink-priorities-2021-impact-and-2022-strategy). We are advised by Tom Davidson from Open Philanthropy and Neil Thompson. Rethink Priorities is also our fiscal sponsor.
 
 <div class="logos">
   <a href="https://www.openphilanthropy.org/"><img src="/assets/images/logos/op-logo.png"></a>
