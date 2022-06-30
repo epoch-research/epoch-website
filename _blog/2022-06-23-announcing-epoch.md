@@ -108,7 +108,7 @@ authors:
 # Summary
 
 * We are a new research initiative working on investigating trends in Machine Learning and forecasting the development of Transformative Artificial Intelligence
-* This work is done in close collaboration with other organizations, like [Rethink Priorities](https://rethinkpriorities.org/), [Open Philanthropy](https://www.openphilanthropy.org/)
+* This work is done in close collaboration with other organizations, like [Rethink Priorities](https://rethinkpriorities.org/) and [Open Philanthropy](https://www.openphilanthropy.org/)
 * We will be hiring for 2-4 full-time roles this summer – more information [here]({% link _pages/careers.md %})
 * You can find up-to-date information about Epoch on [our website]({% link _pages/index.md %})
 
