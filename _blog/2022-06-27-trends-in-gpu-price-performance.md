@@ -38,12 +38,12 @@ authors:
 Executive Summary
 ===============================
 
-Using a dataset of 470 models of graphics processing units (GPUs) released between 2006 and 2021, we find that the amount of floating-point operations/second per $ (hereafter FLOP/s per $) doubles every ~2.5 years. For top GPUs at any point in time, we find a slower rate of improvement (FLOP/s per $ doubles every 2.95 years), while for models of GPU typically used in ML research, we find a faster rate of improvement (FLOP/s per $ doubles every 2.07 years). GPU price-performance improvements have generally been slightly slower than the 2-year doubling time associated with Moore’s law, much slower than what is implied by Huang’s law, yet considerably faster than was generally found in prior work on trends in GPU price-performance.[^a] We aim to provide a more precise characterization of GPU price-performance trends based on more or higher-quality data, that is more robust to justifiable changes in the analysis than previous investigations.
+Using a dataset of 470 models of graphics processing units (GPUs) released between 2006 and 2021, we find that the amount of floating-point operations/second per $ (hereafter FLOP/s per $) doubles every ~2.5 years. For top GPUs at any point in time, we find a slower rate of improvement (FLOP/s per $ doubles every 2.95 years), while for models of GPU typically used in ML research, we find a faster rate of improvement (FLOP/s per $ doubles every 2.07 years). GPU price-performance improvements have generally been slightly slower than the 2-year doubling time associated with Moore’s law, much slower than what is implied by Huang’s law, yet considerably faster than was generally found in prior work on trends in GPU price-performance. We aim to provide a more precise characterization of GPU price-performance trends based on more or higher-quality data, that is more robust to justifiable changes in the analysis than previous investigations.[^a]
 
 <figure>
-  <img src="{% link assets/images/posts/2022/gpu-perf/image2.png %}">
+  <img src="{% link assets/images/posts/2022/gpu-perf/image3.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 1. Plots of FLOPs and FLOPs/dollar for our dataset and relevant trends from the existing literature
+  Figure 1. Plots of FLOP/s and FLOP/s per dollar for our dataset and relevant trends from the existing literature
   </figcaption>
 </figure>
 
@@ -61,37 +61,37 @@ Using a dataset of 470 models of graphics processing units (GPUs) released betwe
       <td><p><span>Our dataset<br />(n=470)</span></p></td>
       <td><p><span>2.46 years <br />[2.24, 2.72]</span></p></td>
       <td><p><span>8.17 years <br />[7.45, 9.04]</span></p></td>
-      <td><p><span>FLOPs/dollar</span></p></td>
+      <td><p><span>FLOP/s per dollar</span></p></td>
     </tr>
     <tr style="background-color: #f6b26b">
       <td><p><span>ML GPUs<br />(n=26)</span></p></td>
       <td><p><span>2.07 years<br />[1.54, 3.13]</span></p></td>
       <td><p><span>6.86 years<br />[5.12, 10.39]</span></p></td>
-      <td><p><span>FLOPs/dollar</span></p></td>
+      <td><p><span>FLOP/s per dollar</span></p></td>
     </tr>
     <tr style="background-color: #b7b7b7">
       <td> <p> <span> Top GPUs<br /> (n=57) </span> </p> </td>
       <td> <p> <span> 2.95 years<br /> [2.54, 3.52] </span> </p> </td>
       <td> <p> <span> 9.81 years<br /> [8.45, 11.71] </span> </p> </td>
-      <td> <p><span>FLOPs/dollar</span></p> </td>
+      <td> <p><span>FLOP/s per dollar</span></p> </td>
     </tr>
     <tr style="background-color: #a2c4c9">
       <td> <p><span>Our data FP16 (n=91)</span></p> </td>
       <td> <p> <span> 2.30 years<br /> [1.69, 3.62] </span> </p> </td>
       <td> <p> <span> 7.64 years<br /> [5.60, 12.03] </span> </p> </td>
-      <td> <p><span>FLOPs/dollar</span></p> </td>
+      <td> <p><span>FLOP/s per dollar</span></p> </td>
     </tr>
     <tr style="background-color: #d9ead3">
       <td> <p><span>Moore’s law</span></p> </td>
       <td> <p><span>2 years</span></p> </td>
       <td> <p><span>6.64 years</span></p> </td>
-      <td> <p><span>FLOPs</span></p> </td>
+      <td> <p><span>FLOP/s</span></p> </td>
     </tr>
     <tr style="background-color: #f4cccc">
       <td> <p><span>Huang’s law</span></p> </td>
       <td> <p><span>1.08 years</span></p> </td>
       <td> <p><span>3.58 years</span></p> </td>
-      <td> <p><span>FLOPs</span></p> </td>
+      <td> <p><span>FLOP/s</span></p> </td>
     </tr>
     <tr style="background-color: #cfe2f3">
       <td>
@@ -106,7 +106,7 @@ Using a dataset of 470 models of graphics processing units (GPUs) released betwe
         <p><span>7.7 years</span></p>
       </td>
       <td>
-        <p><span>FLOPs/dollar</span></p>
+        <p><span>FLOP/s per dollar</span></p>
       </td>
     </tr>
     <tr style="background-color: #cfe2f3">
@@ -126,7 +126,7 @@ Using a dataset of 470 models of graphics processing units (GPUs) released betwe
         <p><span>14.7 years</span></p>
       </td>
       <td>
-        <p><span>FLOPs/dollar</span></p>
+        <p><span>FLOP/s per dollar</span></p>
       </td>
     </tr>
   </tbody>
@@ -140,7 +140,7 @@ Introduction
 
 GPUs are the dominant computing platform for accelerating machine learning (ML) workloads, and most (if not all) of the biggest models over the last five years have been trained on GPUs or other special-purpose hardware like tensor processing units (TPUs). Price-performance improvements in underlying hardware has resulted in a rapid growth of the size of ML training runs ([Sevilla et al., 2022](https://arxiv.org/abs/2202.05924)), and has thereby centrally contributed to the recent progress in AI.
 
-The rate at which GPUs have been improving has been analyzed previously. For example, [Su et al., 2017](https://www.semanticscholar.org/paper/Multi-chip-technologies-to-unleash-computing-gains-Su-Naffziger/7ff96079f20fc5dbb399be8c6189464ef990692a) finds a 2.4-year doubling rate for GPU FLOPs from 2006 to 2017. [Sun et al., 2019](https://arxiv.org/abs/1911.11313) analyses over 4,000 GPU models and finds that FLOPS per watt doubles around every three to four years. By contrast, some have speculated that GPU performance improvements are more rapid than the exponential improvements associated with other microprocessors like CPUs (which typically see a 2 to 3-year doubling time, see [AI Impacts, 2019](https://aiimpacts.org/trends-in-the-cost-of-computing/)). Notable amongst these is the so-called Huang’s Law proposed by NVIDIA CEO, Jensen Huang, according to whom GPUs see a “25x improvement every 5 years” ([Mims, 2020](https://www.wsj.com/articles/huangs-law-is-the-new-moores-law-and-explains-why-nvidia-wants-arm-11600488001)), which would be equivalent to a ~1.1-year doubling time in performance.
+The rate at which GPUs have been improving has been analyzed previously. For example, [Su et al., 2017](https://www.semanticscholar.org/paper/Multi-chip-technologies-to-unleash-computing-gains-Su-Naffziger/7ff96079f20fc5dbb399be8c6189464ef990692a) finds a 2.4-year doubling rate for GPU FLOP/s from 2006 to 2017. [Sun et al., 2019](https://arxiv.org/abs/1911.11313) analyses over 4,000 GPU models and finds that FLOPs per watt doubles around every three to four years. By contrast, some have speculated that GPU performance improvements are more rapid than the exponential improvements associated with other microprocessors like CPUs (which typically see a 2 to 3-year doubling time, see [AI Impacts, 2019](https://aiimpacts.org/trends-in-the-cost-of-computing/)). Notable amongst these is the so-called Huang’s Law proposed by NVIDIA CEO, Jensen Huang, according to whom GPUs see a “25x improvement every 5 years” ([Mims, 2020](https://www.wsj.com/articles/huangs-law-is-the-new-moores-law-and-explains-why-nvidia-wants-arm-11600488001)), which would be equivalent to a ~1.1-year doubling time in performance.
 
 There is previous work that specifically analyzes price-performance across CPUs and GPUs (summarized in Table 1). Prior estimates of the rate of improvement vary widely (e.g. the time it takes for price-performance to increase by 10-fold ranges from ~6 to ~15 years, depending on the computing precision—see Table 2.). Due to the high variance of previous approaches and their usage of smaller datasets, we are not confident in existing estimates.[^b]
 
@@ -166,14 +166,14 @@ There is previous work that specifically analyzes price-performance across CPUs 
     <tr style="background-color: #f4cccc">
       <td><a href="https://aiimpacts.org/2019-recent-trends-in-gpu-price-per-flops/">Bergal, 2019</a></td>
       <td>GPU</td>
-      <td>FLOP/$ in FP32, FP16, and FP16 fused multiply-add</td>
+      <td>FLOP/s per $ in FP32, FP16, and FP16 fused multiply-add</td>
       <td>4.4 years (FP32)<br> 3.0 years (FP16)<br> 1.8 years (FP16 fused)</td>
       <td>14.7 years (FP32)<br> 10.0 years (FP16)<br> 6.1 years (FP16 fused)</td>
     </tr>
     <tr style="background-color: #fff2cc">
       <td><a href="http://mediangroup.org/docs/Feasibility%20of%20Training%20an%20AGI%20using%20Deep%20Reinforcement%20Learning,%20A%20Very%20Rough%20Estimate.pdf">Median Group, 2018</a></td>
       <td>GPU</td>
-      <td>FLOPS/$ in FP32</td>
+      <td>FLOP/s per $ in FP32</td>
       <td>1.5 years</td>
       <td>5.0 years</td>
     </tr>
@@ -187,9 +187,9 @@ There is previous work that specifically analyzes price-performance across CPUs 
     <tr style="background-color: #c9daf8">
       <td><a href="http://www.fhi.ox.ac.uk/brain-emulation-roadmap-report.pdf">Sandberg and Bostrom, 2008</a></td>
       <td>CPU-based</td>
-      <td>MIPS/$ and FLOP/$</td>
-      <td>1.7 years (MIPS)<br> 2.3 (FLOPS)</td>
-      <td>5.6 years (MIPS)<br> 7.7 years (FLOPS)</td>
+      <td>MIPS/$ and FLOP/s per $</td>
+      <td>1.7 years (MIPS)<br> 2.3 (FLOP/s)</td>
+      <td>5.6 years (MIPS)<br> 7.7 years (FLOP/s)</td>
     </tr>
     <tr style="background-color: #d9d2e9">
       <td><a href="https://web.archive.org/web/20160222082744/http://www.econ.yale.edu/~nordhaus/homepage/prog_083001a.pdf">Nordhaus, 2001</a></td>
@@ -216,9 +216,9 @@ Dataset
 We combine two existing datasets on GPU price-performance. One dataset is from the Median Group, which contains data on 223 Nvidia and AMD GPUs ([Median Group, 2018](http://mediangroup.org/docs/Feasibility%20of%20Training%20an%20AGI%20using%20Deep%20Reinforcement%20Learning,%20A%20Very%20Rough%20Estimate.pdf)). The second dataset is from [Sun et al., 2019,](https://arxiv.org/pdf/1911.11313.pdf) which contains price-performance data on 413 GPUs released by Nvidia, Intel and AMD.
 
 <figure>
-  <img src="{% link assets/images/posts/2022/gpu-perf/image7.png %}">
+  <img src="{% link assets/images/posts/2022/gpu-perf/image1.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 2. Plots of FLOPs and FLOPs/dollar for Median Group’s and [Sun et al., 2019](https://arxiv.org/pdf/1911.11313.pdf)’s datasets.
+  Figure 2. Plots of FLOP/s and FLOP/s per dollar for Median Group’s and [Sun et al., 2019](https://arxiv.org/pdf/1911.11313.pdf)’s datasets.
   </figcaption>
 </figure>
 
@@ -228,26 +228,26 @@ We also decided to drop observations prior to 2006 for two main reasons: 1) it i
 
 Finally, we noticed that there is a subset of 20 GPUs for which the 16-bit performance is ~60-fold worse than its performance in 32-bit format, while for all other GPUs the 16-bit performance is at least as good as its 34-bit performance. We dropped these 16-bit performance numbers, which we think might have been erroneous. 
 
-The final dataset thus contains 470 GPUs from AMD, Intel, and Nvidia released between 2006 and 2021. We will refer to this merged dataset as “our dataset” for the rest of the report. Throughout, FLOPs are those in 32-bit (full) precision.
+The final dataset thus contains 470 GPUs from AMD, Intel, and Nvidia released between 2006 and 2021. We will refer to this merged dataset as “our dataset” for the rest of the report. Throughout, FLOP/s are those in 32-bit (full) precision.
 
 <figure>
-  <img src="{% link assets/images/posts/2022/gpu-perf/image9.png %}">
+  <img src="{% link assets/images/posts/2022/gpu-perf/image11.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 3. Plots of FLOPs and FLOPs/dollar for the dataset used in our analysis
+  Figure 3. Plots of FLOP/s and FLOP/s per dollar for the dataset used in our analysis
   </figcaption>
 </figure>
 
 Empirical analysis
 ==================
 
-In what follows, we analyze trends in price-performance, measured in FLOPs/dollar as well as raw performance in FLOPs for GPUs in our dataset. Our analysis considers key subsets, such as GPUs commonly used in Machine Learning research, as well as top-performing GPUs.[^3] 
+In what follows, we analyze trends in price-performance, measured in FLOP/s per dollar as well as raw performance in FLOP/s for GPUs in our dataset. Our analysis considers key subsets, such as GPUs commonly used in Machine Learning research, as well as top-performing GPUs.[^3] 
 
 Empirical trend vs. other predictions
 -------------------------------------
 
 To put our findings in context, we compare them with other proposed GPU (price) performance trends found elsewhere. These are
 
-* Moore’s law, which states that a transistor density doubled every two years. For the purpose of comparison, we take that to mean that the amount of FLOPs also doubles every two years
+* Moore’s law, which states that a transistor density doubled every two years. For the purpose of comparison, we take that to mean that the amount of FLOP/s also doubles every two years
 * [Huang’s law](https://en.wikipedia.org/wiki/Huang%27s_law), which describes the rate of performance improvements for GPUs. While there are multiple interpretations of Huang’s law, we chose the one that reflects Huang’s original wording, namely “25x improvement every 5 years”
 * Historical trends in CPU price-performance, which has been found to increase by a factor of 10 every 7.7 years since 1940 ([AI Impacts, 2019](https://aiimpacts.org/trends-in-the-cost-of-computing/))
 * The prediction made in [Cotra 2020](https://www.alignmentforum.org/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines) of a 2.5-year doubling time in price-performance of compute relevant to Machine Learning training runs[^4]
@@ -255,12 +255,12 @@ To put our findings in context, we compare them with other proposed GPU (price) 
 
 We recognize that some of these trends are not quite comparable to FLOP/s per $ (Moore’s law relates to the density of circuits, Huang’s law relates to theoretical performance improvements, while [Cotra 2020](https://www.alignmentforum.org/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines)’s predictions relates to FLOP per dollar[^5]). The purpose of these comparisons is just to provide a rough sense of how our estimated trends relate to relevant empirical trends and predictions.
 
-Unless specified otherwise, we will present the results for FLOPs/dollar. This is because we a) think that FLOPs/dollar is the more relevant trend as argued previously and b) because there is not that much of a difference between FLOPs and FLOPs/dollar trends. For a detailed comparison see [Appendix B](#appendix-b---robustness-check-for-flops).
+Unless specified otherwise, we will present the results for FLOP/s per dollar. This is because we a) think that FLOP/s per dollar is the more relevant trend as argued previously and b) because there is not that much of a difference between FLOP/s and FLOP/s per dollar trends. For a detailed comparison see [Appendix B](#appendix-b---robustness-check-for-flops).
 
 <figure>
-  <img style="max-width: calc(min(100%, 600px))" src="{% link assets/images/posts/2022/gpu-perf/image11.png %}">
+  <img style="max-width: calc(min(100%, 600px))" src="{% link assets/images/posts/2022/gpu-perf/image5.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 4. FLOPs/dollar for our dataset and relevant trends found elsewhere
+  Figure 4. FLOP/s per dollar for our dataset and relevant trends found elsewhere
   </figcaption>
 </figure>
 
@@ -272,9 +272,9 @@ Trends across precision for floating formats
 Half-precision computing (FP16) and mixed-precision computing (usually FP16 and FP32) are now commonly used for deep learning. In our dataset, we had 91 GPUs for which we had both price and FP16 performance numbers.[^6] 
 
 <figure>
-  <img style="max-width: calc(min(100%, 600px))" src="{% link assets/images/posts/2022/gpu-perf/image14.png %}">
+  <img style="max-width: calc(min(100%, 600px))" src="{% link assets/images/posts/2022/gpu-perf/image9.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 5. FLOPs/dollar for FP32 and FP16 performance
+  Figure 5. FLOP/s per dollar for FP32 and FP16 performance
   </figcaption>
 </figure>
 
@@ -285,18 +285,18 @@ Trends of GPUs used in ML
 
 The vast majority of all ML training is done on a very small number of different models of GPUs. From a [previous publication](https://arxiv.org/abs/2202.05924) where we looked at 75 papers that present milestone ML models, we collected a total of 42 distinct models of GPUs commonly used to train ML systems. In total, we found 26 of these 42 GPUs in our dataset on GPUs.
 
-We find that the price-performance of GPUs used in ML improves faster than the typical GPU. We find that FLOPs/dollar for ML GPUs double every 2.07 years (95% CI: 1.54 to 3.13 years) compared to 2.46 years for all GPUs. This is not significantly different from the slope for the doubling time for price-performance for all GPUs.
+We find that the price-performance of GPUs used in ML improves faster than the typical GPU. We find that FLOP/s per dollar for ML GPUs double every 2.07 years (95% CI: 1.54 to 3.13 years) compared to 2.46 years for all GPUs. This is not significantly different from the slope for the doubling time for price-performance for all GPUs.
 
 <figure>
-  <img style="max-width: calc(min(100%, 620px))" src="{% link assets/images/posts/2022/gpu-perf/image6.png %}">
+  <img style="max-width: calc(min(100%, 620px))" src="{% link assets/images/posts/2022/gpu-perf/image12.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 6. FLOPs/dollar for our dataset and separately for GPU models commonly used in ML research compared to relevant trends found elsewhere
+  Figure 6. FLOP/s per dollar for our dataset and separately for GPU models commonly used in ML research compared to relevant trends found elsewhere
   </figcaption>
 </figure>
 
 Furthermore, the latest ML GPUs tend to be among the GPUs with high price-performance, whereas the older ones are more middle of the pack. 
 
-Moreover, when looking through the FLOPs lens, it becomes even more clear that the latest ML experiments use the most powerful GPUs. We think that shows the increased importance of GPUs for modern ML. Once again, the ML GPUs show a steeper slope than the general trend (doubling time of 2.00 years compared to 2.31 years for all GPUs).
+Moreover, when looking through the FLOP/s lens, it becomes even more clear that the latest ML experiments use the most powerful GPUs. We think that shows the increased importance of GPUs for modern ML. Once again, the ML GPUs show a steeper slope than the general trend (doubling time of 2.00 years compared to 2.31 years for all GPUs).
 
   
 Our higher point estimate for the rate of performance improvements amongst GPUs used for ML research could be explained by relevant labs spending more resources on procuring top GPUs over time. If this were the case, this would reflect merely a change in investment decisions by relevant research labs and not a faster-than-usual rate of improvement of the underlying hardware amongst the relevant GPUs suitable for ML workloads. Given this, and because our estimates for the entire GPUs is not statistically significantly different, we expect that the ~2.5 year doubling time to be a more reliable estimate of the underlying rate of hardware price-performance improvements.
@@ -306,12 +306,12 @@ Trend of top-performing GPUs
 
 As we saw in the previous section, the latest ML models tend to be trained on state-of-the-art GPUs. Therefore, looking at the trend of top-performing GPUs might be a good indicator for ML capabilities in the future. Note, that this does not imply that we think that GPU performance will grow linearly. We will publish more detailed thoughts on predictions from this data in a second piece.
 
-Here, we select the subset of GPUs that had the highest FLOPs per dollar values during each month. For this subset of models, we find a doubling time of 2.95 years (95% CI: 2.54 to 3.52 years), which is statistically significantly longer than the typical doubling time. 
+Here, we select the subset of GPUs that had the highest FLOP/s per dollar values during each month. For this subset of models, we find a doubling time of 2.95 years (95% CI: 2.54 to 3.52 years), which is statistically significantly longer than the typical doubling time. 
 
 <figure>
   <img style="max-width: calc(min(100%, 620px))" src="{% link assets/images/posts/2022/gpu-perf/image10.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 7. FLOPs per dollar for our dataset and separately for top-performing GPUs compared to relevant trends found elsewhere
+  Figure 7. FLOP/s per dollar for our dataset and separately for top-performing GPUs compared to relevant trends found elsewhere
   </figcaption>
 </figure>
 
@@ -344,91 +344,91 @@ To compare all the trends we highlighted above and the ones you can find in the 
       <td>2x every 2 years</td>
       <td>2 years</td>
       <td>6.64 years</td>
-      <td>FLOPs</td>
+      <td>FLOP/s</td>
     </tr>
     <tr style="background-color: #f4cccc">
       <td>Huang’s law</td>
       <td>25x every 5 years</td>
       <td>1.08 years</td>
       <td>3.58 years</td>
-      <td>FLOPs</td>
+      <td>FLOP/s</td>
     </tr>
     <tr style="background-color: #d0e0e3">
       <td>Biological anchors report (<a href="https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines&amp;sa=D&amp;source=editors&amp;ust=1656344719876336&amp;usg=AOvVaw2i9SKlYv4rV31-zjyBCI1V">Cotra, 2020</a>)</td>
       <td>2x every 2.5 years</td>
       <td>2.5 years</td>
       <td>8.30 years</td>
-      <td>FLOPs/dollar</td>
+      <td>FLOP/s per dollar</td>
     </tr>
     <tr style="background-color: #cfe2f3">
       <td>CPU historical (<a href="https://aiimpacts.org/trends-in-the-cost-of-computing/&amp;sa=D&amp;source=editors&amp;ust=1656344719878007&amp;usg=AOvVaw1tSSji93R6BI_tQm87PjPW">AI Impacts, 2019</a>)</td>
       <td>10x every 7.7 years</td>
       <td>2.32 years</td>
       <td>7.7 years</td>
-      <td>FLOPs/dollar</td>
+      <td>FLOP/s per dollar</td>
     </tr>
     <tr style="background-color: #fff2cc">
       <td><a href="http://mediangroup.org/docs/Feasibility%20of%20Training%20an%20AGI%20using%20Deep%20Reinforcement%20Learning,%20A%20Very%20Rough%20Estimate.pdf">Median Group, 2018</a></td>
       <td>2x every 1.5 years</td>
       <td>1.5 years</td>
       <td>1.5 years</td>
-      <td>FLOPs/dollar</td>
+      <td>FLOP/s per dollar</td>
     </tr>
     <tr style="background-color: #d9d2e9">
       <td>Our data (n=470)</td>
       <td>-</td>
       <td>2.46 years [2.24, 2.72]</td>
       <td>8.17 years [7.45, 9.04]</td>
-      <td>FLOPs/dollar</td>
+      <td>FLOP/s per dollar</td>
     </tr>
     <tr style="background-color: #d9d2e9">
       <td>Our data (n=470)</td>
       <td>-</td>
       <td>2.31 years[2.14, 2.51]</td>
       <td>7.68 years[7.12, &nbsp;8.33]</td>
-      <td>FLOPs</td>
+      <td>FLOP/s</td>
     </tr>
     <tr style="background-color: #a2c4c9">
       <td>Our data FP16 (n=91)</td>
       <td>-</td>
       <td>2.30 years[1.69, 3.62]</td>
       <td>7.64 years[5.60, 12.03]</td>
-      <td>FLOPs/dollar</td>
+      <td>FLOP/s per dollar</td>
     </tr>
     <tr style="background-color: #a2c4c9">
       <td>Our data FP16 (n=91)</td>
       <td>-</td>
       <td>2.91 years[1.94, 5.83]</td>
       <td>9.68 years[6.45, 19.35]</td>
-      <td>FLOPs</td>
+      <td>FLOP/s</td>
     </tr>
     <tr style="background-color: #f6b26b">
       <td>ML GPUs (n=26)</td>
       <td>-</td>
       <td>2.07 years[1.54, 3.13]</td>
       <td>6.86 years[5.12, 10.39]</td>
-      <td>FLOPs/dollar</td>
+      <td>FLOP/s per dollar</td>
     </tr>
     <tr style="background-color: #f6b26b">
       <td>ML GPUs (n=26)</td>
       <td>-</td>
       <td>2.00 years[1.69, 2.43]</td>
       <td>6.63 years[5.63, &nbsp;8.07]</td>
-      <td>FLOPs</td>
+      <td>FLOP/s</td>
     </tr>
     <tr style="background-color: #b7b7b7">
       <td>Top GPUs (n=57)</td>
       <td>-</td>
       <td>2.95 years[2.54, 3.52]</td>
       <td>9.81 years[8.45, 11.71]</td>
-      <td>FLOPs/dollar</td>
+      <td>FLOP/s per dollar</td>
     </tr>
     <tr style="background-color: #b7b7b7">
       <td>Top GPUs (n=57)</td>
       <td>-</td>
       <td>2.69 years[2.40, &nbsp;3.30]</td>
       <td>8.92 years[7.99, 10.95]</td>
-      <td>FLOPs</td>
+      <td>FLOP/s</td>
     </tr>
   </tbody>
   <caption markdown="1">
@@ -437,13 +437,10 @@ To compare all the trends we highlighted above and the ones you can find in the 
 </table>
 
 <figure>
-  <img style="max-width: calc(min(100%, 544px));" src="{% link assets/images/posts/2022/gpu-perf/image4.png %}">
-</figure>
-<figure>
-  <img style="max-width: calc(min(100%, 544px));" src="{% link assets/images/posts/2022/gpu-perf/image5.png %}">
+  <img style="max-width: calc(min(100%, 544px));" src="{% link assets/images/posts/2022/gpu-perf/image3.png %}">
 </figure>
 <figcaption class="caption" markdown="1">
-Figure 8. FLOPs per dollar for our dataset and various subgroups compared to relevant trends found elsewhere
+Figure 8. FLOP/s per dollar for our dataset and various subgroups compared to relevant trends found elsewhere
 </figcaption>
 
 Conclusion
@@ -458,7 +455,7 @@ On balance, we felt like the arguments for keeping the data were weaker than for
 
 Arguments for including pre-2006 data:
 
-1. The median group provides the data and somehow got a hold of the estimated FLOPs
+1. The median group provides the data and somehow got a hold of the estimated FLOP/s
 
 Arguments against including pre-2006 data:
 
@@ -505,50 +502,50 @@ Arguments against including pre-2006 data:
   </li>
 </ol>
 
-Appendix B - Robustness check for FLOPs
-=======================================
+Appendix B - Robustness check for FLOP/s
+========================================
 
-In our dataset, we only look at GPUs for which we have the FLOPs and price information since we are interested in performance and price. However, there are many more GPUs that have performance information than ones for which we have both performance and price. We find 1848 data points for which we have FLOPs data. To make sure that there is no selection effect, we also analyze the trend from “just FLOPs”. 
+In our dataset, we only look at GPUs for which we have the FLOP/s and price information since we are interested in performance and price. However, there are many more GPUs that have performance information than ones for which we have both performance and price. We find 1848 data points for which we have FLOP/s data. To make sure that there is no selection effect, we also analyze the trend from “just FLOP/s”. 
 
 <figure>
-  <img src="{% link assets/images/posts/2022/gpu-perf/image3.png %}">
+  <img src="{% link assets/images/posts/2022/gpu-perf/image13.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 9: empirical FLOPs with all GPUs that we have FLOPs information for
+  Figure 9. Empirical FLOP/s with all GPUs that we have FLOP/s information for
   </figcaption>
 </figure>
 
-We find that it pretty much aligns exactly with what we see from our previous selection and therefore preliminary conclude that there is no reason to discard our previous findings. We additionally see that the GPUs for which we have price data tend to be the ones with higher FLOPs values. We speculate that more powerful GPUs are used more often and therefore have higher availability of price information. 
+We find that it pretty much aligns exactly with what we see from our previous selection and therefore preliminary conclude that there is no reason to discard our previous findings. We additionally see that the GPUs for which we have price data tend to be the ones with higher FLOP/s values. We speculate that more powerful GPUs are used more often and therefore have higher availability of price information. 
 
-### More FLOPs plots
+### More FLOP/s plots
 
-For all the plots used in the paper, there is also a version in which we only look at FLOPs information. Note, that this is not the “just-FLOPs” data from the previous section. Rather it is the same dataset as used in the main text but we didn’t divide it by price. 
+For all the plots used in the paper, there is also a version in which we only look at FLOP/s information. Note, that this is not the “just-FLOP/s” data from the previous section. Rather it is the same dataset as used in the main text but we didn’t divide it by price. 
 
 <div class="figure-flexbox">
   <figure>
-    <img src="{% link assets/images/posts/2022/gpu-perf/image1.png %}">
+    <img src="{% link assets/images/posts/2022/gpu-perf/image6.png %}">
     <figcaption class="caption">
-    Figure 10: empirical FLOPs for our dataset
+    Figure 10. Empirical FLOP/s for our dataset
     </figcaption>
   </figure>
 
   <figure>
-    <img src="{% link assets/images/posts/2022/gpu-perf/image4.png %}">
+    <img src="{% link assets/images/posts/2022/gpu-perf/image7.png %}">
     <figcaption class="caption">
-    Figure 11: empirical FLOPs for our dataset with subset of GPUs used for ML
+    Figure 11. Empirical FLOP/s for our dataset with subset of GPUs used for ML
     </figcaption>
   </figure>
 
   <figure>
-    <img src="{% link assets/images/posts/2022/gpu-perf/image13.png %}">
+    <img src="{% link assets/images/posts/2022/gpu-perf/image8.png %}">
     <figcaption class="caption">
-    Figure 12: empirical FLOPs for the GPUs with the highest FLOPs value for every month
+    Figure 12. Empirical FLOP/s for the GPUs with the highest FLOP/s value for every month
     </figcaption>
   </figure>
 
   <figure>
-    <img src="{% link assets/images/posts/2022/gpu-perf/image12.png %}">
+    <img src="{% link assets/images/posts/2022/gpu-perf/image2.png %}">
     <figcaption class="caption">
-    Figure 13: empirical FLOPs for top FLOP GPUs and ML GPUs combined
+    Figure 13. Empirical FLOP/s for top FLOP GPUs and ML GPUs combined
     </figcaption>
   </figure>
 </div>
@@ -556,9 +553,9 @@ For all the plots used in the paper, there is also a version in which we only lo
 <br>
 
 <figure>
-  <img src="{% link assets/images/posts/2022/gpu-perf/image8.png %}">
+  <img src="{% link assets/images/posts/2022/gpu-perf/image4.png %}">
   <figcaption class="caption" markdown="1">
-  Figure 14: empirical FLOPs for FP16 and FP32
+  Figure 14. Empirical FLOPs for FP16 and FP32
   </figcaption>
 </figure>
 
@@ -576,7 +573,7 @@ We did not include these in the main text because they show very similar slopes 
 
 [^3]: We focus primarily on these metrics as we are mostly interested in questions related to the amount of compute that might be deployed for large AI experiments. While there are other metrics that might be of interest (such as energy efficiency), we do not consider these here as they relate less directly to the questions motivating our work, and because these have been analyzed in prior work, notably in [Sun et al., 2019](https://arxiv.org/pdf/1911.11313.pdf).
 
-[^4]: This is our interpretation of section 4 of her draft report, where she writes “I also assume that effective FLOP per dollar is doubling roughly once every 2.5 years around 2025. This is slower than Moore’s law (which posits a ~1-2 year doubling time and described growth reasonably well until the mid-2000s) but faster than growth in effective FLOP per dollar from ~2008 to 2018 (a doubling time of ~3-4 years)”
+[^4]: This is our interpretation of section 4 of her draft report, where she writes “I also assume that effective FLOP/s per dollar is doubling roughly once every 2.5 years around 2025. This is slower than Moore’s law (which posits a ~1-2 year doubling time and described growth reasonably well until the mid-2000s) but faster than growth in effective FLOP/s per dollar from ~2008 to 2018 (a doubling time of ~3-4 years)”
 
 [^5]: FLOP per dollar in [Cotra 2020](https://www.alignmentforum.org/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines) refers to the total amount of computation that can be done per dollar.
 
