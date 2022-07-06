@@ -153,17 +153,21 @@
 
       let inputId = this.param;
 
-      let node = mlp.html('<div class="option"><label class="optionLabel" for="' + inputId + '">' + this.label + '</label></div>');
-      let input = mlp.html('<input type="number" value="'+ this.defaultValue +'" class="optionValue" id="' + inputId + (this.type == "natural" ? "step=1 min=0" : "") + '"></input>');
-      node.appendChild(input);
+      if (options.input) {
+        this.input = options.input;
+      } else {
+        let node = mlp.html('<div class="option"><label class="optionLabel" for="' + inputId + '">' + this.label + '</label></div>');
+        let input = mlp.html('<input type="number" value="'+ this.defaultValue +'" class="optionValue" id="' + inputId + (this.type == "natural" ? "step=1 min=0" : "") + '"></input>');
+        node.appendChild(input);
+
+        this.node = node;
+        this.input = input;
+      }
 
       let self = this;
-      input.addEventListener("input", () => {
+      this.input.addEventListener("input", () => {
         self.fire('change');
       });
-
-      this.node = node;
-      this.input = input;
     },
 
     getValue: function() {

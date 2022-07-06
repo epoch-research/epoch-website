@@ -522,11 +522,15 @@ function buildTrendsGraph(container, database, args) {
 
   // Thresholds
 
-  v.addControl(mlp.newNumberControl("Low Z value",        "lowOutliersZValueThreshold",  0));
-  v.addControl(mlp.newNumberControl("High Z value",       "highOutliersZValueThreshold", 0));
-  v.addControl(mlp.newNumberControl("Window size",        "outlierWindowSize",           2));
   v.addControl(mlp.newNumberControl("Citation threshold", "citationThreshold",           0));
   v.addControl(mlp.newNumberControl("Others threshold",   "otherDomainThreshold",        10));
+  v.addHtmlControls(`
+    Define as outliers systems between
+    <input id="lowOutliersZValueThreshold" class="control" value=0></input> <span>and</span> <input id="lowOutliersZValueThreshold" class="control" value=0></input>
+    standard deviations away in any
+    <input id="outlierWindowSize" class="control" value=2> year
+    window
+  `);
 
   // Outliers actions
 

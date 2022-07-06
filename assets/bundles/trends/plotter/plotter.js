@@ -680,6 +680,27 @@
       control.on('change', e => self.onControlChanged(e, control));
     },
 
+    addHtmlControls: function(html) {
+      // Hacky :(
+      let self = this;
+      let node = mlp.html(`
+        <div class="option">
+          ${html}
+        </div>
+      `);
+      for (let controlInput of node.querySelectorAll("input.control")) {
+        controlInput.classList.add('optionValue');
+        if (controlInput.type == "number") {
+          let control = mlp.NumberControl({param: controlInput.id, input: controlInput});
+          this.controls.push(control);
+          this.options[control.param] = control.getValue();
+          control.on('change', e => self.onControlChanged(e, control));
+        }
+      }
+      console.log(node);
+      this.nodes.options.appendChild(node);
+    },
+
     onControlChanged: function(e, controlUpdated) {
       for (let control of this.controls) {
         this.options[control.param] = control.getValue();
