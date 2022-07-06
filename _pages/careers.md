@@ -54,4 +54,4 @@ image: /assets/images/team/epoch-team.jpg
 {% assign list = site.data.jobs %}
 {% include box_list.html button="Apply" sameRowHeight=false %}
 
-*Applications for the current hiring round will be open until July 31st.*
+*Applications for the current hiring round will be open until July 30th.*
