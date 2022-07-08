@@ -516,7 +516,10 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newCheckControl("Plot regressions",     "plotRegressions",    true));
   v.addControl(mlp.newCheckControl("Separate by category", "separateCategories", true));
   v.addControl(mlp.newCheckControl("Label eras",           "labelEras",          true));
-  v.addControl(mlp.newCheckControl("Show doubling times",  "showDoublingTimes",  true));
+
+  v.addControl(mlp.newCheckControl("Show doubling times", "showDoublingTimes", true));
+  v.addControl(mlp.newNumberControl("Number of decimals in regressions", "regressionDecimals", 1, "natural", 1));
+
   v.addControl(mlp.newCheckControl("Label systems",        "labelSystems",       false));
   v.addControl(mlp.newCheckControl("Show legend",          "showLegend",         true));
 

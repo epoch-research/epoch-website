@@ -153,11 +153,18 @@
 
       let inputId = this.param;
 
+      this.type = options.type;
+      this.minValue = options.minValue;
+
+      if (typeof this.minValue == 'undefined' && this.type == 'natural') {
+        this.minValue = 0;
+      }
+
       if (options.input) {
         this.input = options.input;
       } else {
         let node = mlp.html('<div class="option"><label class="optionLabel" for="' + inputId + '">' + this.label + '</label></div>');
-        let input = mlp.html('<input type="number" value="'+ this.defaultValue +'" class="optionValue" id="' + inputId + (this.type == "natural" ? "step=1 min=0" : "") + '"></input>');
+        let input = mlp.html('<input type="number" value="'+ this.defaultValue +'" class="optionValue" id="' + inputId + '"' + (this.type == "natural" ? " step=1" : "") + (typeof this.minValue != "undefined" ? ` min=${this.minValue}` : "") + '></input>');
         node.appendChild(input);
 
         this.node = node;
@@ -186,6 +193,8 @@
       this.callSuper('initialize', options);
       if (this.defaultValues == null) this.defaultValues = [-Infinity, +Infinity];
       this.params = options.params;
+
+      this.type = options.type;
 
       this.inputs = [];
 
@@ -295,8 +304,8 @@
     return new mlp.CheckSetControl({label, param, subParams, reverse});
   }
 
-  mlp.newNumberControl = function(label, param, defaultValue) {
-    return new mlp.NumberControl({label, param, defaultValue});
+  mlp.newNumberControl = function(label, param, defaultValue, type, minValue) {
+    return new mlp.NumberControl({label, param, defaultValue, type, minValue});
   }
 
   mlp.newNumberRangeControl = function(label, param, options) {

@@ -474,6 +474,8 @@ function regressData(rows, eras, params) {
   let lines = [];
   let infoTable = [];
 
+  let d = params.regressionDecimals;
+
   for (let [era, domain, group] of extractEraDomains(eras, rows)) {
     if (group.length < 3) continue;
 
@@ -525,11 +527,11 @@ function regressData(rows, eras, params) {
       lowSlope *= DAYS_PER_YEAR;
       medianSlope *= DAYS_PER_YEAR;
       highSlope *= DAYS_PER_YEAR;
-      info.Slope = `${bestSlope.toFixed(1)} OOMs/year [${lowSlope.toFixed(1)} ; ${medianSlope.toFixed(1)} ; ${highSlope.toFixed(1)}]`
-      info.bestSlope = `${bestSlope.toFixed(1)} OOMs/year`
+      info.Slope = `${bestSlope.toFixed(d)} OOMs/year [${lowSlope.toFixed(d)} ; ${medianSlope.toFixed(d)} ; ${highSlope.toFixed(d)}]`
+      info.bestSlope = `${bestSlope.toFixed(d)} OOMs/year`
     } else {
-      info.bestSlope = `${bestSlope.toExponential(1)}`
-      info.Slope = `${bestSlope.toExponential(1)} [${lowSlope.toExponential(1)} ; ${medianSlope.toExponential(1)} ; ${highSlope.toExponential(1)}]`
+      info.bestSlope = `${bestSlope.toExponential(d)}`
+      info.Slope = `${bestSlope.toExponential(d)} [${lowSlope.toExponential(d)} ; ${medianSlope.toExponential(d)} ; ${highSlope.toExponential(d)}]`
     }
 
 
@@ -546,7 +548,7 @@ function regressData(rows, eras, params) {
       let medianDoublingTime = quantile(doublingTimes, quantiles.median);
       let highDoublingTime   = quantile(doublingTimes, quantiles.high);
 
-      info["Doubling time"] = `${bestDoublingTime.toFixed(1)} months [${lowDoublingTime.toFixed(1)} ; ${medianDoublingTime.toFixed(1)} ; ${highDoublingTime.toFixed(1)}]`;
+      info["Doubling time"] = `${bestDoublingTime.toFixed(d)} months [${lowDoublingTime.toFixed(d)} ; ${medianDoublingTime.toFixed(d)} ; ${highDoublingTime.toFixed(d)}]`;
     }
 
     info._slopes = bootstrappingResults.slopes;
