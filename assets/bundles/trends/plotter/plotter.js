@@ -336,7 +336,7 @@
         let cameraBounds = rect({x0: minX - 2, y0: minY/1.2, x1: maxX + 2, y1: maxY*1.2});
       });
 
-      let rebuildTooltip = (hoveredObject, args) => {
+      let buildTooltip = (hoveredObject, args) => {
         // Gee
 
         let objectTooltippedGroup = this.objectTooltipped ? (this.objectTooltipped.group ? this.objectTooltipped.group : this.objectTooltipped) : null;
@@ -346,6 +346,7 @@
           this.tooltipPinned = false;
 
           this.tooltip = this.objectTooltipBuilder(hoveredObject, args.p);
+          this.tooltipP = args.p;
           this.objectTooltip.innerHTML = '';
         }
 
@@ -402,7 +403,7 @@
           this.objectTooltip.style.visibility = 'hidden';
 
           if (hoveredObject) {
-            let tooltip = rebuildTooltip(hoveredObject, args);
+            let tooltip = buildTooltip(hoveredObject, args);
             this.tooltipPinned = tooltip ? true : false;
             this.objectTooltip.style.visibility = tooltip ? 'visible' : 'hidden';
           }
@@ -451,7 +452,7 @@
             if (args.area != this.mainArea) return;
 
             if (hoveredObject) {
-              rebuildTooltip(hoveredObject, args);
+              buildTooltip(hoveredObject, args);
             }
 
             this.objectTooltip.style.visibility = ((hoveredObject && this.objectTooltip.innerHTML) || this.tooltipPinned) ? 'visible' : 'hidden';
@@ -668,6 +669,19 @@
           mlp.lerp(0.1, parseFloat(computedStyle.width), targetWidth, (w) => {
             optionsNode.style.width = w + 'px';
           });
+        }
+      }
+    },
+
+    rebuildTooltip: function() {
+      if (this.tooltipP) {
+        // God, so hacky
+        let hoveredObject = this.getObjectUnderPoint(this.tooltipP);
+        this.tooltip = this.objectTooltipBuilder(hoveredObject, this.tooltipP);
+        this.objectTooltipped = hoveredObject;
+        this.objectTooltip.innerHTML = '';
+        if (this.tooltip) {
+          this.objectTooltip.appendChild(this.tooltip.dom);
         }
       }
     },

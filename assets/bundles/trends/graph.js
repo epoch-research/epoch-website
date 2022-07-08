@@ -1056,6 +1056,8 @@ function buildTrendsGraph(container, database, args) {
       }
     }
 
+    v.rebuildTooltip();
+
     updateVisibility();
 
     //
