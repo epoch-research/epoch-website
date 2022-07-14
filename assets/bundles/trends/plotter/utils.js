@@ -492,7 +492,7 @@
     return tmpDiv.firstElementChild;
   }
 
-  mlp.lerp = function(duration, from, to, callback) {
+  mlp.lerp = function(duration, from, to, callback, endCallback) {
     if (duration == 0) {
       callback(to);
       return;
@@ -508,6 +508,8 @@
       callback(v);
       if (t < duration) {
         setTimeout(step, 1000*Math.min((duration - t) + 1e-3, dt));
+      } else {
+        if (endCallback) endCallback();
       }
     }
 

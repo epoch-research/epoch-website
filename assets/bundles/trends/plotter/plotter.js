@@ -165,6 +165,8 @@
     xAxisLabel: undefined,
     yAxisLabel: undefined,
 
+    graphAspectRatio: 1,
+
     objects: undefined, // Area to object array
     hoveredObject: null,
     legendNameToItem: undefined,
@@ -208,7 +210,7 @@
       let innerContainer = mlp.html(`
         <div class="plotter-container">
           <div class="left-panel">
-            <div class="graph"><canvas></canvas></div>
+            <div class="graph"><div class="canvas-container"><canvas></canvas></div></div>
             <div class="legend"></div>
             <div class="dateSliderContainer"></div>
           </div>
@@ -220,11 +222,13 @@
       this.canvas = new mlp.Canvas(innerContainer.querySelector(".graph canvas"));
 
       this.nodes = {
-        container:  container,
-        graph:      container.querySelector(".graph"),
-        legend:     container.querySelector(".legend"),
-        options:    container.querySelector(".options"),
-        dateSlider: container.querySelector(".dateSliderContainer"),
+        container:       container,
+        graph:           container.querySelector(".graph"),
+        legend:          container.querySelector(".legend"),
+        options:         container.querySelector(".options"),
+        dateSlider:      container.querySelector(".dateSliderContainer"),
+        canvasContainer: container.querySelector(".canvas-container"),
+        leftPanel:       container.querySelector(".left-panel"),
       }
 
       //// Main area
@@ -304,6 +308,25 @@
 
         plotter.yAxisArea.cameraBounds.setY(plotter.mainArea.cameraBounds.y);
         plotter.yAxisArea.cameraBounds.setH(plotter.mainArea.cameraBounds.h);
+      }
+
+      {
+        let resizeObserver = new ResizeObserver(() => self.ensureAspectRatio());
+        resizeObserver.observe(this.nodes.graph);
+        self.ensureAspectRatio();
+      }
+
+      {
+        // Patch to prevent the left panel from wiggling when opening the options panel
+
+        function setGraphSize() {
+          let h = getComputedStyle(self.nodes.leftPanel).height;
+          self.nodes.graph.style.height = (parseFloat(h) - 35) + 'px';
+        }
+
+        let resizeObserver = new ResizeObserver(setGraphSize);
+        resizeObserver.observe(this.nodes.leftPanel);
+        setGraphSize();
       }
 
       this.canvas.on('beforeRender', args => {
@@ -661,13 +684,23 @@
         optionsNode.style.height = (container.offsetHeight - 10) + 'px';
         closeOptionsButton.style.right = 0;
 
-        let computedStyle = getComputedStyle(optionsNode);
+        let originalGraphHeight = getComputedStyle(self.nodes.graph).height;
 
         if (instantenous) {
           optionsNode.style.width = targetWidth + 'px';
         } else {
+          let computedStyle = getComputedStyle(optionsNode);
           mlp.lerp(0.1, parseFloat(computedStyle.width), targetWidth, (w) => {
+            //console.log(originalGraphHeight);
+            //self.nodes.graph.style.height = originalGraphHeight;
+            //console.log(getComputedStyle(self.nodes.graph).height);
             optionsNode.style.width = w + 'px';
+          }, () => {
+            //console.log("???????");
+            //self.nodes.graph.style.height = '';
+            //console.log(getComputedStyle(self.nodes.graph).height);
+            //console.log(getComputedStyle(self.nodes.graph).height);
+            //console.log(getComputedStyle(self.nodes.graph).height);
           });
         }
       }
@@ -711,7 +744,6 @@
           control.on('change', e => self.onControlChanged(e, control));
         }
       }
-      console.log(node);
       this.nodes.options.appendChild(node);
     },
 
@@ -1012,6 +1044,39 @@
 
     setYAxis: function(options) {
       this.setAxis(this.yAxis, this.yAxisLabel, 'y', options);
+    },
+
+    setAspectRatio: function(r) {
+      this.graphAspectRatio = r;
+      this.ensureAspectRatio();
+    },
+
+    ensureAspectRatio: function() {
+      let node = this.nodes.canvasContainer;
+
+      let margin = 5;
+
+      let bounds = node.parentElement.getBoundingClientRect();
+      let availableWidth = bounds.width - 2*margin;
+      let availableHeight = bounds.height - 2*margin;
+
+      //console.log(node.parentElement);
+      //console.log(bounds.height);
+
+      let r = this.graphAspectRatio;
+      if (r == 'fit') r = availableHeight/availableWidth;
+
+      // Find maximum l such that (1, r) <= (availableWidth, availableHeight)
+
+      let lw = availableWidth;
+      let lh = availableHeight/r;
+      let l = Math.min(lw, lh);
+
+      let width = l;
+      let height = l * r;
+
+      node.style.width = width + 'px';
+      node.style.height = height + 'px';
     },
 
     // TODO

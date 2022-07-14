@@ -74,7 +74,10 @@ body.disabled *:focus {
 
 .plotter-container .graph {
   width: 100%;
-  height: calc(100% - 35px);
+
+  display: flex;
+  align-items: center;
+  overflow: auto;
 }
 
 .plotter-container canvas {
@@ -85,6 +88,13 @@ body.disabled *:focus {
 
 .plotter-container .left-panel {
   flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.plotter-container .canvas-container {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .plotter-container .regressionTableWrapper {
@@ -121,6 +131,8 @@ body.disabled *:focus {
   background-color: #f0f0f0;
   overflow-x: hidden;
   position: relative;
+  flex-grow: 0;
+  flex-shrink: 0;
   z-index: 2;
 }
 
