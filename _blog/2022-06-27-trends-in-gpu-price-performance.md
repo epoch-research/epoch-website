@@ -278,7 +278,7 @@ Half-precision computing (FP16) and mixed-precision computing (usually FP16 and 
   </figcaption>
 </figure>
 
-We find that the price-performance doubling time in FP16 was 2.32 years (95% CI: 1.69 years, 3.62 years). This was significantly different from the slope for the doubling time for price-performance in FP32, suggesting that price-performance improvements in FP16 and FP32 are likely to be similar. This stands in contrast to the findings of [Bergal, 2019](https://aiimpacts.org/2019-recent-trends-in-gpu-price-per-flops/), which finds a 1.8-year doubling time for FP16 FMA.[^7] In what follows, we decide to focus on price-performance in FP32 as we do not find a statistically significant difference between the two trends, and we therefore choose to analyze the models for which we have the most data on.
+We find that the price-performance doubling time in FP16 was 2.32 years (95% CI: 1.69 years, 3.62 years). This was not significantly different from the slope for the doubling time for price-performance in FP32, suggesting that price-performance improvements in FP16 and FP32 are likely to be similar. This stands in contrast to the findings of [Bergal, 2019](https://aiimpacts.org/2019-recent-trends-in-gpu-price-per-flops/), which finds a 1.8-year doubling time for FP16 FMA.[^7] In what follows, we decide to focus on price-performance in FP32 as we do not find a statistically significant difference between the two trends, and we therefore choose to analyze the models for which we have the most data on.
 
 Trends of GPUs used in ML
 -------------------------
