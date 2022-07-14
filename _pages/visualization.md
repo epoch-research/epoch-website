@@ -3,6 +3,7 @@ layout: full_screen_app
 title: ML input trends visualization
 image: /assets/images/posts/2022/compute-trends.png
 permalink: /mlinputs/visualization
+exclude_mathjax: true
 ---
 
 {% include head.html %}
@@ -86,7 +87,7 @@ permalink: /mlinputs/visualization
 
 {% include header.html %}
 
-<div class="graph-wrapper">
+<div class="graph-wrapper tex2jax_ignore">
   <div id="trends-graph">
   </div>
 </div>
