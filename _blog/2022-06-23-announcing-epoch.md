@@ -163,7 +163,7 @@ Besides this, we also plan to opportunistically research topics important for AI
 
 # Our work so far
 
-Earlier this year we published *[Compute Trends Across Three Eras of Machine Learning]({% link _blog/2022-02-16-compute-trends.md %})*. We collected and analyzed data about the training compute budget of >100 Machine Learning models across history. Consistent with our commitment to field building, we have released the associated dataset and an interactive visualization tool to help other researchers understand these trends better. This work has been featured in [Our World in Data](https://ourworldindata.org/grapher/ai-training-computation), in [The Economist](https://www.economist.com/interactive/briefing/2022/06/11/huge-foundation-models-are-turbo-charging-ai-progress) and at the OECD.
+Earlier this year we published *[Compute Trends Across Three Eras of Machine Learning]({% link _blog/2022-02-16-compute-trends.md %})*. We collected and analyzed data about the training compute budget of >100 Machine Learning models across history. Consistent with our commitment to field building, we have released the associated dataset and an interactive visualization tool to help other researchers understand these trends better. This work has been featured in [Our World in Data](https://ourworldindata.org/grapher/ai-training-computation), in [The Economist](https://www.economist.com/interactive/briefing/2022/06/11/huge-foundation-models-are-turbo-charging-ai-progress) and at [the OECD](https://www.oecd.org/).
 
 <div id="trends-graph-wrapper">
   <div id="trends-graph">
