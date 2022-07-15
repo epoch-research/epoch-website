@@ -14,13 +14,6 @@ banner:
     - label: Paper
       url: https://arxiv.org/abs/2207.02852
       icon: file-text
-    - label: Visualization
-      url: /mlinputs/visualization
-      icon: graph-up
-    - label: Dataset
-      url: /mlinputs/data
-      icon: table
-
 
 authors:
   - name: Pablo Villalobos
