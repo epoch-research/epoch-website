@@ -3,6 +3,7 @@ layout: article
 title: "Machine Learning Model Sizes and the Parameter Gap"
 description: 'The model size of notable Machine Learning systems has grown ten times faster than before since 2018. After 2020 growth has not been entirely continuous: there was a jump of one order of magnitude which persists until today. This is relevant for forecasting model size and thus AI capabilities.'
 tags: paper
+image: assets/images/posts/2022/machine-learning-model-sizes-and-the-parameter-gap.png
 date: 2022-07-05
 
 banner:
