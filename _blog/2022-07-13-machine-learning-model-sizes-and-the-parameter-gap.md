@@ -27,12 +27,6 @@ authors:
 <style>
   .side-by-side {
     display: flex;
-    flex-flow: wrap;
-  }
-
-  .side-by-side .figure {
-    flex: 1;
-    min-width: calc(min(100%, 200px));
   }
 </style>
 
