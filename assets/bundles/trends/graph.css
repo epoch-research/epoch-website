@@ -25,3 +25,9 @@ table.dataTable th, table.dataTable td {
 .dateSlider {
   margin: 10px auto;
 }
+
+.download-header {
+  color: white;
+  font-size: 0.9em;
+  text-align: left;
+}

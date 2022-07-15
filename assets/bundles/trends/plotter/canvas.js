@@ -293,6 +293,25 @@
       this.context.restore();
     },
 
+    exportToPng: function() {
+      let padding = 5;
+
+      let paddedCanvas = document.createElement('canvas');
+      paddedCanvas.width  = this.node.width + 2*padding;
+      paddedCanvas.height = this.node.height + 2*padding;
+
+      let destContext = paddedCanvas.getContext('2d');
+
+      destContext.fillStyle = "white";
+      destContext.rect(0, 0, paddedCanvas.width, paddedCanvas.height);
+      destContext.fill();
+
+      destContext.drawImage(this.node, padding, padding);
+
+      let dataUrl = paddedCanvas.toDataURL();
+      return dataUrl;
+    },
+
     requestRenderAll: function() {
       this.dirty = true;
     },
@@ -356,17 +375,19 @@
       // This one is set in the initializer
     },
 
-    _render: function() {
+    _render: function(context) {
+      if (!context) context = this.context;
+
       let bounds = this.bounds();
 
-      this.context.save();
+      context.save();
 
-      this.context.beginPath();
-      this.context.rect(bounds.x, bounds.y, bounds.w, bounds.h);
-      this.context.clip();
+      context.beginPath();
+      context.rect(bounds.x, bounds.y, bounds.w, bounds.h);
+      context.clip();
 
       this.render();
-      this.context.restore();
+      context.restore();
     },
 
     clippedContext: function() {

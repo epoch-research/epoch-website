@@ -371,8 +371,12 @@ function buildTrendsGraph(container, database, args) {
   //
 
   let exportButton = html('<div class="exportButton over-button" id="exportButton">⭳</div>');
-  let csvDownload = '<button id="databaseDownload">Download dataset</button>';
-  let pngDownload = '<button id="graphDownload">Download graph</button>';
+  let csvDownload = `
+    <button id="databaseDownloadCsv">Download dataset</button>
+  `;
+  let pngDownload = `
+    <button id="graphDownload">Download graph</button>
+  `;
   exportButton.appendChild(html('<ul class="dropdown"><li>'+ csvDownload +'</li><li>'+ pngDownload +'</li></ul>'));
 
   let dropdown = _(exportButton, ".dropdown");
@@ -388,7 +392,7 @@ function buildTrendsGraph(container, database, args) {
     }
   });
 
-  _(exportButton, "#databaseDownload").addEventListener("click", function() {
+  _(exportButton, "#databaseDownloadCsv").addEventListener("click", function() {
     let link = document.createElement('a');
     let url = "https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/export?format=csv#gid=0";
     link.setAttribute('href', url);
@@ -398,26 +402,17 @@ function buildTrendsGraph(container, database, args) {
   });
 
   _(exportButton, "#graphDownload").addEventListener("click", function() {
-    let padding = 5;
-    let destCanvas = document.createElement('canvas');
-    destCanvas.width  = plotter.canvas.node.width + 2*padding;
-    destCanvas.height = plotter.canvas.node.height + 2*padding;
+    downloadGraph();
+  });
 
-    let destContext = destCanvas.getContext('2d');
-
-    destContext.fillStyle = "white";
-    destContext.rect(0, 0, destCanvas.width, destCanvas.height);
-    destContext.fill();
-
-    destContext.drawImage(plotter.canvas.node, padding, padding);
-
-    let dataUrl = destCanvas.toDataURL();
+  function downloadGraph(quality) {
+    let dataUrl = plotter.canvas.exportToPng();
     let link = document.createElement('a');
     link.setAttribute('href', dataUrl);
     link.setAttribute('target', '_blank');
     link.setAttribute('download', 'trends.png');
     link.dispatchEvent(new MouseEvent('click'));
-  });
+  }
 
   plotter.nodes.graph.appendChild(exportButton);
 
@@ -511,6 +506,13 @@ function buildTrendsGraph(container, database, args) {
     param: "yAxis",
     defaultValue: "Parameters",
     values: possibleYAxes,
+  }));
+
+  v.addControl(new mlp.SelectControl({
+    label: "Aspect ratio",
+    param: "aspectRatio",
+    defaultValue: "fit to container",
+    values: ["fit to container", "16:9", "1:1",],
   }));
 
   v.addControl(mlp.newCheckControl("Plot regressions",     "plotRegressions",    true));
@@ -1106,6 +1108,14 @@ function buildTrendsGraph(container, database, args) {
       };
 
       v.setCamera({x0: minX, y0: minY / 1.5, x1: maxX, y1: maxY * 1.5});
+    }
+
+    let aspectRatioStr = args.options.aspectRatio;
+    if (aspectRatioStr == 'fit to container') {
+      v.setAspectRatio('fit');
+    } else {
+      let [w, h] = aspectRatioStr.split(':');
+      v.setAspectRatio(parseFloat(h)/parseFloat(w));
     }
 
     v.requestRenderAll();
