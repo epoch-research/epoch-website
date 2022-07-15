@@ -6,6 +6,8 @@ tags: paper
 image: assets/images/posts/2022/machine-learning-model-sizes-and-the-parameter-gap.png
 date: 2022-07-05
 
+toc: auto
+
 banner:
   fullscreen: false
   resources:
