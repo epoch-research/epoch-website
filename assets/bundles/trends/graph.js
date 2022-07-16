@@ -1120,12 +1120,12 @@ function buildTrendsGraph(container, database, args) {
       v.setAspectRatio(parseFloat(h)/parseFloat(w));
     }
 
+    v.requestRenderAll();
+
     for (let button of downloadButtons) {
       button.dataset.width = Math.round((+button.dataset.height)/v.getAspectRatio());
       button.innerText = `${button.dataset.quality} (${button.dataset.width}x${button.dataset.height})`;
     }
-
-    v.requestRenderAll();
   }
 }
 
