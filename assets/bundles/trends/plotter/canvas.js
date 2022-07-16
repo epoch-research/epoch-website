@@ -29,6 +29,8 @@
 
     currentPointer: {x: 0, y: 0},
 
+    pixelRatio: mlp.devicePixelRatio,
+
     _cachedBoundingRect: null,
 
     initialize: function(container, options) {
@@ -42,20 +44,9 @@
 
       let self = this;
 
-      let onResize = () => {
-        this._cachedBoundingRect = rect({x: 0, y: 0, w: this.node.clientWidth, h: this.node.clientHeight});
-
-        this.node.width = mlp.devicePixelRatio * this.node.clientWidth;
-        this.node.height = mlp.devicePixelRatio * this.node.clientHeight;
-
-        this.fire('resize');
-        this.render(); // Sorry, but using requestRenderAll makes things less smooth, here
-        this.dirty = false;
-      }
-
-      let resizeObserver = new ResizeObserver(onResize);
+      let resizeObserver = new ResizeObserver(() => this.onResize());
       resizeObserver.observe(this.node);
-      onResize();
+      this.onResize();
 
       let renderLoop = () => {
         if (self.dirty) {
@@ -80,6 +71,26 @@
 
       // TODO do we really need eventjs?
       eventjs.add(this.node, "wheel", this.onWheel.bind(this), {passive: false});
+    },
+
+    onResize: function() {
+      this._cachedBoundingRect = rect({x: 0, y: 0, w: this.node.clientWidth, h: this.node.clientHeight});
+
+      this.node.width = this.pixelRatio * this.node.clientWidth;
+      this.node.height = this.pixelRatio * this.node.clientHeight;
+
+      this.fire('resize');
+      this.render(); // Sorry, but using requestRenderAll makes things less smooth, here
+      this.dirty = false;
+    },
+
+    getPixelRatio: function() {
+      return this.pixelRatio;
+    },
+
+    setPixelRatio: function(pixelRatio) {
+      this.pixelRatio = pixelRatio;
+      this.onResize();
     },
 
     getTouchedArea: function(p) {
@@ -273,7 +284,7 @@
     },
 
     bounds: function() {
-      return this._cachedBoundingRect;
+      return this._cachedBoundingRect;this._cachedBoundingRect;
     },
 
     addArea: function(options) {
@@ -284,7 +295,7 @@
 
     render: function() {
       this.context.save();
-      this.context.scale(mlp.devicePixelRatio, mlp.devicePixelRatio);
+      this.context.scale(this.pixelRatio, this.pixelRatio);
       this.fire('beforeRender', {context: this.context});
       for (let area of this.areas) {
         area._render();
@@ -293,8 +304,25 @@
       this.context.restore();
     },
 
-    exportToPng: function() {
-      let padding = 5;
+    exportToPng: function(width, height, pixelRatio) {
+      // Pretty hacky, to be honest
+
+      let originalPixelRatio = this.pixelRatio;
+
+      this.pixelRatio = pixelRatio || 1;
+
+      let padding = Math.ceil(5 * pixelRatio);
+
+      let originalWidth = this.node.width;
+      let originalHeight = this.node.height;
+
+      this.node.width = width - 2*padding;
+      this.node.height = height - 2*padding;
+
+      this._cachedBoundingRect = rect({x: 0, y: 0, w: this.node.width/pixelRatio, h: this.node.height/pixelRatio});
+
+      this.fire('resize');
+      this.render();
 
       let paddedCanvas = document.createElement('canvas');
       paddedCanvas.width  = this.node.width + 2*padding;
@@ -307,6 +335,10 @@
       destContext.fill();
 
       destContext.drawImage(this.node, padding, padding);
+
+      this.node.width = originalWidth;
+      this.node.height = originalHeight;
+      this.setPixelRatio(originalPixelRatio);
 
       let dataUrl = paddedCanvas.toDataURL();
       return dataUrl;
@@ -435,5 +467,4 @@
     },
   };
 })();
-
 

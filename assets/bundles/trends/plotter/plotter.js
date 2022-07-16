@@ -1051,6 +1051,10 @@
       this.ensureAspectRatio();
     },
 
+    getAspectRatio: function() {
+      return (this.graphAspectRatio == 'fit') ? this.canvas.node.height/this.canvas.node.width : this.graphAspectRatio;
+    },
+
     ensureAspectRatio: function() {
       let node = this.nodes.canvasContainer;
 
@@ -1102,6 +1106,6 @@
 
     requestRenderAll: function() {
       this.canvas.requestRenderAll();
-    }
+    },
   });
 })();

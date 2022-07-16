@@ -1,3 +1,6 @@
+// TODO For testing purposes. Remove.
+let p;
+
 function buildTrendsGraph(container, database, args) {
   'use strict';
 
@@ -348,36 +351,27 @@ function buildTrendsGraph(container, database, args) {
     return closestSlopeInfo;
   }
 
-  /*
-  plotter.on('hover', args => {
-    if (args.mouseLeaveObject) {
-      if (args.mouseLeaveObject instanceof mlp.Point) {
-        args.mouseLeaveObject.fill = '';
-        plotter.requestRenderAll();
-      }
-    }
-
-    if (args.mouseEnterObject) {
-      if (args.mouseEnterObject instanceof mlp.Point) {
-        args.mouseEnterObject.fill = 'red';
-        plotter.requestRenderAll();
-      }
-    }
-  });
-  */
-
   //
   // Export buttons
   //
 
   let exportButton = html('<div class="exportButton over-button" id="exportButton">⭳</div>');
   let csvDownload = `
-    <button id="databaseDownloadCsv">Download dataset</button>
+    <div class="download-header">Download dataset</div>
+    <button id="databaseDownloadCsv">CSV</button>
   `;
   let pngDownload = `
-    <button id="graphDownload">Download graph</button>
+    <div class="download-header">Download graph</div>
+    <button id="graphDownloadHD" data-quality="HD" data-height=720></button>
+    <button id="graphDownloadSuperHD" data-quality="Super HD" data-height=1080></button>
+    <button id="graphDownloadExtraSuperHD" data-quality="Extra super HD" data-height=2160></button>
   `;
   exportButton.appendChild(html('<ul class="dropdown"><li>'+ csvDownload +'</li><li>'+ pngDownload +'</li></ul>'));
+
+  let downloadButtons = [];
+  for (let id of ["#graphDownloadHD",  "#graphDownloadSuperHD",  "#graphDownloadExtraSuperHD"]) {
+    downloadButtons.push(_(exportButton, id));
+  }
 
   let dropdown = _(exportButton, ".dropdown");
   dropdown.style.visibility = "hidden";
@@ -401,12 +395,18 @@ function buildTrendsGraph(container, database, args) {
     link.dispatchEvent(new MouseEvent('click'));
   });
 
-  _(exportButton, "#graphDownload").addEventListener("click", function() {
-    downloadGraph();
-  });
+  for (let button of downloadButtons) {
+    button.addEventListener("click", function() {
+      let targetHeight = +this.dataset.height;
+      let targetWidth = +this.dataset.width; // will be set below
+      downloadGraph(targetWidth, targetHeight);
+    });
+  }
 
-  function downloadGraph(quality) {
-    let dataUrl = plotter.canvas.exportToPng();
+  function downloadGraph(targetWidth, targetHeight) {
+    let pixelRatio = targetHeight/720;
+
+    let dataUrl = plotter.canvas.exportToPng(targetWidth, targetHeight, pixelRatio);
     let link = document.createElement('a');
     link.setAttribute('href', dataUrl);
     link.setAttribute('target', '_blank');
@@ -778,6 +778,8 @@ function buildTrendsGraph(container, database, args) {
   v.xAxisLabel.cursor = 'pointer';
   v.yAxisLabel.cursor = 'pointer';
 
+  p = v;
+
   function onChange(args) {
     v.showLegend(args.options.showLegend);
 
@@ -1116,6 +1118,11 @@ function buildTrendsGraph(container, database, args) {
     } else {
       let [w, h] = aspectRatioStr.split(':');
       v.setAspectRatio(parseFloat(h)/parseFloat(w));
+    }
+
+    for (let button of downloadButtons) {
+      button.dataset.width = Math.round((+button.dataset.height)/v.getAspectRatio());
+      button.innerText = `${button.dataset.quality} (${button.dataset.width}x${button.dataset.height})`;
     }
 
     v.requestRenderAll();
