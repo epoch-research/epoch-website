@@ -519,8 +519,9 @@ function buildTrendsGraph(container, database, args) {
   v.addControl(mlp.newCheckControl("Separate by category", "separateCategories", true));
   v.addControl(mlp.newCheckControl("Label eras",           "labelEras",          true));
 
-  v.addControl(mlp.newCheckControl("Show doubling times", "showDoublingTimes", true));
-  v.addControl(mlp.newNumberControl("Number of decimals in regressions", "regressionDecimals", 1, "natural", 1));
+  v.addControl(mlp.newCheckControl("Show doubling times",                "showDoublingTimes",  true));
+  v.addControl(mlp.newNumberControl("Number of decimals in regressions", "regressionDecimals", 1,   "natural", 1));
+  v.addControl(mlp.newNumberControl("Text size (%)",                     "textSize",           100, "real",    40, 100));
 
   v.addControl(mlp.newCheckControl("Label systems",        "labelSystems",       false));
   v.addControl(mlp.newCheckControl("Show legend",          "showLegend",         true));
@@ -783,6 +784,8 @@ function buildTrendsGraph(container, database, args) {
   function onChange(args) {
     v.showLegend(args.options.showLegend);
 
+    v.setTextScale(args.options.textSize/100);
+
     let axesUpdated = (prevParams.xAxis != args.options.xAxis) || (prevParams.yAxis != args.options.yAxis);
     let resetCamera = false;
 
@@ -839,7 +842,10 @@ function buildTrendsGraph(container, database, args) {
 
     if (linkParamsToUrl) setUrlParams(params);
 
-    result = generateGraph(database, params);
+    let skipRegeneration = args.objectsUpdated && (args.objectsUpdated.length == 1) && (args.objectsUpdated[0].param == 'textSize');
+    if (!skipRegeneration) {
+      result = generateGraph(database, params);
+    }
 
     //
     // Update the visualizer

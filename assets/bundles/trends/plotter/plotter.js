@@ -147,6 +147,8 @@
   mlp.Plotter = mlp.createClass(mlp.Observable, {
     canvas: undefined,
 
+    textScale: 1,
+
     tooltip: undefined,
     objectTooltip: undefined,
     objectTooltipped: undefined,
@@ -546,7 +548,7 @@
 
         // Fix this!
         text.area.context.save();
-        text.area.context.font = (text.fontWeight || 'bold') + ' ' + (text.fontSize || 14) + 'px ' + (text.fontFamily || 'sans');
+        text.area.context.font = (text.fontWeight || 'bold') + ' ' + ((text.fontSize || 14)*this.textScale) + 'px ' + (text.fontFamily || 'sans');
         let textBounds = mlp.rect(mlp.getTextBounds(text.area.context, text.text));
         text.area.context.restore();
 
@@ -573,7 +575,7 @@
 
         // Fix this!
         text.area.context.save();
-        text.area.context.font = (text.fontWeight || 'bold') + ' ' + (text.fontSize || 14) + 'px ' + (text.fontFamily || 'sans');
+        text.area.context.font = (text.fontWeight || 'bold') + ' ' + ((text.fontSize || 14)*this.textScale) + 'px ' + (text.fontFamily || 'sans');
         let textBounds = mlp.rect(mlp.getTextBounds(text.area.context, text.text));
         text.area.context.restore();
 
@@ -599,7 +601,7 @@
           let isXAxis = (axis == self.xAxis);
           let scale = isXAxis ? x : y;
 
-          this.context.font = '15px sans-serif';
+          this.context.font = `${15 * plotter.textScale}px sans-serif`;
 
           let ticks = isXAxis ? plotter.xAxis.ticks(plotter.xAxisArea, 20) : plotter.yAxis.ticks(plotter.yAxisArea, 10);
 
@@ -805,6 +807,21 @@
       this.fire('optionsChanged', {options: this.options, objectsUpdated: paramsSet});
     },
 
+    setTextScale: function(s) {
+      if (Number.isNaN(s) || s <= 0) {
+        s = 1;
+      }
+      this.textScale = s;
+      for (let area of this.areas) {
+        for (let object of this.objects.get(area)) {
+          if (object instanceof mlp.Text) {
+            object.setScale(s);
+          }
+        }
+      }
+      this.canvas.requestRenderAll();
+    },
+
     setLegend: function(categories) {
       let self = this;
 
@@ -997,7 +1014,7 @@
       if ("position" in options) {
         options.position = this.getPaperCoords(options.position.x, options.position.y);
       }
-      let textObject = new mlp.Text(text, {area: this.mainArea, plotter: this, ...options});
+      let textObject = new mlp.Text(text, {area: this.mainArea, plotter: this, scale: this.textScale, ...options});
       this.objects.get(options.area || this.mainArea).push(textObject);
       return textObject;
     },
