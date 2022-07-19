@@ -331,6 +331,31 @@
         setGraphSize();
       }
 
+      {
+        function updateLegendPositionAndVisibility() {
+          let canvasBounds = self.canvas.node.getBoundingClientRect();
+          let leftPanelBounds = self.nodes.leftPanel.getBoundingClientRect();
+          let canvasContainerWidth = getComputedStyle(self.canvas.node.parentElement).width;
+
+          let margin = 15;
+          let legend = self.nodes.legend;
+          legend.style.top = `${self.mainArea.bounds().y0 + canvasBounds.y - leftPanelBounds.y + margin}px`;
+          legend.style.left = `${self.mainArea.bounds().x0 + canvasBounds.x - leftPanelBounds.x + margin}px`;
+
+          let legendWidth = parseFloat(getComputedStyle(self.nodes.legend).width);
+          if (legendWidth + margin > self.mainArea.bounds().w/2) {
+            legend.style.visibility = 'hidden';
+          } else {
+            legend.style.visibility = '';
+          }
+        }
+
+        let resizeObserver = new ResizeObserver(updateLegendPositionAndVisibility);
+        resizeObserver.observe(this.nodes.leftPanel);
+        this.canvas.on('resize', updateLegendPositionAndVisibility);
+        updateLegendPositionAndVisibility();
+      }
+
       this.canvas.on('beforeRender', args => {
         args.context.fillStyle = "white";
         args.context.rect(0, 0, this.canvas.node.width, this.canvas.node.height);

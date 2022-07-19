@@ -766,16 +766,6 @@ function buildTrendsGraph(container, database, args) {
   v.on('optionsChanged', onChange);
   onChange({options: params});
 
-  function updateLegendVisibility() {
-    // TODO
-    if (v.mainArea.bounds().w < 500) {
-      v.setOptions({showLegend: false});
-    }
-  }
-
-  v.canvas.on('resize', updateLegendVisibility);
-  updateLegendVisibility();
-
   v.xAxisLabel.cursor = 'pointer';
   v.yAxisLabel.cursor = 'pointer';
 
