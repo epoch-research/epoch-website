@@ -7,7 +7,8 @@ import urllib.request
 import os.path
 
 self_path = os.path.dirname(os.path.realpath(__file__))
-output_path = os.path.join(self_path, '..', 'assets/bundles/trends/database.js')
+output_path_csv = os.path.join(self_path, '..', 'assets/bundles/trends/database.csv')
+output_path_js = os.path.join(self_path, '..', 'assets/bundles/trends/database.js')
 
 response = urllib.request.urlopen(databaseUrl)
 dataset = response.read().decode('utf-8')
@@ -34,7 +35,10 @@ for row in rows[1:]:
 lines.append("  ],")
 lines.append("};")
 
-with open(output_path, 'w') as f:
+with open(output_path_csv, 'w') as f:
+  f.write('\n'.join(dataset))
+
+with open(output_path_js, 'w') as f:
   f.write('\n'.join(lines))
 
 print('Done')

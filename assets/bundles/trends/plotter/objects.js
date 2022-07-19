@@ -293,6 +293,8 @@
 
     stroke: '#1f77b4',
 
+    scale: 1,
+
     initialize: function(text, options) {
       options ||= {};
 
@@ -307,6 +309,7 @@
       this.fill                = ('fill' in options)                ? options.fill : 'black';
       this.offset              = ('offset' in options)              ? options.offset : {x: 0, y: 0};
       this.stroke              = options.stroke;
+      this.scale               = ('scale' in options)               ? options.scale : 1;
     },
 
     canvasDistanceToPoint: function(canvasPoint) {
@@ -320,12 +323,20 @@
       return dist;
     },
 
+    setScale: function(s) {
+      this.scale = s;
+    },
+
+    getScale: function() {
+      return this.scale;
+    },
+
     getBounds: function() {
       let areaBounds = this.area.bounds();
       let cameraBounds = this.area.cameraBounds;
 
       this.area.context.save();
-      this.area.context.font = (this.fontWeight || 'bold') + ' ' + (this.fontSize || 14) + 'px ' + (this.fontFamily || 'sans');
+      this.area.context.font = (this.fontWeight || 'bold') + ' ' + ((this.fontSize || 14) * this.scale) + 'px ' + (this.fontFamily || 'sans');
       let textBounds = mlp.rect(mlp.getTextBounds(this.area.context, this.text));
       this.area.context.restore();
 
@@ -359,7 +370,7 @@
 
       context.save();
 
-      context.font = (this.fontWeight || 'bold') + ' ' + (this.fontSize || 14) + 'px ' + (this.fontFamily || 'sans');
+      context.font = (this.fontWeight || 'bold') + ' ' + ((this.fontSize || 14) * this.scale) + 'px ' + (this.fontFamily || 'sans');
       let textBounds = mlp.rect(mlp.getTextBounds(context, this.text));
 
       let q = mlp.Converter.paperToCanvas(this.position, areaBounds, cameraBounds);

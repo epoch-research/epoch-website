@@ -155,6 +155,7 @@
 
       this.type = options.type;
       this.minValue = options.minValue;
+      this.maxValue = options.maxValue;
 
       if (typeof this.minValue == 'undefined' && this.type == 'natural') {
         this.minValue = 0;
@@ -164,7 +165,7 @@
         this.input = options.input;
       } else {
         let node = mlp.html('<div class="option"><label class="optionLabel" for="' + inputId + '">' + this.label + '</label></div>');
-        let input = mlp.html('<input type="number" value="'+ this.defaultValue +'" class="optionValue" id="' + inputId + '"' + (this.type == "natural" ? " step=1" : "") + (typeof this.minValue != "undefined" ? ` min=${this.minValue}` : "") + '></input>');
+        let input = mlp.html('<input type="number" value="'+ this.defaultValue +'" class="optionValue" id="' + inputId + '"' + (this.type == "natural" ? " step=1" : "") + (typeof this.minValue != "undefined" ? ` min=${this.minValue}` : "") + (typeof this.maxValue != "undefined" ? ` max=${this.maxValue}` : "") +'></input>');
         node.appendChild(input);
 
         this.node = node;
@@ -172,13 +173,21 @@
       }
 
       let self = this;
+
+      this.input.addEventListener("input", () => {
+        self.fire('change');
+      });
+
       this.input.addEventListener("input", () => {
         self.fire('change');
       });
     },
 
     getValue: function() {
-      return parseFloat(this.input.value);
+      let v = parseFloat(this.input.value);
+      if (this.minValue != 'undefined' && v < this.minValue) v = this.minValue;
+      if (this.maxValue != 'undefined' && v > this.maxValue) v = this.maxValue;
+      return v;
     },
 
     setValue: function(value) {
@@ -306,6 +315,10 @@
 
   mlp.newNumberControl = function(label, param, defaultValue, type, minValue) {
     return new mlp.NumberControl({label, param, defaultValue, type, minValue});
+  }
+
+  mlp.newNumberControl = function(label, param, defaultValue, type, minValue, maxValue) {
+    return new mlp.NumberControl({label, param, defaultValue, type, minValue, maxValue});
   }
 
   mlp.newNumberRangeControl = function(label, param, options) {
