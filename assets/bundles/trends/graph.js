@@ -521,7 +521,7 @@ function buildTrendsGraph(container, database, args) {
 
   v.addControl(mlp.newCheckControl("Show doubling times",                "showDoublingTimes",  true));
   v.addControl(mlp.newNumberControl("Number of decimals in regressions", "regressionDecimals", 1,   "natural", 1));
-  v.addControl(mlp.newNumberControl("Text size (%)",                     "textSize",           100, "real",    40, 100));
+  v.addControl(mlp.newNumberControl("Text size (%)",                     "textSize",           100, "real",    40, 200));
 
   v.addControl(mlp.newCheckControl("Label systems",        "labelSystems",       false));
   v.addControl(mlp.newCheckControl("Show legend",          "showLegend",         true));
