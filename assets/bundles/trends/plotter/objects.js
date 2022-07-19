@@ -172,6 +172,9 @@
     shape: 'circle',
     fill: null,
     stroke: '#1f77b4',
+    shapeSize: 144,
+    lineWidth: 2,
+    alpha: 1,
 
     initialize: function(paperCoords, dataCoords, options) {
       options ||= {};
@@ -182,6 +185,7 @@
       this.shape = options.shape || 'circle';
       this.fill = options.fill;
       this.stroke = ('stroke' in options) ? options.stroke : '#1f77b4';
+      this.alpha =  ('alpha' in options)  ? options.alpha : 1;
     },
 
     canvasDistanceToPoint: function(canvasPoint) {
@@ -189,36 +193,54 @@
     },
 
     render: function(context) {
+      context.save();
+
       let areaBounds = this.area.bounds();
       let cameraBounds = this.area.cameraBounds;
 
       let q = mlp.Converter.paperToCanvas(this.paperCoords, areaBounds, cameraBounds);
 
-      context.lineWidth = 2;
+      context.lineWidth = this.lineWidth;
       context.strokeStyle = this.stroke;
       context.fillStyle = this.fill;
       context.setLineDash([]);
 
-      context.save();
-
       context.beginPath();
       context.translate(q.x, q.y);
 
-      let shapeSize = 144;
+      context.globalAlpha = this.alpha;
 
       let shape = this.shape;
 
       if (typeof shape == 'function') {
-        shape(context, shapeSize);
+        shape(context, this.shapeSize);
       } else {
         if (!(shape in mlp.pointSymbols)) shape = 'circle';
-        mlp.pointSymbols[this.shape].draw(context, shapeSize);
+        mlp.pointSymbols[this.shape].draw(context, this.shapeSize);
       }
 
       if (this.stroke) context.stroke();
       if (this.fill) context.fill();
 
       context.restore();
+    },
+
+    getBounds: function() {
+      let areaBounds = this.area.bounds();
+      let cameraBounds = this.area.cameraBounds;
+      let q = mlp.Converter.paperToCanvas(this.paperCoords, areaBounds, cameraBounds);
+
+      let s = Math.sqrt(this.shapeSize);
+      let w = this.lineWidth;
+
+      let bounds = [
+        {x: q.x + s/2 + w, y: q.y + s/2 + w},
+        {x: q.x + s/2 + w, y: q.y - s/2 - w},
+        {x: q.x - s/2 - w, y: q.y - s/2 - w},
+        {x: q.x - s/2 - w, y: q.y + s/2 + w},
+      ];
+
+      return bounds;
     },
   });
 
@@ -249,6 +271,8 @@
     },
 
     render: function(context) {
+      context.save();
+
       let areaBounds = this.area.bounds();
       let cameraBounds = this.area.cameraBounds;
 
@@ -271,6 +295,8 @@
         if (this.stroke) context.stroke();
         if (this.fill) context.fill();
       }
+
+      context.restore();
     },
   });
 
@@ -293,6 +319,8 @@
 
     stroke: '#1f77b4',
 
+    backgroundColor: null,
+
     scale: 1,
 
     initialize: function(text, options) {
@@ -310,6 +338,7 @@
       this.offset              = ('offset' in options)              ? options.offset : {x: 0, y: 0};
       this.stroke              = options.stroke;
       this.scale               = ('scale' in options)               ? options.scale : 1;
+      this.backgroundColor     = ('backgroundColor' in options)     ? options.backgroundColor : null;
     },
 
     canvasDistanceToPoint: function(canvasPoint) {
@@ -365,10 +394,10 @@
     },
 
     render: function(context) {
+      context.save();
+
       let areaBounds = this.area.bounds();
       let cameraBounds = this.area.cameraBounds;
-
-      context.save();
 
       context.font = (this.fontWeight || 'bold') + ' ' + ((this.fontSize || 14) * this.scale) + 'px ' + (this.fontFamily || 'sans');
       let textBounds = mlp.rect(mlp.getTextBounds(context, this.text));
@@ -381,9 +410,6 @@
       let x = q.x - basePointX;
       let y = q.y - basePointY;
 
-      context.strokeStyle = this.stroke;
-      context.fillStyle = this.fill;
-
       let angle = this.rotation * Math.PI/180;
 
       if (angle) {
@@ -395,8 +421,36 @@
       x += this.offset.x;
       y += this.offset.y;
 
-      if (this.fill)  context.fillText(this.text, x, y);
-      if (this.stoke) context.strokeText(this.text, x, y);
+      if (this.backgroundColor) {
+        /*
+        let rect = [
+          {x: x + textBounds.x0, y: y + textBounds.y0},
+          {x: x + textBounds.x1, y: y + textBounds.y0},
+          {x: x + textBounds.x1, y: y + textBounds.y1},
+          {x: x + textBounds.x0, y: y + textBounds.y1},
+        ];
+
+        context.beginPath();
+        context.moveTo(rect[0].x, rect[0].y);
+        for (let p of rect) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        context.fill();
+        */
+
+        let padding = 1.5;
+
+        context.fillStyle = this.backgroundColor;
+        mlp.drawRoundedRect(context, x + textBounds.x0 - padding, y + textBounds.y0 - padding, textBounds.w + 2*padding, textBounds.h + 2*padding, 4);
+        context.fill();
+      }
+
+      context.strokeStyle = this.stroke;
+      context.fillStyle = this.fill;
+
+      if (this.fill) context.fillText(this.text, x, y);
+      if (this.stroke) context.strokeText(this.text, x, y);
 
       context.restore();
     },

@@ -335,7 +335,11 @@
         args.context.fillStyle = "white";
         args.context.rect(0, 0, this.canvas.node.width, this.canvas.node.height);
         args.context.fill();
-        this.fire('beforeRender');
+        this.fire('beforeRender', args);
+      });
+
+      this.canvas.on('afterRender', args => {
+        this.fire('afterRender', args);
       });
 
       this.canvas.on('afterRender', args => {

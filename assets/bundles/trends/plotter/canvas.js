@@ -349,7 +349,7 @@
     },
   });
 
-  mlp.Area = mlp.createClass({
+  mlp.Area = mlp.createClass(mlp.Observable, {
     // Parent canvas
     canvas: undefined,
 
@@ -418,7 +418,9 @@
       context.rect(bounds.x, bounds.y, bounds.w, bounds.h);
       context.clip();
 
+      this.fire('beforeRender', {context: this.context});
       this.render();
+      this.fire('afterRender', {context: this.context});
       context.restore();
     },
 

@@ -387,6 +387,19 @@
     return Math.sqrt(p.x**2 + p.y**2);
   }
 
+  mlp.normalize = function(u) {
+    let norm = mlp.norm(u);
+    return {x: u.x/norm, y: u.y/norm};
+  }
+
+  mlp.dot = function(u, v) {
+    return u.x * v.x + u.y * v.y;
+  }
+
+  mlp.sub = function(u, v) {
+    return {x: v.x - u.x, y: v.y - u.y};
+  }
+
   mlp.dist = function(p, q) {
     return Math.sqrt((q.x - p.x)*(q.x - p.x) + (q.y - p.y)*(q.y - p.y));
   }
@@ -530,4 +543,14 @@
   }
 
   mlp.createEnum = (definition) => Object.freeze(definition);
+
+  // Taken from https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes
+  mlp.drawRoundedRect = function(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x, y + radius);
+    ctx.arcTo(x, y + height, x + radius, y + height, radius);
+    ctx.arcTo(x + width, y + height, x + width, y + height - radius, radius);
+    ctx.arcTo(x + width, y, x + width - radius, y, radius);
+    ctx.arcTo(x, y, x, y + radius, radius);
+  }
 })();

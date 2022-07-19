@@ -700,6 +700,491 @@ function buildTrendsGraph(container, database, args) {
     }
   });
 
+  plotter.on("beforeRender", args => {
+    let context = args.context;
+
+    let textPolygons = [];
+    for (let {text, p, q, slopeInfo} of slopeTexts) {
+      let textPolygon = text.getBounds();
+      textPolygons.push(textPolygon);
+    }
+
+    for (let object of plotter.objects.get(v.mainArea)) {
+      if (object instanceof mlp.Point) {
+        let bounds = object.getBounds();
+
+        object.alpha = 1;
+        for (let polygon of textPolygons) {
+          if (intersect(polygon, bounds).length > 0) {
+            object.alpha = 0.2;
+            break;
+          }
+        }
+      }
+    }
+
+    return;
+
+
+    for (let {text, p, q, slopeInfo} of slopeTexts) {
+      let a = plotter.paperToCanvas(p);
+      let b = plotter.paperToCanvas(q);
+
+      let u = mlp.normalize({x: b.x - a.x, y: b.y - a.y});
+      let n = mlp.normalize({x: u.y, y: -u.x});
+
+      let d = 15;
+
+      let bandPolygon = [
+        {x: a.x, y: a.y},
+        {x: b.x, y: b.y},
+        {x: b.x + d*n.x, y: b.y + d*n.y},
+        {x: a.x + d*n.x, y: a.y + d*n.y},
+      ];
+
+      context.fillStyle = 'rgba(255, 0, 0, 0.5)';
+      context.strokeStyle = 'red';
+
+      context.beginPath();
+      context.moveTo(bandPolygon[0].x, bandPolygon[0].y);
+      for (let v of bandPolygon) {
+        context.lineTo(v.x, v.y);
+      }
+      context.closePath();
+      //context.stroke();
+      context.fill();
+
+      let polygons = [];
+
+      let textPolygon = text.getBounds();
+
+      for (let object of plotter.objects.get(v.mainArea)) {
+        if (object instanceof mlp.Point) {
+          let bounds = object.getBounds();
+          let intersection = intersect(textPolygon, bounds);
+          object.alpha = (intersection.length > 0) ? 0.3 : 1;
+          polygons.push(bounds);
+        }
+      }
+
+      continue;
+
+      let intersectionsPolygons = [];
+      for (let polygon of polygons) {
+        context.beginPath();
+        context.moveTo(polygon[0].x, polygon[0].y);
+        for (let p of polygon) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        //context.stroke();
+        context.fill();
+
+        let intersection = intersect(bandPolygon, polygon);
+        for (let p of intersection) {
+          intersectionsPolygons.push(p);
+        }
+      }
+
+      context.fillStyle = 'rgba(0, 255, 0, 0.5)';
+      for (let polygon of intersectionsPolygons) {
+        context.beginPath();
+        context.moveTo(polygon[0].x, polygon[0].y);
+        for (let p of polygon) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        //context.stroke();
+        context.fill();
+      }
+
+      // 3. Get forbidden intervals
+      let intervals = [];
+      for (let polygon of intersectionsPolygons) {
+        let minL = Infinity;
+        let maxL = -Infinity;
+        for (let p of polygon) {
+          let l = -mlp.dot(mlp.sub(p, a), u);
+          maxL = Math.max(maxL, l);
+          minL = Math.min(minL, l);
+        }
+        intervals.push([minL, maxL]);
+      }
+
+      intervals.sort((a, b) => {
+        if (a[0] < b[0]) return -1;
+        if (a[0] > b[0]) return +1;
+        return a[1] <= b[1];
+      });
+
+      // 4. Extend and merge the forbidden intervals
+      let textWidth = 100;
+      let currentStart = -Infinity;
+      let currentEnd = -Infinity;
+      let mergedIntervals = [];
+      for (let interval of intervals) {
+        let start = interval[0] - textWidth;
+        let end = interval[1];
+
+        if (start > currentEnd) {
+          if (currentStart != -Infinity) {
+            mergedIntervals.push([currentStart, currentEnd]);
+          }
+          currentStart = start;
+          currentEnd = end;
+        } else {
+          currentEnd = end;
+        }
+      }
+      if (currentStart != -Infinity) {
+        mergedIntervals.push([currentStart, currentEnd]);
+      }
+
+      let allowedIntervals = [];
+      let previousEnd = -Infinity;
+      for (let interval of mergedIntervals) {
+        let start = interval[0];
+        let end = interval[1];
+
+        allowedIntervals.push([previousEnd, start]);
+        previousEnd = end;
+      }
+      allowedIntervals.push([previousEnd, Infinity]);
+
+
+      context.fillStyle = 'rgba(0, 0, 255, 0.5)';
+      for (let interval of allowedIntervals) {
+        let l0 = Math.max(interval[0], -100000);
+        let l1 = Math.min(interval[1], 100000);
+
+        let rect = [
+          {x: a.x + l0*u.x, y: a.y + l0*u.y},
+          {x: a.x + l1*u.x, y: a.y + l1*u.y},
+          {x: a.x + l1*u.x + d*n.x, y: a.y + l1*u.y + d*n.y},
+          {x: a.x + l0*u.x + d*n.x, y: a.y + l0*u.y + d*n.y},
+        ];
+
+        context.beginPath();
+        context.moveTo(rect[0].x, rect[0].y);
+        for (let p of rect) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        context.fill();
+      }
+
+      /*
+      context.fillStyle = 'rgba(0, 0, 255, 0.5)';
+      for (let interval of mergedIntervals) {
+        let l0 = interval[0];
+        let l1 = interval[1];
+
+        let rect = [
+          {x: a.x + l0*u.x, y: a.y + l0*u.y},
+          {x: a.x + l1*u.x, y: a.y + l1*u.y},
+          {x: a.x + l1*u.x + d*n.x, y: a.y + l1*u.y + d*n.y},
+          {x: a.x + l0*u.x + d*n.x, y: a.y + l0*u.y + d*n.y},
+        ];
+
+        context.beginPath();
+        context.moveTo(rect[0].x, rect[0].y);
+        for (let p of rect) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        context.fill();
+      }
+      */
+
+      // 6. Find the best position for the text
+      let mid = -0.5*mlp.dot(mlp.sub(b, a), u);
+      let bestL = null;
+      let bestScore = +Infinity;
+      for (let interval of allowedIntervals) {
+        let shiftMid = mid - textWidth/2;
+        if (shiftMid >= interval[0] && shiftMid < interval[1]) {
+          bestL = shiftMid;
+          bestScore = 0;
+        } else {
+          for (let l of interval) {
+            let score = Math.abs(l - mid);
+            if (score < bestScore) {
+              bestScore = score;
+              bestL = l;
+            }
+          }
+        }
+      }
+
+      {
+        context.fillStyle = 'rgba(255, 255, 255, 0.5)';
+
+        let l0 = bestL;
+        let l1 = bestL + textWidth;
+
+        let rect = [
+          {x: a.x + l0*u.x, y: a.y + l0*u.y},
+          {x: a.x + l1*u.x, y: a.y + l1*u.y},
+          {x: a.x + l1*u.x + d*n.x, y: a.y + l1*u.y + d*n.y},
+          {x: a.x + l0*u.x + d*n.x, y: a.y + l0*u.y + d*n.y},
+        ];
+
+        context.beginPath();
+        context.moveTo(rect[0].x, rect[0].y);
+        for (let p of rect) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        context.fill();
+      }
+
+      break;
+    }
+  });
+
+  plotter.on("afterRender", args => {
+    let context = args.context;
+    context.fillStyle = 'rgba(255, 0, 0, 1)';
+    for (let {text, p, q, slopeInfo} of slopeTexts) {
+      let textPolygon = text.getBounds();
+
+      break;
+
+      for (let object of plotter.objects.get(v.mainArea)) {
+        if (object instanceof mlp.Point) {
+          let bounds = object.getBounds();
+          let intersection = intersect(textPolygon, bounds);
+          if (intersection.length > 0) {
+            context.fillStyle = 'rgba(0, 255, 0, 0.5)';
+            context.beginPath();
+            context.moveTo(bounds[0].x, bounds[0].y);
+            for (let v of bounds) {
+              context.lineTo(v.x, v.y);
+            }
+            context.fill();
+            context.closePath();
+
+          }
+        }
+      }
+
+      break;
+    }
+    return;
+    for (let {text, p, q, slopeInfo} of slopeTexts) {
+      let a = plotter.paperToCanvas(p);
+      let b = plotter.paperToCanvas(q);
+
+      let u = mlp.normalize({x: b.x - a.x, y: b.y - a.y});
+      let n = mlp.normalize({x: u.y, y: -u.x});
+
+      let d = 15;
+
+      let bandPolygon = [
+        {x: a.x, y: a.y},
+        {x: b.x, y: b.y},
+        {x: b.x + d*n.x, y: b.y + d*n.y},
+        {x: a.x + d*n.x, y: a.y + d*n.y},
+      ];
+
+      context.fillStyle = 'rgba(255, 0, 0, 0.5)';
+      context.strokeStyle = 'red';
+
+      context.beginPath();
+      context.moveTo(bandPolygon[0].x, bandPolygon[0].y);
+      for (let v of bandPolygon) {
+        context.lineTo(v.x, v.y);
+      }
+      context.closePath();
+      //context.stroke();
+      context.fill();
+
+      let polygons = [];
+
+      for (let object of plotter.objects.get(v.mainArea)) {
+        if (object instanceof mlp.Point) {
+          let bounds = object.getBounds();
+          polygons.push(bounds);
+        }
+      }
+
+      let intersectionsPolygons = [];
+      for (let polygon of polygons) {
+        context.beginPath();
+        context.moveTo(polygon[0].x, polygon[0].y);
+        for (let p of polygon) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        //context.stroke();
+        context.fill();
+
+        let intersection = intersect(bandPolygon, polygon);
+        for (let p of intersection) {
+          intersectionsPolygons.push(p);
+        }
+      }
+
+      context.fillStyle = 'rgba(0, 255, 0, 0.5)';
+      for (let polygon of intersectionsPolygons) {
+        context.beginPath();
+        context.moveTo(polygon[0].x, polygon[0].y);
+        for (let p of polygon) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        //context.stroke();
+        context.fill();
+      }
+
+      // 3. Get forbidden intervals
+      let intervals = [];
+      for (let polygon of intersectionsPolygons) {
+        let minL = Infinity;
+        let maxL = -Infinity;
+        for (let p of polygon) {
+          let l = -mlp.dot(mlp.sub(p, a), u);
+          maxL = Math.max(maxL, l);
+          minL = Math.min(minL, l);
+        }
+        intervals.push([minL, maxL]);
+      }
+
+      intervals.sort((a, b) => {
+        if (a[0] < b[0]) return -1;
+        if (a[0] > b[0]) return +1;
+        return a[1] <= b[1];
+      });
+
+      // 4. Extend and merge the forbidden intervals
+      let textWidth = 100;
+      let currentStart = -Infinity;
+      let currentEnd = -Infinity;
+      let mergedIntervals = [];
+      for (let interval of intervals) {
+        let start = interval[0] - textWidth;
+        let end = interval[1];
+
+        if (start > currentEnd) {
+          if (currentStart != -Infinity) {
+            mergedIntervals.push([currentStart, currentEnd]);
+          }
+          currentStart = start;
+          currentEnd = end;
+        } else {
+          currentEnd = end;
+        }
+      }
+      if (currentStart != -Infinity) {
+        mergedIntervals.push([currentStart, currentEnd]);
+      }
+
+      let allowedIntervals = [];
+      let previousEnd = -Infinity;
+      for (let interval of mergedIntervals) {
+        let start = interval[0];
+        let end = interval[1];
+
+        allowedIntervals.push([previousEnd, start]);
+        previousEnd = end;
+      }
+      allowedIntervals.push([previousEnd, Infinity]);
+
+
+      context.fillStyle = 'rgba(0, 0, 255, 0.5)';
+      for (let interval of allowedIntervals) {
+        let l0 = Math.max(interval[0], -100000);
+        let l1 = Math.min(interval[1], 100000);
+
+        let rect = [
+          {x: a.x + l0*u.x, y: a.y + l0*u.y},
+          {x: a.x + l1*u.x, y: a.y + l1*u.y},
+          {x: a.x + l1*u.x + d*n.x, y: a.y + l1*u.y + d*n.y},
+          {x: a.x + l0*u.x + d*n.x, y: a.y + l0*u.y + d*n.y},
+        ];
+
+        context.beginPath();
+        context.moveTo(rect[0].x, rect[0].y);
+        for (let p of rect) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        context.fill();
+      }
+
+      /*
+      context.fillStyle = 'rgba(0, 0, 255, 0.5)';
+      for (let interval of mergedIntervals) {
+        let l0 = interval[0];
+        let l1 = interval[1];
+
+        let rect = [
+          {x: a.x + l0*u.x, y: a.y + l0*u.y},
+          {x: a.x + l1*u.x, y: a.y + l1*u.y},
+          {x: a.x + l1*u.x + d*n.x, y: a.y + l1*u.y + d*n.y},
+          {x: a.x + l0*u.x + d*n.x, y: a.y + l0*u.y + d*n.y},
+        ];
+
+        context.beginPath();
+        context.moveTo(rect[0].x, rect[0].y);
+        for (let p of rect) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        context.fill();
+      }
+      */
+
+      // 6. Find the best position for the text
+      let mid = -0.5*mlp.dot(mlp.sub(b, a), u);
+      let bestL = null;
+      let bestScore = +Infinity;
+      for (let interval of allowedIntervals) {
+        let shiftMid = mid - textWidth/2;
+        if (shiftMid >= interval[0] && shiftMid < interval[1]) {
+          bestL = shiftMid;
+          bestScore = 0;
+        } else {
+          for (let l of interval) {
+            let score = Math.abs(l - mid);
+            if (score < bestScore) {
+              bestScore = score;
+              bestL = l;
+            }
+          }
+        }
+      }
+
+      console.log(allowedIntervals);
+      console.log(mid);
+      console.log(bestL, bestScore);
+
+      {
+        context.fillStyle = 'rgba(255, 255, 255, 0.5)';
+
+        let l0 = bestL;
+        let l1 = bestL + textWidth;
+
+        let rect = [
+          {x: a.x + l0*u.x, y: a.y + l0*u.y},
+          {x: a.x + l1*u.x, y: a.y + l1*u.y},
+          {x: a.x + l1*u.x + d*n.x, y: a.y + l1*u.y + d*n.y},
+          {x: a.x + l0*u.x + d*n.x, y: a.y + l0*u.y + d*n.y},
+        ];
+
+        context.beginPath();
+        context.moveTo(rect[0].x, rect[0].y);
+        for (let p of rect) {
+          context.lineTo(p.x, p.y);
+        }
+        context.closePath();
+        context.fill();
+      }
+
+      break;
+    }
+  });
+
   //
   // Modals
   //
@@ -956,6 +1441,45 @@ function buildTrendsGraph(container, database, args) {
     }
 
     //
+    // Systems
+    //
+
+    let domainsInResult = new Set();
+
+    for (let system of result.systems) {
+      let style = domainStyles[system._Domain];
+      if (!style) style = ['red', 'triangle-down'];
+
+      let point = v.addPoint(system[params.xAxis], system[params.yAxis], {
+        stroke: style[0],
+        shape: style[1],
+      });
+
+      let label = v.addText(system.System, {
+        position: {x: system[params.xAxis], y: system[params.yAxis]},
+        fontSize: 12,
+        fill: style[0],
+        normalizedBasePoint: {x: 1, y: 0.5},
+        offset: {x: -10, y: 0},
+        interactive: false,
+      });
+
+      objectToSystem.set(point, system);
+      objectToSystem.set(label, system);
+
+      domainsInResult.add(system._Domain);
+    }
+
+    for (let legendItem of plotter.getLegendItems()) {
+      let domain = legendItem.dataset.value;
+      if (domainsInResult.has(domain)) {
+        legendItem.style.display = '';
+      } else {
+        legendItem.style.display = 'none';
+      }
+    }
+
+    //
     // Regressions
     //
 
@@ -1008,8 +1532,10 @@ function buildTrendsGraph(container, database, args) {
 
           let text = plotter.addText(slopeInfo.bestSlope, {
             position: {x: cx, y: cy},
+            offset: {x: 0, y: -2},
             normalizedBasePoint: {x: 0.5, y: 0},
             fill: color,
+            //backgroundColor: 'rgba(255, 255, 255, 0.8)',
             group: objectGroup,
             cursor: 'pointer',
           });
@@ -1024,45 +1550,6 @@ function buildTrendsGraph(container, database, args) {
         }
 
         slopeObjectToDomain.set(poly, domain);
-      }
-    }
-
-    //
-    // Systems
-    //
-
-    let domainsInResult = new Set();
-
-    for (let system of result.systems) {
-      let style = domainStyles[system._Domain];
-      if (!style) style = ['red', 'triangle-down'];
-
-      let point = v.addPoint(system[params.xAxis], system[params.yAxis], {
-        stroke: style[0],
-        shape: style[1],
-      });
-
-      let label = v.addText(system.System, {
-        position: {x: system[params.xAxis], y: system[params.yAxis]},
-        fontSize: 12,
-        fill: style[0],
-        normalizedBasePoint: {x: 1, y: 0.5},
-        offset: {x: -10, y: 0},
-        interactive: false,
-      });
-
-      objectToSystem.set(point, system);
-      objectToSystem.set(label, system);
-
-      domainsInResult.add(system._Domain);
-    }
-
-    for (let legendItem of plotter.getLegendItems()) {
-      let domain = legendItem.dataset.value;
-      if (domainsInResult.has(domain)) {
-        legendItem.style.display = '';
-      } else {
-        legendItem.style.display = 'none';
       }
     }
 
