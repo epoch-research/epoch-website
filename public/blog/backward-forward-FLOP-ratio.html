@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="What’s the backward-forward FLOP ratio for Neural Networks?" />
+<meta name="author" content="Marius Hobbhahn" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Determining the backward-forward FLOP ratio for neural networks, to help calculate their total training compute." />
+<meta property="og:description" content="Determining the backward-forward FLOP ratio for neural networks, to help calculate their total training compute." />
+<link rel="canonical" href="https://epochai.org/blog/backward-forward-FLOP-ratio" />
+<meta property="og:url" content="https://epochai.org/blog/backward-forward-FLOP-ratio" />
+<meta property="og:site_name" content="Epoch" />
+<meta property="og:image" content="https://epochai.org/assets/images/posts/2022/backward-forward-FLOP-ratio.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-12-13T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://epochai.org/assets/images/posts/2022/backward-forward-FLOP-ratio.png" />
+<meta property="twitter:title" content="What’s the backward-forward FLOP ratio for Neural Networks?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Marius Hobbhahn"},"dateModified":"2021-12-13T00:00:00+00:00","datePublished":"2021-12-13T00:00:00+00:00","description":"Determining the backward-forward FLOP ratio for neural networks, to help calculate their total training compute.","headline":"What’s the backward-forward FLOP ratio for Neural Networks?","image":"https://epochai.org/assets/images/posts/2022/backward-forward-FLOP-ratio.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://epochai.org/blog/backward-forward-FLOP-ratio"},"url":"https://epochai.org/blog/backward-forward-FLOP-ratio"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <title> What’s the backward-forward FLOP ratio for Neural Networks? </title>
+
+  
+    
+
+
+
+
+
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/micromodal.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" >
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" ><!-- MathJax -->
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true,
+      },
+
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+      },
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+  
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <script src="/assets/js/micromodal.min.js"></script>
+
+  <!-- Copy buttons -->
+  <script src="/assets/js/clipboard.min.js"></script>
+  <script>
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
+
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
+      let wrapper = document.createElement('div');
+      wrapper.classList.add('copiable-wrapper');
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    }
+
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
+      target: function(trigger) {
+        return trigger.parentElement.querySelector('.copy-target');
+      },
+    });
+
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
+      tooltip.show();
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
+    });
+
+    clipboard.on('error', function(e) {
+      e.clearSelection();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
+  });
+</script>
+
+</head>
+<head>
+    <script src="/assets/js/distillpub/template.v2.js"></script>
+    <script src="/assets/js/distillpub/transforms.v2.js"></script>
+
+    
+      
+
+<script src="https://unpkg.com/@popperjs/core@2.11.2"></script>
+<script src="https://unpkg.com/tippy.js@6.2.6"></script>
+
+
+
+<style>
+  :root {
+    --resource-color: 78, 51, 80;
+  }
+
+  d-title {
+    padding: 0;
+  }
+
+  d-title {
+    margin-bottom: 15px;
+  }
+
+  d-article {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .article-head {
+    width: 100%;
+    background-color: var(--header-color);
+    margin-bottom: 4em;
+  }
+
+  .article-head-content {
+    padding-left: var(--nav-bar-margin);
+    padding-right: var(--nav-bar-margin);
+    display: flex;
+    margin: auto;
+    padding-top: 70px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+  }
+
+  .page-content {
+    padding-top: 0;
+  }
+
+  .summary-supertitle {
+    margin-bottom: 0;
+    margin-top: 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    word-spacing: 3px;
+  }
+
+  .summary-title {
+    margin-bottom: 15px;
+  }
+
+  .summary-title h1 {
+    margin-bottom: 0;
+  }
+
+  .cite-us {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    font-size: 0.9rem;
+    color: white !important;
+  }
+
+  .citation-tooltip {
+    max-width: calc(100vw - 27px);
+    box-shadow: 0 0 7px 7px black;
+    border-radius: var(--default-radius);
+  }
+
+  .citation-tooltip > .tippy-box {
+    padding-top: 0.5em;
+  }
+
+  .citation-tooltip pre * {
+    color: var(--code-color);
+  }
+
+  @media (min-width: 800px) {
+    .regular-banner .article-head-content {
+      width: auto;
+      height: calc(50vh);
+      padding-top: 0;
+      padding-bottom: 1em;
+      padding-left: var(--nav-bar-margin);
+      padding-right: var(--nav-bar-margin);
+    }
+
+    .regular-banner .banner-img-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .regular-banner .banner-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left;
+    }
+
+    .regular-banner .summary {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+    }
+
+    .regular-banner .summary-main {
+      width: 90%;
+      margin: auto;
+      margin-left: 0;
+    }
+
+    .regular-banner .banner {
+      flex: 0 0 50%;
+      margin: 0;
+      padding: 0;
+      object-fit: cover;
+    }
+}
+
+  
+
+  .summary {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1em;
+  }
+
+  .summary-title, .summary-title *,
+  .summary-authors, .summary-authors *,
+  .summary-abstract, .summary-abstract *,
+  .summary-supertitle, .summary-supertitle *,
+  .summary-footer, .summary-footer * {
+    color: white;
+  }
+
+  .article-resources, .article-resources * {
+    color: white !important;
+  }
+
+  .summary .copiable-wrapper i {
+    color: black;
+  }
+
+  .summary-footer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .summary-authors {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .banner {
+    order: 2;
+    flex: 0 0 41%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    //padding-right: 10px;
+  }
+
+  .banner-img-wrapper img {
+    border-radius: var(--default-radius);
+  }
+
+  .article-resources {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .article-resource {
+    border-radius: 4px;
+    background-color: rgba(var(--resource-color), 0.8);
+    padding: 6px 11px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 5px;
+    margin-top: 0.5em;
+    white-space: nowrap;
+  }
+
+  .article-resources i {
+    margin-right: 0.5rem;
+  }
+
+  .article-resource:hover {
+    background-color: rgba(var(--resource-color), 1.0);
+  }
+
+  @media (max-width: 800px) {
+    .article-head-content {
+      flex-wrap: wrap;
+    }
+
+    .banner, .regular-banner .banner {
+      order: 1;
+      flex-basis: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .summary {
+      order: 2;
+    }
+  }
+</style>
+
+    
+  </head>
+
+  <body><header class="site-header" role="banner">
+  <div class="header-wrapper"><a href="/">
+      <img src="/assets/images/epoch-logo-white-text.svg" alt="Epoch logo" class="header-logo">
+      
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+          
+          <a class="page-link" href="/research">Research</a>
+          <a class="page-link current-menu-item" href="/blog">Blog</a>
+          <a class="page-link" href="/mlinputs/visualization">Visualization</a>
+          <a class="page-link" href="/team">Team</a>
+          <a class="page-link" href="/careers">Careers</a>
+        </div>
+      </nav></div>
+
+  <script>
+    document.addEventListener('click', (e) => {
+      let navTrigger = document.querySelector('#nav-trigger');
+      if (navTrigger && navTrigger.checked) {
+        if (e.target != navTrigger.parentElement && !navTrigger.parentElement.contains(e.target)) {
+          navTrigger.checked = false;
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="post distill">
+
+        
+          
+
+<div class="article-head ">
+  <div class="article-head-content">
+    <div class="banner">
+      <div class="banner-img-wrapper">
+        <img src="/assets/images/posts/2022/backward-forward-FLOP-ratio.png"/>
+      </div>
+    </div>
+    <div class="summary">
+      <div class="summary-main">
+        
+        <div class="summary-title">
+          <h1>What’s the backward-forward FLOP ratio for Neural Networks?</h1>
+          <a class="cite-us"><i class="bi-journal-text"></i> Cite this post</a>
+        </div>
+        
+        <div class="summary-authors">
+          
+          
+
+
+
+      
+      <span class="author tooltiped" data-member-id="marius-hobbhahn">Marius Hobbhahn</span> and 
+      
+      <span class="author tooltiped" data-member-id="jaime-sevilla">Jaime Sevilla</span>
+
+<script src="/assets/js/umbrella.min.js"></script>
+<style>
+  .author.tooltiped {
+    cursor: pointer;
+  }
+
+  .summary-authors .tippy-content {
+    width: 180px;
+    padding: 5px;
+  }
+
+  .miniprofile .mug {
+    width: 180px;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .miniprofile a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .miniprofile .member-resource {
+    margin-right: 5px;
+  }
+
+  .miniprofile .member-info {
+    padding: 4px;
+    width: 180px;
+  }
+
+  .miniprofile .member-name, .miniprofile .member-role {
+    margin-bottom: 2px;
+  }
+</style>
+
+<script>
+
+  
+
+  
+
+  let teamMembers = {
+    
+      'jaime-sevilla': {
+        id: 'jaime-sevilla',
+        name: 'Jaime Sevilla',
+        description: 'Jaime is a researcher focused on statistics and technological forecasting. Besides his role at Epoch, he is a research affiliate of the <a href="https://www.cser.ac.uk/">Centre for the Study of Existential Risk</a> at Cambridge University and the cofounder of <a href="https://riesgoscatastroficosglobales.com/">Riesgos Catastróficos Globales</a>.',
+        role: 'Director',
+        imageUrl: '/assets/images/team/jaime-sevilla.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'amFpbWVAZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/Jsevillamol'},
+        
+        ],
+      },
+    
+      'tamay-besiroglu': {
+        id: 'tamay-besiroglu',
+        name: 'Tamay Besiroglu',
+        description: 'Tamay is a researcher focusing on the Economics of Computing and big-picture trends in Machine Learning. In addition to his role at Epoch, Tamay is a researcher at the Future Tech Lab at MIT, and AI Forecasting Lead at Metaculus. Previously, he led strategy for Metaculus, consulted for the UK Government, and worked at the Future of Humanity Institute.',
+        role: 'Associate director',
+        imageUrl: '/assets/images/team/tamay-besiroglu.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'dGFtYXlAZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'pablo-villalobos': {
+        id: 'pablo-villalobos',
+        name: 'Pablo Villalobos',
+        description: 'Pablo has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/pablo-villalobos.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'cGFibG9AZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'anson-ho': {
+        id: 'anson-ho',
+        name: 'Anson Ho',
+        description: 'Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/anson-ho.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'YW5zb25AZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'github', icon: 'github', url: 'https://github.com/ansonwhho'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://ansonwhho.github.io/'},
+        
+        ],
+      },
+    
+      'lennart-heim': {
+        id: 'lennart-heim',
+        name: 'Lennart Heim',
+        description: 'Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.',
+        role: 'Research Fellow and Strategy Specialist',
+        imageUrl: '/assets/images/team/lennart-heim.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bGVubmFydEBlcG9jaGFpLm9yZw=='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/ohlennart'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://heim.xyz'},
+        
+        ],
+      },
+    
+      'marius-hobbhahn': {
+        id: 'marius-hobbhahn',
+        name: 'Marius Hobbhahn',
+        description: 'Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.',
+        role: 'Research Fellow',
+        imageUrl: '/assets/images/team/marius-hobbhahn.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bWFyaXVzQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'eduardo-infante-roldan': {
+        id: 'eduardo-infante-roldan',
+        name: 'Eduardo Infante-Roldán',
+        description: 'Eduardo does some programming.',
+        role: 'Software Engineer',
+        imageUrl: '/assets/images/team/eduardo-infante-roldan.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWR1QGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'ege-erdil': {
+        id: 'ege-erdil',
+        name: 'Ege Erdil',
+        description: 'Ege Erdil is an undergraduate student at Middle East Technical University. He has interests in mathematics, statistics, economics and forecasting.',
+        role: 'Intern Researcher',
+        imageUrl: '/assets/images/team/ege-erdil.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWdlQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+  };
+
+  
+
+  
+
+  let advisors = {
+    
+      'tom-davidson': {
+        id: 'tom-davidson',
+        name: 'Tom Davidson',
+        description: 'Tom is a senior research analyst at Open Philanthropy. He’s currently working on assessing arguments that transformative AI might be developed relatively soon. Prior to joining Open Philanthropy, Tom worked as a Data Scientist for education technology startup BridgeU and taught science at a UK comprehensive school. He has a Masters in Physics and Philosophy from the University of Oxford.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/tom-davidson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+      'neil-thompson': {
+        id: 'neil-thompson',
+        name: 'Neil Thompson',
+        description: 'Neil is an Innovation Scholar at MIT’s Computer Science and Artificial Intelligence Lab and the Initiative on the Digital Economy where he leads the FutureTech Project. He is also an Associate Member of the Broad Institute.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/neil-thompson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+  };
+
+  
+
+  let members = {...teamMembers, ...advisors};
+</script>
+
+
+<script>
+  for (let author of document.querySelectorAll('.author.tooltiped')) {
+    let member = teamMembers[author.dataset.memberId];
+    if (!member) continue;
+
+    let resources = [];
+    for (let resource of member.resources) {
+      if (resource.name == "mail") {
+        resources.push(`<a class="member-resource" href="#" data-contact="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      } else {
+        resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      }
+    }
+
+    tippy(author, {
+      allowHTML: true,
+      placement: 'top',
+      arrow: false,
+      interactive: true,
+      maxWidth: '200px',
+      trigger: 'mouseenter click',
+      onShow: (instance) => {
+        tippy.hideAll();
+        for (let element of instance.popper.querySelectorAll('[data-contact]')) {
+          addMailDeobfuscator(element);
+        }
+      },
+      content:
+        `
+        <div class="miniprofile">
+          <div class="mug" style="border-radius: 5px; background-image: url('${member.imageUrl}')"></div>
+          <div class="member-info">
+            <h3 class="member-name">${member.name}</h3>
+            <h4 class="member-role">${member.role}</h4>
+            <div class="member-resources">
+              ${resources.join('\n')}
+            </div>
+          </div>
+        </div>
+        `,
+    });
+  }
+</script>
+
+        </div>
+        
+        
+        <div class="summary-abstract">
+          Determining the backward-forward FLOP ratio for neural networks, to help calculate their total training compute.
+        </div>
+        
+        
+      </div>
+      
+      <div class="summary-footer">
+        Dec. 13, 2021
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script>
+  let content = `
+    
+<p style="margin-bottom: 0">Cite this work as</p>
+
+<div class="language-plaintext highlighter-rouge wrappable-pre">
+<div class="highlight">
+  <pre class="highlight"><code>Marius Hobbhahn and Jaime Sevilla (2021), "What’s the backward-forward FLOP ratio for Neural Networks?". <em>Published online at epochai.org.</em> Retrieved from: 'https://epochai.org/blog/backward-forward-FLOP-ratio' [online resource]</code></pre>
+</div>
+</div>
+
+<p style="margin-bottom: 0">BibTeX citation:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@misc{epoch2021backwardforwardFLOPratio,
+  title = "What’s the backward-forward FLOP ratio for Neural Networks?",
+  author = {Marius Hobbhahn and Jaime Sevilla},
+  year = 2021,
+  howpublished = "\\url{https://epochai.org/blog/backward-forward-FLOP-ratio}",
+  note = "Accessed: 2022-07-19"
+}
+</code></pre></div></div>
+
+  `;
+
+  tippy('.cite-us', {
+    allowHTML: true,
+    placement: 'bottom-start',
+    arrow: false,
+    interactive: true,
+    maxWidth: '900px',
+    trigger: 'click',
+    content: content,
+    onShow: (instance) => {
+      instance.popper.classList.add('citation-tooltip');
+      tippy.hideAll();
+      instance.popper.querySelectorAll('pre').forEach(pre => addCopyButton(pre));
+    },
+  });
+</script>
+
+
+        
+
+        <d-article>
+          <d-contents>
+            <nav class="l-text figcaption">
+            <h3>Contents</h3><div><ul id="toc" class="section-nav">
+<li class="toc-entry toc-h1"><a href="#summary">Summary</a></li>
+<li class="toc-entry toc-h1"><a href="#introduction">Introduction</a></li>
+<li class="toc-entry toc-h1"><a href="#theory">Theory</a></li>
+<li class="toc-entry toc-h1"><a href="#empirical-results">Empirical results</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#backward-and-forward-flop-in-the-first-and-the-rest-of-the-layers">Backward and forward FLOP in the first and the rest of the layers</a></li>
+<li class="toc-entry toc-h2"><a href="#type-of-layer">Type of layer</a></li>
+<li class="toc-entry toc-h2"><a href="#batch-size">Batch size</a></li>
+<li class="toc-entry toc-h2"><a href="#depth">Depth</a></li>
+<li class="toc-entry toc-h2"><a href="#combining-all-above">Combining all above</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+<li class="toc-entry toc-h1"><a href="#acknowledgment">Acknowledgment</a></li>
+<li class="toc-entry toc-h1"><a href="#appendix-a-code-for-all-networks">Appendix A: Code for all networks</a></li>
+<li class="toc-entry toc-h1"><a href="#appendix-b-using-other-optimizers">Appendix B: Using other optimizers</a></li>
+</ul></div></nav>
+          </d-contents>
+
+          <h1 id="summary">Summary</h1>
+
+<ol>
+  <li><em>Classic settings</em>, i.e. deep networks with convolutional layers and large batch sizes, <strong><em>almost always have backward-forward FLOP ratios close to 2:1</em></strong>.</li>
+  <li>Depending on the following criteria we can encounter <strong>ratios between 1:1 and 3:1</strong>
+    <ol>
+      <li><strong>Type of layer:</strong> Passes through linear layers have as many FLOP as they use to do weight updates. Convolutional layers have many more FLOP for passes than for weight updates. Therefore, in CNNs, FLOP for weight updates basically play no role.</li>
+      <li><strong>Batch size:</strong> Weights are updated after the gradients of the batch have been aggregated. Thus, FLOP for passes increase with batch size but stay constant for weight updates.</li>
+      <li><strong>Depth:</strong> The first layer has a backward-forward ratio of 1:1 while all others have 2:1. Therefore, the overall ratio is influenced by the fraction of FLOP in first vs. FLOP in other layers.</li>
+    </ol>
+  </li>
+  <li>We assume the network is being optimized by stochastic gradient descent (w += ɑ⋅dw) and count the weight update as part of the backward pass. Other optimizers would imply different FLOP counts and could create ratios even larger than 3:1 for niche settings (see <a href="#appendix-b-using-other-optimizers">appendix B</a>). However, the ratio of 2:1 in the classic setting (see point 1) should still hold even when you use momentum or Adam.</li>
+</ol>
+
+<table>
+    <thead>
+        <tr>
+            <th>
+                <p><strong>Compute-intensity of the weight update</strong></p>
+            </th>
+            <th>
+                <p><strong>Most compute-intensive layers</strong></p>
+            </th>
+            <th>
+                <p><strong>Backward-forward ratio</strong></p>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="2">
+                <p>Large batch size OR compute-intensive convolutional layer</p>
+            </td>
+            <td>
+                <p>First layer</p>
+            </td>
+            <td>
+                <p>1:1</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Other layers</p>
+            </td>
+            <td rowspan="2">
+                <p>2:1</p>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="2">
+                <p>Small batch size AND no compute-intensive convolutional layers</p>
+            </td>
+            <td>
+                <p>First layer</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p>Other layers</p>
+            </td>
+            <td>
+                <p>3:1</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>How many more floating-point operations (FLOP) does it take to compute a backward pass than a forward pass in a neural network? We call this the backward-forward FLOP ratio. </p>
+
+<p>This ratio is useful to estimate the total amount of training compute from the forward compute; something we are interested in the context of our study of <a href="/blog/compute-trends">Parameter, Compute and Data Trends in Machine Learning</a>.</p>
+
+<p>In this post, we first provide a theoretical analysis of the ratio, and we then corroborate our findings empirically.</p>
+
+<h1 id="theory">Theory</h1>
+
+<p>To understand where the differences in ratios come from, we need to look at the classical <a href="http://neuralnetworksanddeeplearning.com/chap2.html#:~:text=The%20backpropagation%20equations%20provide%20us,%3D%CF%83(zl).">equations of backpropagation</a>.</p>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/5jYwS-GY8kdRWevo4xBlknLcDfVUqhvkvZ7BouG3ykSi55Y9gkK5ImWwFczEEouGYiMu-Upzok9e5qIWWDM2Yjg9f0_7jQQnwvwg-FNTER17FiiqMw7CKPwd-oQEvLNiCljFklhk" />
+</figure>
+
+<p>Let’s start with a simple example—a neural network with 2 hidden layers.</p>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/S0c_d-WAilKWRA1Oa4WYLfSfj9Xn6NmT5YGZRhh8GK2SunZ4l9GLY-gLcnCWTT_F0TJRvITj1-bfsrAQ1x2__eSJj0hTayzqQQMmUt8QNOh-SsaGgNRC6vHM27WcAqc-bnL2Nvu2" />
+</figure>
+
+<p>In this example, we have the following computations for forward and backward pass assuming linear layers with ReLU activations. The “@”-symbols denote matrix multiplications. </p>
+
+<table style="word-break: break-word">
+    <thead>
+        <tr>
+            <td style="vertical-align:top">
+                <p><strong>Operation</strong></p>
+            </td>
+            <td style="vertical-align:top">
+                <p><strong>Computation</strong></p>
+            </td>
+            <td style="vertical-align:top">
+                <p><strong>FLOP forward</strong></p>
+            </td>
+            <td style="vertical-align:top">
+                <p><strong>Computation</strong></p>
+            </td>
+            <td style="vertical-align:top">
+                <p><strong>FLOP backward</strong></p>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td style="background-color:#c9daf8;vertical-align:top">Input</td>
+            <td style="background-color:#c9daf8;vertical-align:top">A1=W1@X</td>
+            <td style="background-color:#c9daf8;vertical-align:top">2*#input*#hidden1*#batch</td>
+            <td style="background-color:#c9daf8;vertical-align:top">dL/dW1 = δ1@X</td>
+            <td style="background-color:#c9daf8;vertical-align:top">2*#input*#hidden1*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#c9daf8;vertical-align:top">ReLU</td>
+            <td style="background-color:#c9daf8;vertical-align:top">A1R=ReLU(A1)</td>
+            <td style="background-color:#c9daf8;vertical-align:top">#hidden1*#batch</td>
+            <td style="background-color:#c9daf8;vertical-align:top">δ1 = dδ1R/dA1</td>
+            <td style="background-color:#c9daf8;vertical-align:top">#hidden1*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#fce5cd;vertical-align:top">Derivative</td>
+            <td style="background-color:#fce5cd;vertical-align:top">&nbsp;</td>
+            <td style="background-color:#fce5cd;vertical-align:top">&nbsp;</td>
+            <td style="background-color:#fce5cd;vertical-align:top">
+                <p>δ1R=dL/dA2</p>
+                <p>=W2@δ2</p>
+            </td>
+            <td style="background-color:#fce5cd;vertical-align:top">2*#hidden1*#hidden2*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#fce5cd;vertical-align:top">Hidden1</td>
+            <td style="background-color:#fce5cd;vertical-align:top">A2=W2@A1R</td>
+            <td style="background-color:#fce5cd;vertical-align:top">2*#hidden1*#hidden2*#batch</td>
+            <td style="background-color:#fce5cd;vertical-align:top">
+                <p>dL/dW2</p>
+                <p>=δ2@A1R</p>
+            </td>
+            <td style="background-color:#fce5cd;vertical-align:top">2*#hidden1*#hidden2*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#fce5cd;vertical-align:top">ReLU</td>
+            <td style="background-color:#fce5cd;vertical-align:top">A2R=ReLU(A2)</td>
+            <td style="background-color:#fce5cd;vertical-align:top">#hidden2*#batch</td>
+            <td style="background-color:#fce5cd;vertical-align:top">δ2 = dδ2R/dA2</td>
+            <td style="background-color:#fce5cd;vertical-align:top">#hidden2*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#fff2cc;vertical-align:top">Derivative</td>
+            <td style="background-color:#fff2cc;vertical-align:top">&nbsp;</td>
+            <td style="background-color:#fff2cc;vertical-align:top">&nbsp;</td>
+            <td style="background-color:#fff2cc;vertical-align:top">δ2R=dL/dA3 =W3@δ3</td>
+            <td style="background-color:#fff2cc;vertical-align:top">2*#hidden2*#output*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#fff2cc;vertical-align:top">Hidden2</td>
+            <td style="background-color:#fff2cc;vertical-align:top">A3=W3@A2R</td>
+            <td style="background-color:#fff2cc;vertical-align:top">2*#hidden2*#output*#batch</td>
+            <td style="background-color:#fff2cc;vertical-align:top">dL/dW3 =δ3@A2R</td>
+            <td style="background-color:#fff2cc;vertical-align:top">2*#hidden2*#output*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#fff2cc;vertical-align:top">ReLU</td>
+            <td style="background-color:#fff2cc;vertical-align:top">A3R=ReLU(A3)</td>
+            <td style="background-color:#fff2cc;vertical-align:top">#output*#batch</td>
+            <td style="background-color:#fff2cc;vertical-align:top">δ3 = dδ3R/dA3</td>
+            <td style="background-color:#fff2cc;vertical-align:top">#output*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#d9ead3;vertical-align:top">Loss</td>
+            <td style="background-color:#d9ead3;vertical-align:top">L=loss(A3R,Y)</td>
+            <td style="background-color:#d9ead3;vertical-align:top">#output*#batch</td>
+            <td style="background-color:#d9ead3;vertical-align:top">δ3R = dL/dA3R</td>
+            <td style="background-color:#d9ead3;vertical-align:top">#output*#batch</td>
+        </tr>
+        <tr>
+            <td style="background-color:#d9d2e9;vertical-align:top">Update</td>
+            <td style="background-color:#d9d2e9;vertical-align:top">&nbsp;</td>
+            <td style="background-color:#d9d2e9;vertical-align:top">&nbsp;</td>
+            <td style="background-color:#d9d2e9;vertical-align:top">W+=lr*δW</td>
+            <td style="background-color:#d9d2e9;vertical-align:top">2*#weights</td>
+        </tr>
+    </tbody>
+</table>
+
+<p> We separate the weight update from the individual layers since the update is done after aggregation, i.e. we first add all gradients coming from different batches and then multiply with the learning rate. </p>
+
+<p>From this table we see</p>
+
+<ol>
+  <li>ReLUs and the loss function contribute a negligible amount of FLOP compared to layers.</li>
+  <li>For the first layer, the backward-forward FLOP ratio is 1:1</li>
+  <li>For all other layers, the backward-forward FLOP ratio is 2:1 (ignoring ReLUs)</li>
+</ol>
+
+<p>In equation form, the formula for the backward-forward FLOP ratio is:</p>
+
+<p>backward / forward = </p>
+
+<p class="centered">(FIRST LAYER FORWARD FLOP + 2*OTHER LAYERS FORWARD FLOP + WEIGHT UPDATE) / (FIRST LAYER FORWARD FLOP + OTHER LAYERS FORWARD FLOP)</p>
+
+<p>There are two considerations to see which terms dominate in this equation:</p>
+
+<ol>
+  <li>How much of the computation happens in the first layer?</li>
+  <li>How many operations does the weight update take compared to the computation in the layers? If the batch size is large or many parameters are shared, this term can be dismissed. Otherwise, it can be approximated as WEIGHT UPDATE ≈ FIRST LAYER FORWARD FLOP + OTHER LAYERS FORWARD FLOP.</li>
+</ol>
+
+<p>This leads us to four possible cases:</p>
+
+<table>
+    <tbody>
+        <tr>
+            <td style="border-top-color: transparent !important; border-left-color: transparent !important"></td>
+            <td>
+                <p><strong>Big weight update</strong></p>
+            </td>
+            <td>
+                <p><strong>Small weight update</strong></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><strong>First layer dominant</strong></p>
+            </td>
+            <td>
+                <p>2*FIRST LAYER FORWARD FLOP / FIRST LAYER FORWARD FLOP = <strong>2:1</strong></p>
+            </td>
+            <td>
+                <p>FIRST LAYER FORWARD FLOP / FIRST LAYER FORWARD FLOP = <strong>1:1</strong></p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <p><strong>Other layers dominant</strong></p>
+            </td>
+            <td>
+                <p>3*OTHER LAYERS FORWARD FLOP / OTHER LAYERS FORWARD FLOP = <strong>3:1</strong></p>
+            </td>
+            <td>
+                <p>2*OTHER LAYERS FORWARD FLOP / OTHER LAYERS FORWARD FLOP = <strong>2:1</strong></p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p> The norm in modern Machine Learning is <strong>deep networks</strong> with <strong>large batch sizes</strong>, where our analysis predicts a ratio close to <strong>2:1</strong>.</p>
+
+<p>In short, our theoretical analysis predicts that the backward-forward FLOP ratio will be between <strong>1:1 and 3:1</strong>, with <strong>2:1</strong> being the typical case.</p>
+
+<h1 id="empirical-results">Empirical results</h1>
+
+<p>To corroborate our analysis we use <a href="https://docs.nvidia.com/deeplearning/frameworks/pyprof-user-guide/profile.html">NVIDIA’s pyprof profiler</a> to audit the amount of FLOP in each layer during the backward and forward pass.</p>
+
+<p>In this section we will explore:</p>
+
+<ul>
+  <li>The difference between the backward-forward ratio in the first and the rest of the layers.</li>
+  <li>The difference between the weight update in convolutional and linear layers.</li>
+  <li>The effect of a large batch size on the weight update.</li>
+  <li>The effect of depth on the backward-forward ratio.</li>
+  <li>The combined effects of batch-size, convolutional layers and depth.</li>
+</ul>
+
+<p><em>In short, our empirical results confirm our theoretical findings</em>. </p>
+
+<p>In a <a href="/blog/measure-FLOPs-empirically">previous post</a>, we tried to estimate utilization rates. As detailed in the previous post, the profiler does under- and overcounting. Thus, we believe some of the estimates are slightly off. </p>
+
+<p>We have tried to correct them as much as possible. In particular, we eliminate some operations which we believe are double-counted, and we add the operations corresponding to multiplication by the learning rate which we believe are not counted in stochastic gradient descent.</p>
+
+<h2 id="backward-and-forward-flop-in-the-first-and-the-rest-of-the-layers">Backward and forward FLOP in the first and the rest of the layers</h2>
+
+<p>We can investigate this empirically by looking at a simple linear network (code in <a href="#appendix-a-code-for-all-networks">appendix</a>).</p>
+
+<p>It results in the following FLOP counts:</p>
+
+<figure style="width: 50% !important">
+  <img src="https://lh6.googleusercontent.com/TJLh3y8th56sF-XWIr-sopHEzZ5BnlB-IPnVAOb1Zot9nL9Amm6S5A__lxE9h6ivF6mB2TcDx9it3w4aC9gHVUPmyjsqtyY5sBcpPgqrts85rI9zUQsgXG-wnyW8GiGcg06tHVkk" />
+</figure>
+
+<p>We can see that the first layer (red) has the same flop count for forward and backward pass while the other layers (blue, green) have a ratio of 2:1. The final weight update (yellow) is 2x the number of parameters of the network. </p>
+
+<h2 id="type-of-layer">Type of layer</h2>
+
+<p>The number of FLOP is different for different types of layers.</p>
+
+<figure>
+  <img src="https://39669.cdn.cke-cs.com/rQvD3VnunXZu34m86e5f/images/35b5f0c50d84acd15c76a8def63fc24dbe1d5a0a19c95e85.png" />
+</figure>
+
+<p> As we can see, the number of FLOP for linear layers is 2x their number of parameters. For CNNs the number of FLOP is much higher than the number of parameters. This means that the final weight update is basically negligible for CNNs but relevant for linear networks. </p>
+
+<p>To show this empirically, we look at the profiler FLOP counts of a small CNN (code in <a href="#appendix-a-code-for-all-networks">appendix</a>). </p>
+
+<figure style="width: 50% !important">
+  <img src="https://lh3.googleusercontent.com/4rPIY_MOH6Fg5_rxcBBULW5BLuKrB8_-MGij8ryeM-c2O8hic3PWAQJ3rmuy6sAo7ejtALwKSmaywCDNZA93Dkjzr7hsur8IowR4z2eVZJgdajFTGQoXYdWUieN7dorKfxGwoCL8" />
+</figure>
+
+<p>Similar to the linear network, we can confirm that the backward-forward ratio for the first layer is 1:1 and that of all others 2:1. However, the number of FLOP in layers (red, blue, green) is much larger than for the weight update (yellow).</p>
+
+<h2 id="batch-size">Batch size</h2>
+
+<p>Gradients are aggregated before the weight update. Thus, the FLOP for weight updates stays the same for different batch sizes (yellow) while the FLOP for all other operations scales with the batch size (blue, green, red). As a consequence, larger batch sizes make the FLOP from weight updates negligibly small. </p>
+
+<figure>
+  <img src="https://lh3.googleusercontent.com/qexSxYBU7611GHCUuC-AvtT0dJW1jJuBrGPNmMhhJGe-Uy21ysXufOQGRCjnJrFzGOsQ5eCiweLpq0s3GC-y6e-947ZmxJEmEmtTXyi0nR0bkXUIEHjVBHg5xii5Z1aFqup6k9PQ" />
+</figure>
+
+<h2 id="depth">Depth</h2>
+
+<p>Depth, i.e. the number of layers only has an indirect influence. This stems from the fact that the first layer has a ratio of 1:1 while further layers have a ratio of 2:1. Thus, the true influence comes from FLOP in the first layer vs. every other layer.</p>
+
+<p>To show this effect, we define a CNN with different numbers of intermediate conv layers (code in <a href="#appendix-a-code-for-all-networks">appendix</a>). </p>
+
+<p>We find that the backward-forward starts significantly below 2:1 for 0 intermediate layers and converges towards 2:1 when increasing the number of intermediate layers. </p>
+
+<figure>
+  <img src="https://lh5.googleusercontent.com/T24ibTLUgncweExBMXbBX1e4N0pLGBFTg2F8gjSU8f9wXntjCUtR6sXa251UL75I6-eMZLjaAifI3DhLn_RSW5t3RFwm3FinPi8rGE9jI1c9uhG1S1fo0WHoJ6KRBO1Ajj-ARUax" />
+</figure>
+
+<p>Most common deep learning CNN architectures are deep enough that the first layer shouldn’t have a strong effect on the overall number of FLOP and thus the ratio should be close to 2:1. We have empirically tested this for multiple different types of resnets and batch sizes. We observe some diverge from the expected 2:1 ratio but we think that this is a result of the profiler undercounting certain operations. We have described problems with the profiler in the <a href="/blog/measure-FLOPs-empirically">previous post</a>.</p>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/jXTwTdOotVqzG4H-ZzmYAiKIAVW79O7kAgnvYUlgC0reBqbcxvWg8S1x14Qp8pcDKCBM6IfCKNWYTJjsmoeQg-ZPuKaCKlyMApkZqvr1dYrtgcNi05uHVsLd8tTTpVs-odYuSrY9" />
+  <figcaption>
+Backward-forward FLOP ratio in different architectures. Read the labels as architecture_batchsize.
+  </figcaption>
+</figure>
+
+<h2 id="combining-all-above">Combining all above</h2>
+
+<p>There are interdependencies of batch size, type of layer and depth which we want to explore in the following. We compare the small CNN and the linear network that were already used before with a network we call OneNet (code in <a href="#appendix-a-code-for-all-networks">appendix</a>). OneNet has only one input neuron and a larger second and third layer. Thus, the ratio between the first and other layers is very small and we can see that the theoretical maximum for the backward-forward ratio of 3:1 can be observed in practice. </p>
+
+<p>Furthermore, we look at exponentially increasing batch sizes for all three architectures. In the case of linear networks, i.e. LinearNet and OneNet, the ratio decreases with increasing batch size since the influence of the weight update is reduced. In the case of the CNN, the FLOP count is completely dominated by layers and the weight update is negligible. This effect is so strong that no change can be observed in the figure.</p>
+
+<p>We see that LinearNet converges to a backward-forward ratio of 1:1 for larger batch sizes while OneNet converges to 2:1. This is because nearly all weights of LinearNet are in the first layer and nearly all weights of OneNet in the other layers.</p>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/Ca92ne5fQoSKPiBJqsiI-7ESLybkkslhTus5vH8b7cuCYin54mmLTbFlbs42e9Y-f_2Y4m5Skk2rDuY_LcNZlFiKfyp4n7n3oZuP-GwgsLXRQQEmI5zT8CwqF3ADepXyr_B-L-lW" />
+</figure>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>We have reasoned that the backward-forward FLOP ratio in Neural Networks will typically be between 1:1 and 3:1, and most often close to 2:1.</p>
+
+<p>The ratio depends on the batch size, how much computation happens in the first layer versus the others, the degree of parameter sharing and the batch size.</p>
+
+<p>We have confirmed this in practice. However, we have used a profiler with some problems, so we cannot completely rule out a mistake.</p>
+
+<h1 id="acknowledgment">Acknowledgment</h1>
+
+<p>The experiments have been conducted by Marius Hobbhahn. The text was written by Marius Hobbhahn and Jaime Sevilla.</p>
+
+<p>Lennart Heim helped greatly with discussion and support. We also thank Danny Hernandez and Girish Sastry for discussion.</p>
+
+<h1 id="appendix-a-code-for-all-networks">Appendix A: Code for all networks</h1>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### linear network with large first layer and small later layers
+class LinearNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(224*224*3, 4096)
+        self.fc2 = nn.Linear(4096, 128)
+        self.fc3 = nn.Linear(128, 10)
+
+    def forward(self, x):
+        x = torch.flatten(x, 1) # flatten all dimensions except batch
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+### linear network with just one input but larger intermediate layers
+class OneNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(1, 4096)
+        self.fc2 = nn.Linear(4096, 128)
+        self.fc3 = nn.Linear(128, 10)
+
+    def forward(self, x):
+        x = torch.flatten(x, 1) # flatten all dimensions except batch
+        x = F.relu(self.fc1(x))
+        x = F.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+### small conv net
+class ConvNet(nn.Module):
+
+    def __init__(self):
+        super(ConvNet, self).__init__()
+        self.conv1 = nn.Conv2d(3, 32, kernel_size=7, stride=2, padding=3, bias=False)
+        self.relu = nn.ReLU(inplace=True)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fc1 = nn.Linear(64, 10)
+
+    def forward(self, x):
+        x = self.maxpool(self.relu(self.conv1(x)))
+        x = self.maxpool(self.relu(self.conv2(x)))
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1) # flatten all dimensions except batch
+        x = self.fc1(x)
+        return x
+
+### conv net with different sizes for intermediate layers
+class DeeperConvNet(nn.Module):
+
+    def __init__(self):
+        super(DeeperConvNet, self).__init__()
+        self.first_layer = nn.Sequential(
+            nn.Conv2d(3, 32, kernel_size=7, stride=2, padding=3, bias=False),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2)
+        )
+        self.conv_layer = nn.Sequential(
+            nn.Conv2d(32, 32, kernel_size=3, stride=1, padding=1, bias=False),
+            nn.ReLU(inplace=True)
+        )
+        self.relu = nn.ReLU(inplace=True)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        self.convN = nn.Conv2d(32, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fc1 = nn.Linear(64, 10)
+
+    def forward(self, x):
+        x = self.first_layer(x)
+        for i in range(100):
+            x = self.conv_layer(x)
+        x = self.relu(self.convN(x))
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1) # flatten all dimensions except batch
+        x = self.fc1(x)
+        return x
+</code></pre></div></div>
+
+<h1 id="appendix-b-using-other-optimizers">Appendix B: Using other optimizers</h1>
+
+<p>Through this post we have assumed stochastic gradient descent (SGD) for the weight update. SGD involves multiplying the gradient by a learning rate and adding the result to the current weights. That is, it requires 2 FLOP per parameter.</p>
+
+<p>Other optimizers require some extra work. For example, consider <a href="https://arxiv.org/abs/1412.6980">adaptive moment estimation (Adam)</a>. Adam’s parameter update is given by:</p>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/orn7zIGdl5T7KJ4eu2fKhbMcFhUnFSizCGc4nnjA9phIQxTnRdovOGDGVrP1qvowMxFkCZluN9wLS7iI6R46jhQiTzT7rGSUAWm7XO2IcYXxi7V7s7g7HgMPa2N5OPBcKSFzSyNA" />
+</figure>
+
+<p>For a total of ~3 + 4 + 3 + 3 + 5 = 18 FLOP per parameter.</p>
+
+<p>In any case, the choice of optimizer affects only the weight update and the amount of FLOP is proportional to the number of parameters. Since batch sizes are typically large, the difference will be small and won’t affect the backward-forward ratio much.</p>
+
+<hr>
+
+              <p class="hiring-message">
+                We are hiring! If you want to contribute to our research, consider applying to one of <a href="/careers#open-positions">our job offers</a>.
+              </p></d-article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <span>© 2022 Epoch. Epoch is a fiscal sponsorship project of <a href="https://rethinkpriorities.org/">Rethink Priorities</a>.</span>
+
+  <div class="footer-icons-container">
+    <div class="footer-icons">
+      <a data-contact="aW5mb0BlcG9jaGFpLm9yZw==" href="#">
+        <i class="bi bi-envelope"></i>
+      </a>
+      <a href="https://github.com/epoch-research">
+          <i class="bi bi-github"></i>
+      </a>
+      <a href="https://twitter.com/EpochAIResearch">
+          <i class="bi bi-twitter"></i>
+      </a>
+    </div>
+  </div>
+
+</footer>
+</body>
+
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script src="/assets/js/footnotes.js"></script>
+</html>
+
+<script>
+  // As seen here: https://www.bram.us/2020/01/10/smooth-scrolling-sticky-scrollspy-navigation/
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling
+
+    if (window.getComputedStyle(document.documentElement).scrollBehavior !== 'smooth') {
+      for (let internalLink of document.querySelectorAll('a[href^="#"]')) {
+        let href = internalLink.getAttribute('href');
+        if (href == '#') continue;
+        const targetElement = document.querySelector(href.replaceAll(':', '\\:'));
+        if (targetElement) {
+          internalLink.addEventListener('click', (e) => {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+            });
+            e.preventDefault();
+          });
+        }
+      };
+    }
+
+    // Highlight TOC on scroll
+
+    let headers = [];
+    for (let header of document.querySelectorAll('h1[id]')) {
+      let subHeaders = [];
+      for (let subHeader of document.querySelectorAll('h2[id]')) {
+        subHeaders.push(subHeader);
+      }
+      headers.push[{
+        dom: header,
+        subHeaders: subHeaders,
+      }];
+    }
+
+    document.addEventListener('scroll', function(e) {
+      let currentHeader;
+
+      let headers = document.querySelectorAll('h1[id], h2[id], h3[id]');
+      let middleY = document.documentElement.clientHeight/2;
+      for (let i = 0; i < headers.length; i++) {
+        let p0 = headers[i].getBoundingClientRect().top;
+        let p1 = (i < headers.length - 1) ? headers[i+1].getBoundingClientRect().top : 999999;
+
+        if (p0 <= middleY && p1 > middleY) {
+          currentHeader = headers[i];
+          break;
+        }
+      }
+
+      if (currentHeader) {
+        let id = currentHeader.id;
+        document.querySelectorAll(`d-contents nav li a:not([href="#${id}"])`).forEach(node => node.classList.remove('active'));
+        document.querySelector(`d-contents nav li a[href="#${id}"]`).classList.add('active');
+      } else {
+        document.querySelectorAll(`d-contents nav li a`).forEach(node => node.classList.remove('active'));
+      }
+    });
+  });
+</script>

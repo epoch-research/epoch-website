@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Machine Learning Trends" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Producing datasets and analysing trends in Machine Learning" />
+<meta property="og:description" content="Producing datasets and analysing trends in Machine Learning" />
+<link rel="canonical" href="https://epochai.org/research/ml-trends.html" />
+<meta property="og:url" content="https://epochai.org/research/ml-trends.html" />
+<meta property="og:site_name" content="Epoch" />
+<meta property="og:image" content="https://epochai.org/assets/images/posts/2022/compute-trends.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-07-19T16:21:16+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://epochai.org/assets/images/posts/2022/compute-trends.png" />
+<meta property="twitter:title" content="Machine Learning Trends" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-07-19T16:21:16+00:00","datePublished":"2022-07-19T16:21:16+00:00","description":"Producing datasets and analysing trends in Machine Learning","headline":"Machine Learning Trends","image":"https://epochai.org/assets/images/posts/2022/compute-trends.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://epochai.org/research/ml-trends.html"},"url":"https://epochai.org/research/ml-trends.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <title> Machine Learning Trends </title>
+
+  
+    
+
+
+
+
+
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/micromodal.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" >
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" ><!-- MathJax -->
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true,
+      },
+
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+      },
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+  
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <script src="/assets/js/micromodal.min.js"></script>
+
+  <!-- Copy buttons -->
+  <script src="/assets/js/clipboard.min.js"></script>
+  <script>
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
+
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
+      let wrapper = document.createElement('div');
+      wrapper.classList.add('copiable-wrapper');
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    }
+
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
+      target: function(trigger) {
+        return trigger.parentElement.querySelector('.copy-target');
+      },
+    });
+
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
+      tooltip.show();
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
+    });
+
+    clipboard.on('error', function(e) {
+      e.clearSelection();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
+  });
+</script>
+
+</head>
+<head>
+    <script src="/assets/js/distillpub/template.v2.js"></script>
+    <script src="/assets/js/distillpub/transforms.v2.js"></script>
+
+    
+      
+
+<script src="https://unpkg.com/@popperjs/core@2.11.2"></script>
+<script src="https://unpkg.com/tippy.js@6.2.6"></script>
+
+
+
+<style>
+  :root {
+    --resource-color: 78, 51, 80;
+  }
+
+  d-title {
+    padding: 0;
+  }
+
+  d-title {
+    margin-bottom: 15px;
+  }
+
+  d-article {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .article-head {
+    width: 100%;
+    background-color: var(--header-color);
+    margin-bottom: 4em;
+  }
+
+  .article-head-content {
+    padding-left: var(--nav-bar-margin);
+    padding-right: var(--nav-bar-margin);
+    display: flex;
+    margin: auto;
+    padding-top: 70px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+  }
+
+  .page-content {
+    padding-top: 0;
+  }
+
+  .summary-supertitle {
+    margin-bottom: 0;
+    margin-top: 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    word-spacing: 3px;
+  }
+
+  .summary-title {
+    margin-bottom: 15px;
+  }
+
+  .summary-title h1 {
+    margin-bottom: 0;
+  }
+
+  .cite-us {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    font-size: 0.9rem;
+    color: white !important;
+  }
+
+  .citation-tooltip {
+    max-width: calc(100vw - 27px);
+    box-shadow: 0 0 7px 7px black;
+    border-radius: var(--default-radius);
+  }
+
+  .citation-tooltip > .tippy-box {
+    padding-top: 0.5em;
+  }
+
+  .citation-tooltip pre * {
+    color: var(--code-color);
+  }
+
+  @media (min-width: 800px) {
+    .regular-banner .article-head-content {
+      width: auto;
+      height: calc(50vh);
+      padding-top: 0;
+      padding-bottom: 1em;
+      padding-left: var(--nav-bar-margin);
+      padding-right: var(--nav-bar-margin);
+    }
+
+    .regular-banner .banner-img-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .regular-banner .banner-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left;
+    }
+
+    .regular-banner .summary {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+    }
+
+    .regular-banner .summary-main {
+      width: 90%;
+      margin: auto;
+      margin-left: 0;
+    }
+
+    .regular-banner .banner {
+      flex: 0 0 50%;
+      margin: 0;
+      padding: 0;
+      object-fit: cover;
+    }
+}
+
+  
+
+  .summary {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1em;
+  }
+
+  .summary-title, .summary-title *,
+  .summary-authors, .summary-authors *,
+  .summary-abstract, .summary-abstract *,
+  .summary-supertitle, .summary-supertitle *,
+  .summary-footer, .summary-footer * {
+    color: white;
+  }
+
+  .article-resources, .article-resources * {
+    color: white !important;
+  }
+
+  .summary .copiable-wrapper i {
+    color: black;
+  }
+
+  .summary-footer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .summary-authors {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .banner {
+    order: 2;
+    flex: 0 0 41%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    //padding-right: 10px;
+  }
+
+  .banner-img-wrapper img {
+    border-radius: var(--default-radius);
+  }
+
+  .article-resources {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .article-resource {
+    border-radius: 4px;
+    background-color: rgba(var(--resource-color), 0.8);
+    padding: 6px 11px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 5px;
+    margin-top: 0.5em;
+    white-space: nowrap;
+  }
+
+  .article-resources i {
+    margin-right: 0.5rem;
+  }
+
+  .article-resource:hover {
+    background-color: rgba(var(--resource-color), 1.0);
+  }
+
+  @media (max-width: 800px) {
+    .article-head-content {
+      flex-wrap: wrap;
+    }
+
+    .banner, .regular-banner .banner {
+      order: 1;
+      flex-basis: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .summary {
+      order: 2;
+    }
+  }
+</style>
+
+    
+  </head>
+
+  <body><header class="site-header" role="banner">
+  <div class="header-wrapper"><a href="/">
+      <img src="/assets/images/epoch-logo-white-text.svg" alt="Epoch logo" class="header-logo">
+      
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+          
+          <a class="page-link current-menu-item" href="/research">Research</a>
+          <a class="page-link" href="/blog">Blog</a>
+          <a class="page-link" href="/mlinputs/visualization">Visualization</a>
+          <a class="page-link" href="/team">Team</a>
+          <a class="page-link" href="/careers">Careers</a>
+        </div>
+      </nav></div>
+
+  <script>
+    document.addEventListener('click', (e) => {
+      let navTrigger = document.querySelector('#nav-trigger');
+      if (navTrigger && navTrigger.checked) {
+        if (e.target != navTrigger.parentElement && !navTrigger.parentElement.contains(e.target)) {
+          navTrigger.checked = false;
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="post distill">
+
+        
+          
+
+<div class="article-head regular-banner">
+  <div class="article-head-content">
+    <div class="banner">
+      <div class="banner-img-wrapper">
+        <img src="/assets/images/posts/2022/compute-trends.png"/>
+      </div>
+    </div>
+    <div class="summary">
+      <div class="summary-main">
+        
+          <h5 class="summary-supertitle">Research direction</h5>
+        
+        <div class="summary-title">
+          <h1>Machine Learning Trends</h1>
+          
+        </div>
+        
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+        
+
+        <d-article>
+          
+
+          <h3 id="producing-datasets-and-analysing-trends-in-machine-learning">Producing datasets and analysing trends in Machine Learning</h3>
+
+<p>Despite surging interest in Machine Learning, there has been limited work systematically curating and studying datasets about what these systems are like—how much compute they used, what datasets they were trained on, and what their architectures are like. We aim to fill that gap in collaboration with <strong><a href="https://futuretech.mit.edu/">MIT’s FutureTech project</a></strong>.</p>
+
+<p>This work will help us build a big picture understanding of what has happened in the field in the recent decades, and ultimately help us understand where it might go next.</p>
+
+<p>This line of research involves:</p>
+
+<ul>
+  <li>Developing standards for collecting and representing data on Machine Learning systems</li>
+  <li>Building datasets and making these publicly available for other researchers to use</li>
+  <li>Creating measuring tools to estimate or extract features of ML systems, such as compute used during training</li>
+  <li>Analysing and explaining trends in the data, investigating discontinuities, and plausible contributing factors</li>
+  <li>Analysing the implications of a continuation of existing trends, by, for example, producing extrapolations and projections</li>
+</ul>
+
+<hr />
+<h1 style="margin-bottom: 1em">Prior work</h1>
+
+<div class="collection-grid research-grid">
+  
+        
+        
+        <a href="/blog/compute-trends.html" class="member shadow-on-hover show-description-on-hover">
+          <div class="member-info">
+            <h4 class="uppercase">Machine Learning Trends</h4>
+            <h3>Compute Trends Across Three Eras of Machine Learning</h3>
+            <h4 class="uppercase type"><i class="bi bi-file-text"></i> Paper</h4>
+            <div class="info-cdr">
+              <div class="unhovered-text">
+                
+                
+                <p>Feb. 11, 2022</p>
+                
+                <p>Jaime Sevilla, Tamay Besiroglu, Anson Ho, Lennart Heim, Marius Hobbhahn, and Pablo Villalobos</p>
+              </div>
+              <div class="hovered-text">
+                <p>Compute, data, and algorithmic advances are the three fundamental factors that guide the progress of modern Machine Learning (ML). In this paper we study trends in the most readily quantified...</p>
+              </div>
+            </div>
+          </div>
+        </a>
+  
+        
+        
+        <a href="/blog/estimating-training-compute" class="member shadow-on-hover show-description-on-hover">
+          <div class="member-info">
+            <h4 class="uppercase"></h4>
+            <h3>Estimating Training Compute of Deep Learning Models</h3>
+            <h4 class="uppercase type"><i class="bi bi-newspaper"></i> Report</h4>
+            <div class="info-cdr">
+              <div class="unhovered-text">
+                
+                
+                <p>Jan. 20, 2022</p>
+                
+                <p>Jaime Sevilla, Lennart Heim, Marius Hobbhahn, Tamay Besiroglu, Anson Ho and Pablo Villalobos</p>
+              </div>
+              <div class="hovered-text">
+                <p>We describe two approaches for estimating the training compute of Deep Learning systems, by counting operations and looking at GPU time.</p>
+              </div>
+            </div>
+          </div>
+        </a>
+  
+        
+        
+        <a href="https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/edit?usp=sharing" class="member shadow-on-hover show-description-on-hover">
+          <div class="member-info">
+            <h4 class="uppercase">Machine Learning Trends</h4>
+            <h3>Parameters, Compute and Data Trends in Machine Learning</h3>
+            <h4 class="uppercase type"><i class="bi bi-table"></i> Database</h4>
+            <div class="info-cdr">
+              <div class="unhovered-text">
+                
+                
+                <p>Jul. 2022</p>
+                
+                <p>Jaime Sevilla et al.</p>
+              </div>
+              <div class="hovered-text">
+                <p>Public dataset</p>
+              </div>
+            </div>
+          </div>
+        </a>
+  
+</div>
+
+
+<hr>
+
+              <p class="hiring-message">
+                We are hiring! If you want to contribute to our research, consider applying to one of <a href="/careers#open-positions">our job offers</a>.
+              </p></d-article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <span>© 2022 Epoch. Epoch is a fiscal sponsorship project of <a href="https://rethinkpriorities.org/">Rethink Priorities</a>.</span>
+
+  <div class="footer-icons-container">
+    <div class="footer-icons">
+      <a data-contact="aW5mb0BlcG9jaGFpLm9yZw==" href="#">
+        <i class="bi bi-envelope"></i>
+      </a>
+      <a href="https://github.com/epoch-research">
+          <i class="bi bi-github"></i>
+      </a>
+      <a href="https://twitter.com/EpochAIResearch">
+          <i class="bi bi-twitter"></i>
+      </a>
+    </div>
+  </div>
+
+</footer>
+</body>
+
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script src="/assets/js/footnotes.js"></script>
+</html>
+
+<script>
+  // As seen here: https://www.bram.us/2020/01/10/smooth-scrolling-sticky-scrollspy-navigation/
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling
+
+    if (window.getComputedStyle(document.documentElement).scrollBehavior !== 'smooth') {
+      for (let internalLink of document.querySelectorAll('a[href^="#"]')) {
+        let href = internalLink.getAttribute('href');
+        if (href == '#') continue;
+        const targetElement = document.querySelector(href.replaceAll(':', '\\:'));
+        if (targetElement) {
+          internalLink.addEventListener('click', (e) => {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+            });
+            e.preventDefault();
+          });
+        }
+      };
+    }
+
+    // Highlight TOC on scroll
+
+    let headers = [];
+    for (let header of document.querySelectorAll('h1[id]')) {
+      let subHeaders = [];
+      for (let subHeader of document.querySelectorAll('h2[id]')) {
+        subHeaders.push(subHeader);
+      }
+      headers.push[{
+        dom: header,
+        subHeaders: subHeaders,
+      }];
+    }
+
+    document.addEventListener('scroll', function(e) {
+      let currentHeader;
+
+      let headers = document.querySelectorAll('h1[id], h2[id], h3[id]');
+      let middleY = document.documentElement.clientHeight/2;
+      for (let i = 0; i < headers.length; i++) {
+        let p0 = headers[i].getBoundingClientRect().top;
+        let p1 = (i < headers.length - 1) ? headers[i+1].getBoundingClientRect().top : 999999;
+
+        if (p0 <= middleY && p1 > middleY) {
+          currentHeader = headers[i];
+          break;
+        }
+      }
+
+      if (currentHeader) {
+        let id = currentHeader.id;
+        document.querySelectorAll(`d-contents nav li a:not([href="#${id}"])`).forEach(node => node.classList.remove('active'));
+        document.querySelector(`d-contents nav li a[href="#${id}"]`).classList.add('active');
+      } else {
+        document.querySelectorAll(`d-contents nav li a`).forEach(node => node.classList.remove('active'));
+      }
+    });
+  });
+</script>

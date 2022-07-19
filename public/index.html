@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Epoch" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="We’re a team of researchers investigating and forecasting the development of advanced AI." />
+<meta property="og:description" content="We’re a team of researchers investigating and forecasting the development of advanced AI." />
+<link rel="canonical" href="https://epochai.org/" />
+<meta property="og:url" content="https://epochai.org/" />
+<meta property="og:site_name" content="Epoch" />
+<meta property="og:image" content="https://epochai.org/assets/images/epoch-logo-og-preview.png" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://epochai.org/assets/images/epoch-logo-og-preview.png" />
+<meta property="twitter:title" content="Epoch" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"We’re a team of researchers investigating and forecasting the development of advanced AI.","headline":"Epoch","image":"https://epochai.org/assets/images/epoch-logo-og-preview.png","name":"Epoch","url":"https://epochai.org/"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <title> Epoch </title>
+
+  
+    
+
+
+
+
+
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/micromodal.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" >
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" ><!-- MathJax -->
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true,
+      },
+
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+      },
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+  
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <script src="/assets/js/micromodal.min.js"></script>
+
+  <!-- Copy buttons -->
+  <script src="/assets/js/clipboard.min.js"></script>
+  <script>
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
+
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
+      let wrapper = document.createElement('div');
+      wrapper.classList.add('copiable-wrapper');
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    }
+
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
+      target: function(trigger) {
+        return trigger.parentElement.querySelector('.copy-target');
+      },
+    });
+
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
+      tooltip.show();
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
+    });
+
+    clipboard.on('error', function(e) {
+      e.clearSelection();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
+  });
+</script>
+
+</head>
+<style>
+    body {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .super-wrapper {
+      height: 100%;
+      min-height: 100vh;
+    }
+
+    .facade {
+      height: 100%;
+      min-height: 100vh;
+      font-size: 2em;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: 110px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .facade .cover {
+      width: 100%;
+      height: 100%;
+      transition: 0.3s ease;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .facade .cover-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      background-image: url('/assets/images/geforce_gtx_970.jpg');
+      background-size: cover;
+      background-position-x: center;
+      background-position-y: center;
+      background-repeat: no-repeat;
+    }
+
+    .facade .cover-text {
+      font-weight: bold;
+      display: inline-block;
+      border-radius: 13px;
+      z-index: 1;
+    }
+
+    .facade .cover-text p {
+      max-width: 700px;
+      color: white;
+    }
+
+    .facade .content {
+      color: white;
+      margin-left: 10px;
+      margin-right: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .site-header, .site-footer {
+      z-index: 2;
+      position: absolute;
+      left: 0;
+      border-bottom: 0 !important;
+      width: 100%;
+      background-color: #0000;
+      box-sizing: border-box;
+    }
+
+    .site-footer *, .site-footer a:visited {
+      color: grey;
+    }
+
+    .site-header {
+      top: 0;
+    }
+
+    .site-footer {
+      bottom: 0;
+    }
+
+    @media (min-width: $on-palm) {
+      .site-nav .page-link {
+        color: white !important;
+      }
+    }
+
+    /* 600px: palm size */
+    @media (max-width: 600px) {
+      .site-footer {
+        position: unset;
+        background-color: black;
+      }
+    }
+
+    .site-header a:hover {
+      color: var(--hovered-link-color) !important;
+    }
+
+    .site-footer {
+      border-top: 0 !important;
+    }
+
+    a.button {
+      color: white;
+      border: 1px solid white;
+    }
+
+    .text-container {
+      width: 100%;
+      z-index: 1;
+      margin-top: 2em;
+    }
+  </style>
+
+  <body>
+    <div class="super-wrapper"><header class="site-header" role="banner">
+  <div class="header-wrapper"><a href="/">
+      <img src="/assets/images/epoch-logo-white-text.svg" alt="Epoch logo" class="header-logo">
+      
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+          
+          <a class="page-link" href="/research">Research</a>
+          <a class="page-link" href="/blog">Blog</a>
+          <a class="page-link" href="/mlinputs/visualization">Visualization</a>
+          <a class="page-link" href="/team">Team</a>
+          <a class="page-link" href="/careers">Careers</a>
+        </div>
+      </nav></div>
+
+  <script>
+    document.addEventListener('click', (e) => {
+      let navTrigger = document.querySelector('#nav-trigger');
+      if (navTrigger && navTrigger.checked) {
+        if (e.target != navTrigger.parentElement && !navTrigger.parentElement.contains(e.target)) {
+          navTrigger.checked = false;
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
+</header>
+<div id="facade" class="facade">
+        <div class="cover-wrapper">
+          <div class="cover"></div>
+        </div>
+        
+        <div class="text-container">
+          <div class="wrapper">
+            <div class="cover-text">
+              <p>We’re a team of researchers investigating and forecasting the development of advanced AI.</p>
+              <a class="button" href="/blog">Learn more</a>
+            </div>
+          </div>
+        </div>
+        
+      </div><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <span>© 2022 Epoch. Epoch is a fiscal sponsorship project of <a href="https://rethinkpriorities.org/">Rethink Priorities</a>.</span>
+
+  <div class="footer-icons-container">
+    <div class="footer-icons">
+      <a data-contact="aW5mb0BlcG9jaGFpLm9yZw==" href="#">
+        <i class="bi bi-envelope"></i>
+      </a>
+      <a href="https://github.com/epoch-research">
+          <i class="bi bi-github"></i>
+      </a>
+      <a href="https://twitter.com/EpochAIResearch">
+          <i class="bi bi-twitter"></i>
+      </a>
+    </div>
+  </div>
+
+</footer>
+</div>
+  </body>
+</html>

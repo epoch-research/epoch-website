@@ -1,0 +1,1047 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Team" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://epochai.org/team" />
+<meta property="og:url" content="https://epochai.org/team" />
+<meta property="og:site_name" content="Epoch" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Team" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","headline":"Team","url":"https://epochai.org/team"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <title> Team </title>
+
+  
+    
+
+
+
+
+
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/micromodal.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" >
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" ><!-- MathJax -->
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true,
+      },
+
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+      },
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+  
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <script src="/assets/js/micromodal.min.js"></script>
+
+  <!-- Copy buttons -->
+  <script src="/assets/js/clipboard.min.js"></script>
+  <script>
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
+
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
+      let wrapper = document.createElement('div');
+      wrapper.classList.add('copiable-wrapper');
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    }
+
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
+      target: function(trigger) {
+        return trigger.parentElement.querySelector('.copy-target');
+      },
+    });
+
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
+      tooltip.show();
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
+    });
+
+    clipboard.on('error', function(e) {
+      e.clearSelection();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
+  });
+</script>
+
+</head>
+<head>
+  
+  </head>
+
+  <body><header class="site-header" role="banner">
+  <div class="header-wrapper"><a href="/">
+      <img src="/assets/images/epoch-logo-white-text.svg" alt="Epoch logo" class="header-logo">
+      
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+          
+          <a class="page-link" href="/research">Research</a>
+          <a class="page-link" href="/blog">Blog</a>
+          <a class="page-link" href="/mlinputs/visualization">Visualization</a>
+          <a class="page-link current-menu-item" href="/team">Team</a>
+          <a class="page-link" href="/careers">Careers</a>
+        </div>
+      </nav></div>
+
+  <script>
+    document.addEventListener('click', (e) => {
+      let navTrigger = document.querySelector('#nav-trigger');
+      if (navTrigger && navTrigger.checked) {
+        if (e.target != navTrigger.parentElement && !navTrigger.parentElement.contains(e.target)) {
+          navTrigger.checked = false;
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
+</header>
+
+
+    <main class="page-content " aria-label="Content">
+      <div class="wrapper">
+
+        <script>
+
+  
+
+  
+
+  let teamMembers = {
+    
+      'jaime-sevilla': {
+        id: 'jaime-sevilla',
+        name: 'Jaime Sevilla',
+        description: 'Jaime is a researcher focused on statistics and technological forecasting. Besides his role at Epoch, he is a research affiliate of the <a href="https://www.cser.ac.uk/">Centre for the Study of Existential Risk</a> at Cambridge University and the cofounder of <a href="https://riesgoscatastroficosglobales.com/">Riesgos Catastróficos Globales</a>.',
+        role: 'Director',
+        imageUrl: '/assets/images/team/jaime-sevilla.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'amFpbWVAZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/Jsevillamol'},
+        
+        ],
+      },
+    
+      'tamay-besiroglu': {
+        id: 'tamay-besiroglu',
+        name: 'Tamay Besiroglu',
+        description: 'Tamay is a researcher focusing on the Economics of Computing and big-picture trends in Machine Learning. In addition to his role at Epoch, Tamay is a researcher at the Future Tech Lab at MIT, and AI Forecasting Lead at Metaculus. Previously, he led strategy for Metaculus, consulted for the UK Government, and worked at the Future of Humanity Institute.',
+        role: 'Associate director',
+        imageUrl: '/assets/images/team/tamay-besiroglu.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'dGFtYXlAZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'pablo-villalobos': {
+        id: 'pablo-villalobos',
+        name: 'Pablo Villalobos',
+        description: 'Pablo has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/pablo-villalobos.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'cGFibG9AZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'anson-ho': {
+        id: 'anson-ho',
+        name: 'Anson Ho',
+        description: 'Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/anson-ho.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'YW5zb25AZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'github', icon: 'github', url: 'https://github.com/ansonwhho'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://ansonwhho.github.io/'},
+        
+        ],
+      },
+    
+      'lennart-heim': {
+        id: 'lennart-heim',
+        name: 'Lennart Heim',
+        description: 'Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.',
+        role: 'Research Fellow and Strategy Specialist',
+        imageUrl: '/assets/images/team/lennart-heim.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bGVubmFydEBlcG9jaGFpLm9yZw=='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/ohlennart'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://heim.xyz'},
+        
+        ],
+      },
+    
+      'marius-hobbhahn': {
+        id: 'marius-hobbhahn',
+        name: 'Marius Hobbhahn',
+        description: 'Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.',
+        role: 'Research Fellow',
+        imageUrl: '/assets/images/team/marius-hobbhahn.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bWFyaXVzQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'eduardo-infante-roldan': {
+        id: 'eduardo-infante-roldan',
+        name: 'Eduardo Infante-Roldán',
+        description: 'Eduardo does some programming.',
+        role: 'Software Engineer',
+        imageUrl: '/assets/images/team/eduardo-infante-roldan.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWR1QGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'ege-erdil': {
+        id: 'ege-erdil',
+        name: 'Ege Erdil',
+        description: 'Ege Erdil is an undergraduate student at Middle East Technical University. He has interests in mathematics, statistics, economics and forecasting.',
+        role: 'Intern Researcher',
+        imageUrl: '/assets/images/team/ege-erdil.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWdlQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+  };
+
+  
+
+  
+
+  let advisors = {
+    
+      'tom-davidson': {
+        id: 'tom-davidson',
+        name: 'Tom Davidson',
+        description: 'Tom is a senior research analyst at Open Philanthropy. He’s currently working on assessing arguments that transformative AI might be developed relatively soon. Prior to joining Open Philanthropy, Tom worked as a Data Scientist for education technology startup BridgeU and taught science at a UK comprehensive school. He has a Masters in Physics and Philosophy from the University of Oxford.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/tom-davidson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+      'neil-thompson': {
+        id: 'neil-thompson',
+        name: 'Neil Thompson',
+        description: 'Neil is an Innovation Scholar at MIT’s Computer Science and Artificial Intelligence Lab and the Initiative on the Digital Economy where he leads the FutureTech Project. He is also an Associate Member of the Broad Institute.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/neil-thompson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+  };
+
+  
+
+  let members = {...teamMembers, ...advisors};
+</script>
+
+<style>
+  .team-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .member {
+    flex: 0 1 210px;
+    max-width: 250px;
+    width: 100%;
+    border-radius: var(--default-radius);
+  }
+
+  @media (max-width: 550px) {
+    .team-grid {
+      justify-items: center;
+    }
+
+    .member {
+      max-width: 300px;
+      width: 100%;
+    }
+  }
+
+  .member {
+    padding: 5px;
+  }
+
+  .member .mug {
+    padding-top: 100%;
+    width: initial;
+    height: initial;
+    margin-bottom: 10px;
+    box-shadow: 0 0 4px 1px rgb(0 0 0 / 55%);
+    background-size: cover;
+    background-position: center;
+    display: block;
+    border-radius: var(--default-radius);
+  }
+
+  #jaime-sevilla .mug {
+    background-size: 135%, 100%;
+    background-position: -40px -3px, 0px 0px;
+  }
+
+  #tamay-besiroglu .mug {
+    background-size: 148%, 100%;
+    background-position: -48px -8px, 0 0;
+  }
+
+  #pablo-villalobos .mug {
+    background-size: 163%, 100%;
+    background-position: -82px -51px, 0 0;
+  }
+
+  #anson-ho .mug {
+    background-size: 141%, 100%;
+    background-position: -56px -56px, 0 0;
+  }
+
+  #eduardo-infante-roldan .mug {
+    background-size: 140%, 100%;
+    background-position: -44px -23px, 0 0;
+  }
+
+  #tom-davidson .mug {
+    background-size: 131%;
+    background-position: -29px -21px;
+  }
+
+  #neil-thompson .mug {
+    background-size: 123%;
+    background-position: -28px -14px;
+  }
+
+  .member:not(.mouse-over-resources):hover {
+    cursor: pointer;
+  }
+
+  .member:hover, .member.selected {
+    box-shadow: 0 0 6px 3px rgb(0 0 0 / 55%);
+  }
+
+  .member-resource, .member-resource:hover {
+    color: black !important;
+    margin-right: 0.4em;
+  }
+
+  .profile-modal .member-resource {
+    margin-right: 0.5em;
+  }
+
+  .profile-modal .mug {
+    width: 100%;
+    border-radius: var(--default-radius);
+    transition: 0.3s;
+
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .member a {
+    color: black !important;
+    text-decoration: none;
+  }
+
+  .member-info {
+    padding: 4px;
+  }
+
+  .member-role {
+    font-weight: bold;
+    font-size: 13px !important;
+    font-height: 15px;
+  }
+
+  .member-name, .member-role {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .member-description {
+    margin-top: 15px;
+    display: none;
+  }
+
+  .modal-header {
+    align-items: flex-start;
+  }
+
+  .modal-content {
+    display: flex;
+  }
+
+  .modal-content .description {
+    flex: 0 0 60%;
+    margin-right: 1em;
+  }
+
+  .modal-content .image {
+    width: 100%;
+  }
+
+  @media (max-width: 650px) {
+    .profile-modal .image {
+      display: none;
+    }
+
+    .profile-modal .description {
+      margin-right: 0;
+      flex-grow: 1;
+    }
+
+    .profile-modal-content {
+      display: block;
+    }
+  }
+</style>
+
+<h1 id="about-us">About us</h1>
+<p>We are a research initiative working to support AI governance and improve forecasts around the development of advanced AI systems. Our mission is to narrow the gap between technical AI developments and AI governance, and inform key decision makers in AI safety.</p>
+
+<h2 id="our-team">Our Team</h2>
+
+<div class="team-grid">
+  
+  <div class="member" id="jaime-sevilla">
+    <div class="mug" style="background-image: url('/assets/images/team/jaime-sevilla.jpg')"></div>
+    <div class="member-info">
+      <div class="member-name">Jaime Sevilla</div>
+      <div class="member-role">Director</div>
+      <div class="member-resources">
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" data-contact="amFpbWVAZXBvY2hhaS5vcmc=" href="#"><i class="bi bi-envelope"></i></a>
+          
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" href="https://twitter.com/Jsevillamol"><i class="bi bi-twitter"></i></a>
+          
+        
+      </div>
+      <p class="member-description">Jaime is a researcher focused on statistics and technological forecasting. Besides his role at Epoch, he is a research affiliate of the <a href="https://www.cser.ac.uk/">Centre for the Study of Existential Risk</a> at Cambridge University and the cofounder of <a href="https://riesgoscatastroficosglobales.com/">Riesgos Catastróficos Globales</a>.</p>
+    </div>
+  </div>
+  
+  <div class="member" id="tamay-besiroglu">
+    <div class="mug" style="background-image: url('/assets/images/team/tamay-besiroglu.jpg')"></div>
+    <div class="member-info">
+      <div class="member-name">Tamay Besiroglu</div>
+      <div class="member-role">Associate director</div>
+      <div class="member-resources">
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" data-contact="dGFtYXlAZXBvY2hhaS5vcmc=" href="#"><i class="bi bi-envelope"></i></a>
+          
+        
+      </div>
+      <p class="member-description">Tamay is a researcher focusing on the Economics of Computing and big-picture trends in Machine Learning. In addition to his role at Epoch, Tamay is a researcher at the Future Tech Lab at MIT, and AI Forecasting Lead at Metaculus. Previously, he led strategy for Metaculus, consulted for the UK Government, and worked at the Future of Humanity Institute.</p>
+    </div>
+  </div>
+  
+  <div class="member" id="pablo-villalobos">
+    <div class="mug" style="background-image: url('/assets/images/team/pablo-villalobos.jpg')"></div>
+    <div class="member-info">
+      <div class="member-name">Pablo Villalobos</div>
+      <div class="member-role">Staff Researcher</div>
+      <div class="member-resources">
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" data-contact="cGFibG9AZXBvY2hhaS5vcmc=" href="#"><i class="bi bi-envelope"></i></a>
+          
+        
+      </div>
+      <p class="member-description">Pablo has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.</p>
+    </div>
+  </div>
+  
+  <div class="member" id="anson-ho">
+    <div class="mug" style="background-image: url('/assets/images/team/anson-ho.jpg')"></div>
+    <div class="member-info">
+      <div class="member-name">Anson Ho</div>
+      <div class="member-role">Staff Researcher</div>
+      <div class="member-resources">
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" data-contact="YW5zb25AZXBvY2hhaS5vcmc=" href="#"><i class="bi bi-envelope"></i></a>
+          
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" href="https://github.com/ansonwhho"><i class="bi bi-github"></i></a>
+          
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" href="https://ansonwhho.github.io/"><i class="bi bi-globe"></i></a>
+          
+        
+      </div>
+      <p class="member-description">Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.</p>
+    </div>
+  </div>
+  
+  <div class="member" id="lennart-heim">
+    <div class="mug" style="background-image: url('/assets/images/team/lennart-heim.jpg')"></div>
+    <div class="member-info">
+      <div class="member-name">Lennart Heim</div>
+      <div class="member-role">Research Fellow and Strategy Specialist</div>
+      <div class="member-resources">
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" data-contact="bGVubmFydEBlcG9jaGFpLm9yZw==" href="#"><i class="bi bi-envelope"></i></a>
+          
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" href="https://twitter.com/ohlennart"><i class="bi bi-twitter"></i></a>
+          
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" href="https://heim.xyz"><i class="bi bi-globe"></i></a>
+          
+        
+      </div>
+      <p class="member-description">Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.</p>
+    </div>
+  </div>
+  
+  <div class="member" id="marius-hobbhahn">
+    <div class="mug" style="background-image: url('/assets/images/team/marius-hobbhahn.jpg')"></div>
+    <div class="member-info">
+      <div class="member-name">Marius Hobbhahn</div>
+      <div class="member-role">Research Fellow</div>
+      <div class="member-resources">
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" data-contact="bWFyaXVzQGVwb2NoYWkub3Jn" href="#"><i class="bi bi-envelope"></i></a>
+          
+        
+      </div>
+      <p class="member-description">Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.</p>
+    </div>
+  </div>
+  
+  <div class="member" id="eduardo-infante-roldan">
+    <div class="mug" style="background-image: url('/assets/images/team/eduardo-infante-roldan.jpg')"></div>
+    <div class="member-info">
+      <div class="member-name">Eduardo Infante-Roldán</div>
+      <div class="member-role">Software Engineer</div>
+      <div class="member-resources">
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" data-contact="ZWR1QGVwb2NoYWkub3Jn" href="#"><i class="bi bi-envelope"></i></a>
+          
+        
+      </div>
+      <p class="member-description">Eduardo does some programming.</p>
+    </div>
+  </div>
+  
+  <div class="member" id="ege-erdil">
+    <div class="mug" style="background-image: url('/assets/images/team/ege-erdil.jpg')"></div>
+    <div class="member-info">
+      <div class="member-name">Ege Erdil</div>
+      <div class="member-role">Intern Researcher</div>
+      <div class="member-resources">
+        
+          
+          
+          
+          
+          
+            <a class="member-resource" data-contact="ZWdlQGVwb2NoYWkub3Jn" href="#"><i class="bi bi-envelope"></i></a>
+          
+        
+      </div>
+      <p class="member-description">Ege Erdil is an undergraduate student at Middle East Technical University. He has interests in mathematics, statistics, economics and forecasting.</p>
+    </div>
+  </div>
+  
+</div>
+
+<h2 id="advisory-board">Advisory Board</h2>
+
+<div class="collection-grid team-grid">
+  
+  <div class="member" id="tom-davidson">
+    <div class="mug" style="background-image: url('/assets/images/advisors/tom-davidson.jpg')"></div>
+    <div class="member-info">
+      <h3 class="member-name">Tom Davidson</h3>
+      <h4 class="member-role">Research Advisor</h4>
+      <div class="member-resources">
+        
+      </div>
+      <p class="member-description">Tom is a senior research analyst at Open Philanthropy. He’s currently working on assessing arguments that transformative AI might be developed relatively soon. Prior to joining Open Philanthropy, Tom worked as a Data Scientist for education technology startup BridgeU and taught science at a UK comprehensive school. He has a Masters in Physics and Philosophy from the University of Oxford.</p>
+    </div>
+  </div>
+  
+  <div class="member" id="neil-thompson">
+    <div class="mug" style="background-image: url('/assets/images/advisors/neil-thompson.jpg')"></div>
+    <div class="member-info">
+      <h3 class="member-name">Neil Thompson</h3>
+      <h4 class="member-role">Research Advisor</h4>
+      <div class="member-resources">
+        
+      </div>
+      <p class="member-description">Neil is an Innovation Scholar at MIT’s Computer Science and Artificial Intelligence Lab and the Initiative on the Digital Economy where he leads the FutureTech Project. He is also an Associate Member of the Broad Institute.</p>
+    </div>
+  </div>
+  
+</div>
+
+<!-- Member modal -->
+<div class="profile-modal micromodal-slide" id="member-modal" aria-hidden="true">
+  <div class="modal-overlay" tabindex="-1" data-micromodal-close="">
+    <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="member-modal-title">
+      <header class="modal-header">
+        <div>
+          <h2 class="modal-title">
+          </h2>
+          <h3 class="member-role"></h3>
+        </div>
+        <button class="modal-close" aria-label="Close modal" data-micromodal-close=""></button>
+      </header>
+      <div class="modal-content-content">
+        <!--<img class="mug">-->
+        <div class="modal-content">
+          <div class="description">
+          </div>
+          <div class="image">
+            <img class="mug" />
+          </div>
+        </div>
+        <footer class="modal-footer">
+        </footer>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/umbrella.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    MicroModal.init({
+      awaitCloseAnimation: true,
+    });
+
+    let backgroundImage = null;
+
+    let modal = document.querySelector('#member-modal');
+    document.body.appendChild(modal); // In case it's defined deep, let's move the modal up
+
+    function showModal(memberDom, member) {
+      let modal = document.querySelector('#member-modal');
+
+      modal.querySelector('.modal-title').innerHTML = member.name;
+      modal.querySelector('.member-role').innerHTML = member.role;
+      modal.querySelector('.description').innerHTML = member.description;
+      modal.querySelector('.modal-container').scrollTop = 0;
+
+      modal.querySelector('.mug').src = '';
+      modal.querySelector('.mug').src = member.imageUrl;
+
+      if (backgroundImage) {
+        modal.querySelector('.mug').style.backgroundImage = `url(${backgroundImage})`;
+      }
+
+      modal.querySelector('.modal-footer').innerHTML = '';
+      for (let resource of member.resources) {
+        let resourceDom;
+        if (resource.name == "mail") {
+          resourceDom = u(`<a class="member-resource" data-contact="${resource.url}" href="#"><i class="bi bi-${resource.icon}"></i></a>`).first();
+          addMailDeobfuscator(resourceDom);
+        } else {
+          resourceDom = u(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`).first();
+        }
+        modal.querySelector('.modal-footer').appendChild(resourceDom);
+      }
+
+      MicroModal.show('member-modal', {
+        onShow: () => {
+          memberDom.classList.add('selected');
+
+          // For some reason, the resources get focused when the modal is shown
+          document.activeElement.blur();
+        },
+        onClose: () => {
+          memberDom.classList.remove('selected');
+        },
+      });
+    }
+
+    for (let member of document.querySelectorAll('.member')) {
+      let mug = member.querySelector('.mug');
+      let resources = member.querySelector('.member-resources');
+
+      resources.addEventListener('mouseenter', () => member.classList.add('mouse-over-resources'));
+      resources.addEventListener('mouseleave', () => member.classList.remove('mouse-over-resources'));
+
+      member.addEventListener('click', (e) => {
+        if (e.target != resources && !resources.contains(e.target)) {
+          showModal(member, members[member.id]);
+        }
+      });
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - -
+    // Start secret code. LOOK NO FURTHER.
+
+    let secretPassword = [
+      'tamay-besiroglu',
+      'eduardo-infante-roldan',
+      'anson-ho',
+      'marius-hobbhahn',
+
+      'tamay-besiroglu',
+      'anson-ho',
+      'lennart-heim',
+      'anson-ho',
+      'marius-hobbhahn',
+      'anson-ho',
+      'jaime-sevilla',
+
+      'pablo-villalobos',
+    ];
+
+    let introducedPassword = [];
+
+    function enterMember(member) {
+      if (introducedPassword.length >= secretPassword.length) return;
+
+      introducedPassword.push(member.id);
+      if (introducedPassword.length == secretPassword.length) {
+        let correctPassword = true;
+        for (let i = 0; i < secretPassword.length; ++i) {
+          if (introducedPassword[i] !== secretPassword[i]) {
+            correctPassword = false;
+            break;
+          }
+        }
+
+        if (correctPassword) {
+          backgroundImage = '/assets/images/team/transparent/bahamas.png';
+
+          // The password is correct. Activate Team Bahamas
+          for (let dom of document.querySelectorAll('.member')) {
+            let m = members[dom.id];
+            m.imageUrl = `/assets/images/team/transparent/${m.id}.png`;
+            dom.querySelector('.mug').style.backgroundImage = `url(${m.imageUrl}), url(${backgroundImage})`;
+          }
+
+          document.body.style.background = 'linear-gradient(0deg, #57C1EB 0%, #009C52 100%)';
+        }
+      }
+    }
+
+    let inTouchDevice = matchMedia('(hover: none)').matches;
+
+    for (let member of document.querySelectorAll('.member')) {
+      if (inTouchDevice) {
+        member.addEventListener('click', (e) => enterMember(members[member.id]));
+      } else {
+        member.addEventListener('mouseenter', (e) => enterMember(members[member.id]));
+      }
+    }
+
+    // End of secret code.
+    // - - - - - - - - - - - - - - - - - - - - - - -
+  });
+</script>
+
+
+        
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <span>© 2022 Epoch. Epoch is a fiscal sponsorship project of <a href="https://rethinkpriorities.org/">Rethink Priorities</a>.</span>
+
+  <div class="footer-icons-container">
+    <div class="footer-icons">
+      <a data-contact="aW5mb0BlcG9jaGFpLm9yZw==" href="#">
+        <i class="bi bi-envelope"></i>
+      </a>
+      <a href="https://github.com/epoch-research">
+          <i class="bi bi-github"></i>
+      </a>
+      <a href="https://twitter.com/EpochAIResearch">
+          <i class="bi bi-twitter"></i>
+      </a>
+    </div>
+  </div>
+
+</footer>
+</body>
+
+</html>
