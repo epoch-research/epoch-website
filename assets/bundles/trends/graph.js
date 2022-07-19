@@ -363,13 +363,13 @@ function buildTrendsGraph(container, database, args) {
   let pngDownload = `
     <div class="download-header">Download graph</div>
     <button id="graphDownloadHD" data-quality="HD" data-height=720></button>
-    <button id="graphDownloadSuperHD" data-quality="Super HD" data-height=1080></button>
-    <button id="graphDownloadExtraSuperHD" data-quality="Extra super HD" data-height=2160></button>
+    <button id="graphDownloadFullHD" data-quality="Full HD" data-height=1080></button>
+    <button id="graphDownloadUltraHD" data-quality="Ultra HD" data-height=2160></button>
   `;
   exportButton.appendChild(html('<ul class="dropdown"><li>'+ csvDownload +'</li><li>'+ pngDownload +'</li></ul>'));
 
   let downloadButtons = [];
-  for (let id of ["#graphDownloadHD",  "#graphDownloadSuperHD",  "#graphDownloadExtraSuperHD"]) {
+  for (let id of ["#graphDownloadHD",  "#graphDownloadFullHD",  "#graphDownloadUltraHD"]) {
     downloadButtons.push(_(exportButton, id));
   }
 
