@@ -45,3 +45,9 @@
   id: eduardo-infante-roldan
   resources:
     - mail: edu@epochai.org
+- name: Ege Erdil
+  role: Intern Researcher
+  description: Ege Erdil is an undergraduate student at Middle East Technical University. He has interests in mathematics, statistics, economics and forecasting.
+  id: ege-erdil
+  resources:
+    - mail: ege@epochai.org
