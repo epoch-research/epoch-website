@@ -1,0 +1,16 @@
+body.dragging, body.dragging * {
+  cursor: grabbing !important;
+}
+
+.slider-handle {
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease;
+}
+
+.slider-handle:hover {
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.slider-handle:active {
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, 0.2);
+}

@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="How to measure FLOP/s for Neural Networks empirically?" />
+<meta name="author" content="Marius Hobbhahn" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Computing the utilization rate for multiple Neural Network architectures." />
+<meta property="og:description" content="Computing the utilization rate for multiple Neural Network architectures." />
+<link rel="canonical" href="https://epoch-website-dev.web.app/blog/measure-FLOPs-empirically" />
+<meta property="og:url" content="https://epoch-website-dev.web.app/blog/measure-FLOPs-empirically" />
+<meta property="og:site_name" content="Epoch" />
+<meta property="og:image" content="https://epoch-website-dev.web.app/assets/images/posts/2022/measure-FLOPs-empirically.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-11-29T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://epoch-website-dev.web.app/assets/images/posts/2022/measure-FLOPs-empirically.png" />
+<meta property="twitter:title" content="How to measure FLOP/s for Neural Networks empirically?" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Marius Hobbhahn"},"dateModified":"2021-11-29T00:00:00+00:00","datePublished":"2021-11-29T00:00:00+00:00","description":"Computing the utilization rate for multiple Neural Network architectures.","headline":"How to measure FLOP/s for Neural Networks empirically?","image":"https://epoch-website-dev.web.app/assets/images/posts/2022/measure-FLOPs-empirically.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://epoch-website-dev.web.app/blog/measure-FLOPs-empirically"},"url":"https://epoch-website-dev.web.app/blog/measure-FLOPs-empirically"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <title> How to measure FLOP/s for Neural Networks empirically? </title>
+
+  
+    
+
+
+
+
+
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/micromodal.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" >
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" ><!-- MathJax -->
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true,
+      },
+
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+      },
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+  
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <script src="/assets/js/micromodal.min.js"></script>
+
+  <!-- Copy buttons -->
+  <script src="/assets/js/clipboard.min.js"></script>
+  <script>
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
+
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
+      let wrapper = document.createElement('div');
+      wrapper.classList.add('copiable-wrapper');
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    }
+
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
+      target: function(trigger) {
+        return trigger.parentElement.querySelector('.copy-target');
+      },
+    });
+
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
+      tooltip.show();
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
+    });
+
+    clipboard.on('error', function(e) {
+      e.clearSelection();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
+  });
+</script>
+
+</head>
+<head>
+    <script src="/assets/js/distillpub/template.v2.js"></script>
+    <script src="/assets/js/distillpub/transforms.v2.js"></script>
+
+    
+      
+
+<script src="https://unpkg.com/@popperjs/core@2.11.2"></script>
+<script src="https://unpkg.com/tippy.js@6.2.6"></script>
+
+
+
+<style>
+  :root {
+    --resource-color: 78, 51, 80;
+  }
+
+  d-title {
+    padding: 0;
+  }
+
+  d-title {
+    margin-bottom: 15px;
+  }
+
+  d-article {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .article-head {
+    width: 100%;
+    background-color: var(--header-color);
+    margin-bottom: 4em;
+  }
+
+  .article-head-content {
+    padding-left: var(--nav-bar-margin);
+    padding-right: var(--nav-bar-margin);
+    display: flex;
+    margin: auto;
+    padding-top: 70px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+  }
+
+  .page-content {
+    padding-top: 0;
+  }
+
+  .summary-supertitle {
+    margin-bottom: 0;
+    margin-top: 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    word-spacing: 3px;
+  }
+
+  .summary-title {
+    margin-bottom: 15px;
+  }
+
+  .summary-title h1 {
+    margin-bottom: 0;
+  }
+
+  .cite-us {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    font-size: 0.9rem;
+    color: white !important;
+  }
+
+  .citation-tooltip {
+    max-width: calc(100vw - 27px);
+    box-shadow: 0 0 7px 7px black;
+    border-radius: var(--default-radius);
+  }
+
+  .citation-tooltip > .tippy-box {
+    padding-top: 0.5em;
+  }
+
+  .citation-tooltip pre * {
+    color: var(--code-color);
+  }
+
+  @media (min-width: 800px) {
+    .regular-banner .article-head-content {
+      width: auto;
+      height: calc(50vh);
+      padding-top: 0;
+      padding-bottom: 1em;
+      padding-left: var(--nav-bar-margin);
+      padding-right: var(--nav-bar-margin);
+    }
+
+    .regular-banner .banner-img-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .regular-banner .banner-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left;
+    }
+
+    .regular-banner .summary {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+    }
+
+    .regular-banner .summary-main {
+      width: 90%;
+      margin: auto;
+      margin-left: 0;
+    }
+
+    .regular-banner .banner {
+      flex: 0 0 50%;
+      margin: 0;
+      padding: 0;
+      object-fit: cover;
+    }
+}
+
+  
+
+  .summary {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1em;
+  }
+
+  .summary-title, .summary-title *,
+  .summary-authors, .summary-authors *,
+  .summary-abstract, .summary-abstract *,
+  .summary-supertitle, .summary-supertitle *,
+  .summary-footer, .summary-footer * {
+    color: white;
+  }
+
+  .article-resources, .article-resources * {
+    color: white !important;
+  }
+
+  .summary .copiable-wrapper i {
+    color: black;
+  }
+
+  .summary-footer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .summary-authors {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .banner {
+    order: 2;
+    flex: 0 0 41%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    //padding-right: 10px;
+  }
+
+  .banner-img-wrapper img {
+    border-radius: var(--default-radius);
+  }
+
+  .article-resources {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .article-resource {
+    border-radius: 4px;
+    background-color: rgba(var(--resource-color), 0.8);
+    padding: 6px 11px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 5px;
+    margin-top: 0.5em;
+    white-space: nowrap;
+  }
+
+  .article-resources i {
+    margin-right: 0.5rem;
+  }
+
+  .article-resource:hover {
+    background-color: rgba(var(--resource-color), 1.0);
+  }
+
+  @media (max-width: 800px) {
+    .article-head-content {
+      flex-wrap: wrap;
+    }
+
+    .banner, .regular-banner .banner {
+      order: 1;
+      flex-basis: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .summary {
+      order: 2;
+    }
+  }
+</style>
+
+    
+  </head>
+
+  <body><header class="site-header" role="banner">
+  <div class="header-wrapper"><a href="/">
+      <img src="/assets/images/epoch-logo-white-text.svg" alt="Epoch logo" class="header-logo">
+      
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+          
+          <a class="page-link" href="/research">Research</a>
+          <a class="page-link current-menu-item" href="/blog">Blog</a>
+          <a class="page-link" href="/mlinputs/visualization">Visualization</a>
+          <a class="page-link" href="/team">Team</a>
+          <a class="page-link" href="/careers">Careers</a>
+        </div>
+      </nav></div>
+
+  <script>
+    document.addEventListener('click', (e) => {
+      let navTrigger = document.querySelector('#nav-trigger');
+      if (navTrigger && navTrigger.checked) {
+        if (e.target != navTrigger.parentElement && !navTrigger.parentElement.contains(e.target)) {
+          navTrigger.checked = false;
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="post distill">
+
+        
+          
+
+<div class="article-head ">
+  <div class="article-head-content">
+    <div class="banner">
+      <div class="banner-img-wrapper">
+        <img src="/assets/images/posts/2022/measure-FLOPs-empirically.png"/>
+      </div>
+    </div>
+    <div class="summary">
+      <div class="summary-main">
+        
+        <div class="summary-title">
+          <h1>How to measure FLOP/s for Neural Networks empirically?</h1>
+          <a class="cite-us"><i class="bi-journal-text"></i> Cite this post</a>
+        </div>
+        
+        <div class="summary-authors">
+          
+          
+
+
+
+      
+      <span class="author tooltiped" data-member-id="marius-hobbhahn">Marius Hobbhahn</span>
+
+<script src="/assets/js/umbrella.min.js"></script>
+<style>
+  .author.tooltiped {
+    cursor: pointer;
+  }
+
+  .summary-authors .tippy-content {
+    width: 180px;
+    padding: 5px;
+  }
+
+  .miniprofile .mug {
+    width: 180px;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .miniprofile a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .miniprofile .member-resource {
+    margin-right: 5px;
+  }
+
+  .miniprofile .member-info {
+    padding: 4px;
+    width: 180px;
+  }
+
+  .miniprofile .member-name, .miniprofile .member-role {
+    margin-bottom: 2px;
+  }
+</style>
+
+<script>
+
+  
+
+  
+
+  let teamMembers = {
+    
+      'jaime-sevilla': {
+        id: 'jaime-sevilla',
+        name: 'Jaime Sevilla',
+        description: 'Jaime is a researcher focused on statistics and technological forecasting. Besides his role at Epoch, he is a research affiliate of the <a href="https://www.cser.ac.uk/">Centre for the Study of Existential Risk</a> at Cambridge University and the cofounder of <a href="https://riesgoscatastroficosglobales.com/">Riesgos Catastróficos Globales</a>.',
+        role: 'Director',
+        imageUrl: '/assets/images/team/jaime-sevilla.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'amFpbWVAZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/Jsevillamol'},
+        
+        ],
+      },
+    
+      'tamay-besiroglu': {
+        id: 'tamay-besiroglu',
+        name: 'Tamay Besiroglu',
+        description: 'Tamay is a researcher focusing on the Economics of Computing and big-picture trends in Machine Learning. In addition to his role at Epoch, Tamay is a researcher at the Future Tech Lab at MIT, and AI Forecasting Lead at Metaculus. Previously, he led strategy for Metaculus, consulted for the UK Government, and worked at the Future of Humanity Institute.',
+        role: 'Associate director',
+        imageUrl: '/assets/images/team/tamay-besiroglu.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'dGFtYXlAZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'pablo-villalobos': {
+        id: 'pablo-villalobos',
+        name: 'Pablo Villalobos',
+        description: 'Pablo has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/pablo-villalobos.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'cGFibG9AZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'anson-ho': {
+        id: 'anson-ho',
+        name: 'Anson Ho',
+        description: 'Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/anson-ho.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'YW5zb25AZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'github', icon: 'github', url: 'https://github.com/ansonwhho'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://ansonwhho.github.io/'},
+        
+        ],
+      },
+    
+      'lennart-heim': {
+        id: 'lennart-heim',
+        name: 'Lennart Heim',
+        description: 'Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.',
+        role: 'Research Fellow and Strategy Specialist',
+        imageUrl: '/assets/images/team/lennart-heim.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bGVubmFydEBlcG9jaGFpLm9yZw=='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/ohlennart'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://heim.xyz'},
+        
+        ],
+      },
+    
+      'marius-hobbhahn': {
+        id: 'marius-hobbhahn',
+        name: 'Marius Hobbhahn',
+        description: 'Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.',
+        role: 'Research Fellow',
+        imageUrl: '/assets/images/team/marius-hobbhahn.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bWFyaXVzQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'eduardo-infante-roldan': {
+        id: 'eduardo-infante-roldan',
+        name: 'Eduardo Infante-Roldán',
+        description: 'Eduardo does some programming.',
+        role: 'Software Engineer',
+        imageUrl: '/assets/images/team/eduardo-infante-roldan.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWR1QGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'ege-erdil': {
+        id: 'ege-erdil',
+        name: 'Ege Erdil',
+        description: 'Ege Erdil is an undergraduate student at Middle East Technical University. He has interests in mathematics, statistics, economics and forecasting.',
+        role: 'Intern Researcher',
+        imageUrl: '/assets/images/team/ege-erdil.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWdlQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+  };
+
+  
+
+  
+
+  let advisors = {
+    
+      'tom-davidson': {
+        id: 'tom-davidson',
+        name: 'Tom Davidson',
+        description: 'Tom is a senior research analyst at Open Philanthropy. He’s currently working on assessing arguments that transformative AI might be developed relatively soon. Prior to joining Open Philanthropy, Tom worked as a Data Scientist for education technology startup BridgeU and taught science at a UK comprehensive school. He has a Masters in Physics and Philosophy from the University of Oxford.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/tom-davidson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+      'neil-thompson': {
+        id: 'neil-thompson',
+        name: 'Neil Thompson',
+        description: 'Neil is an Innovation Scholar at MIT’s Computer Science and Artificial Intelligence Lab and the Initiative on the Digital Economy where he leads the FutureTech Project. He is also an Associate Member of the Broad Institute.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/neil-thompson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+  };
+
+  
+
+  let members = {...teamMembers, ...advisors};
+</script>
+
+
+<script>
+  for (let author of document.querySelectorAll('.author.tooltiped')) {
+    let member = teamMembers[author.dataset.memberId];
+    if (!member) continue;
+
+    let resources = [];
+    for (let resource of member.resources) {
+      if (resource.name == "mail") {
+        resources.push(`<a class="member-resource" href="#" data-contact="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      } else {
+        resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      }
+    }
+
+    tippy(author, {
+      allowHTML: true,
+      placement: 'top',
+      arrow: false,
+      interactive: true,
+      maxWidth: '200px',
+      trigger: 'mouseenter click',
+      onShow: (instance) => {
+        tippy.hideAll();
+        for (let element of instance.popper.querySelectorAll('[data-contact]')) {
+          addMailDeobfuscator(element);
+        }
+      },
+      content:
+        `
+        <div class="miniprofile">
+          <div class="mug" style="border-radius: 5px; background-image: url('${member.imageUrl}')"></div>
+          <div class="member-info">
+            <h3 class="member-name">${member.name}</h3>
+            <h4 class="member-role">${member.role}</h4>
+            <div class="member-resources">
+              ${resources.join('\n')}
+            </div>
+          </div>
+        </div>
+        `,
+    });
+  }
+</script>
+
+        </div>
+        
+        
+        <div class="summary-abstract">
+          Computing the utilization rate for multiple Neural Network architectures.
+        </div>
+        
+        
+      </div>
+      
+      <div class="summary-footer">
+        Nov. 29, 2021
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script>
+  let content = `
+    
+<p style="margin-bottom: 0">Cite this work as</p>
+
+<div class="language-plaintext highlighter-rouge wrappable-pre">
+<div class="highlight">
+  <pre class="highlight"><code>Marius Hobbhahn (2021), "How to measure FLOP/s for Neural Networks empirically?". <em>Published online at epochai.org.</em> Retrieved from: 'https://epoch-website-dev.web.app/blog/measure-FLOPs-empirically' [online resource]</code></pre>
+</div>
+</div>
+
+<p style="margin-bottom: 0">BibTeX citation:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@misc{epoch2021measureFLOPsempirically,
+  title = "How to measure FLOP/s for Neural Networks empirically?",
+  author = {Marius Hobbhahn},
+  year = 2021,
+  howpublished = "\\url{https://epoch-website-dev.web.app/blog/measure-FLOPs-empirically}",
+  note = "Accessed: 2022-07-19"
+}
+</code></pre></div></div>
+
+  `;
+
+  tippy('.cite-us', {
+    allowHTML: true,
+    placement: 'bottom-start',
+    arrow: false,
+    interactive: true,
+    maxWidth: '900px',
+    trigger: 'click',
+    content: content,
+    onShow: (instance) => {
+      instance.popper.classList.add('citation-tooltip');
+      tippy.hideAll();
+      instance.popper.querySelectorAll('pre').forEach(pre => addCopyButton(pre));
+    },
+  });
+</script>
+
+
+        
+
+        <d-article>
+          <d-contents>
+            <nav class="l-text figcaption">
+            <h3>Contents</h3><div><ul id="toc" class="section-nav">
+<li class="toc-entry toc-h1"><a href="#summary">Summary</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#findings">Findings</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#introduction">Introduction</a></li>
+<li class="toc-entry toc-h1"><a href="#methods-for-counting-flop">Methods for counting FLOP</a></li>
+<li class="toc-entry toc-h1"><a href="#our-experimental-setup">Our experimental setup</a></li>
+<li class="toc-entry toc-h1"><a href="#analysis">Analysis</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#something-is-fishy-with-profiler_nvtx">Something is fishy with profiler_nvtx</a></li>
+<li class="toc-entry toc-h2"><a href="#investigating-profiler_nvtx-further">Investigating profiler_nvtx further</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#results">Results</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#comparing-batch-sizes">Comparing batch sizes</a></li>
+<li class="toc-entry toc-h2"><a href="#backward-forward-pass-ratios">Backward-forward pass ratios</a></li>
+<li class="toc-entry toc-h2"><a href="#utilization-rates">Utilization rates</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+<li class="toc-entry toc-h1"><a href="#appendix">Appendix</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#original-versions-of-the-main-figures">Original versions of the main figures</a></li>
+</ul>
+</li>
+</ul></div></nav>
+          </d-contents>
+
+          <p>Experiments and text by Marius Hobbhahn. I would like to thank Jaime Sevilla, Jean-Stanislas Denain, Tamay Besiroglu, Lennart Heim, and Anson Ho for their feedback and support. </p>
+
+<h1 id="summary">Summary</h1>
+
+<p>We measure the utilization rate of a Tesla P100 GPU for training different ML models. Most architectures and methods result in a utilization rate between 0.3 and 0.75. However, two architectures result in implausible low utilization rates of lower than 0.04. The most probable explanation for these outliers is that FLOP for inverted bottleneck layers are not counted correctly by the profiler. In general, the profiler we use shows signs of under- and overcounting and there is a possibility we made errors.</p>
+
+<h2 id="findings">Findings</h2>
+
+<ul>
+  <li>Counting the FLOP for a forward pass is very simple and many different packages give correct answers.</li>
+  <li>Counting the FLOP for the backward pass is harder and our estimator of choice makes weird overcounting and undercounting errors.</li>
+  <li>After cleaning mistakes, it is very likely that the backward/forward ratio is 2:1 (at least for our setup).</li>
+  <li>After correcting for the overcounting issues, we get empirical utilization rates between 0.3 and 0.75 for most architectures. Theoretical predictions and empirical measurements seem very consistent for larger batch sizes.</li>
+</ul>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/cH6b6WvmA5mrSaYzOFeMiFoIFWvb1OeYllX74AUMdK95LMZ3WHd7jymmFHg9S0zHuv_8FRsDubDHA68bMbAu74rD7BNhuAwWf-QeiSVxxQOqxqI6Fr3SCPC5BHqeG_cYsJLZbukq" />
+  <figcaption>
+Estimated GPU utilization rates on different architectures, using four different estimation setups.
+  </figcaption>
+</figure>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>In the “Parameter, Compute and Data Trends in Machine Learning” project we wanted to estimate GPU utilization rates for different Neural Networks and GPUs. While this sounds very easy in theory, it turned out to be hard in practice. </p>
+
+<p class="centered"><em>Utilization rate = empirical performance / peak performance</em></p>
+
+<p>The post contains a lot of technical jargon. If you are just here for the results, skip to the <a href="#analysis">Analysis section</a>.</p>
+
+<p>I don’t have any prior experience in estimating FLOP. It is very possible that I made rookie mistakes. Help and suggestions are appreciated. </p>
+
+<p>Other work on computing and measuring FLOP can be found in Lennart Heim’s sequences <a href="https://forum.effectivealtruism.org/s/4yLbeJ33fYrwnfDev">Transformative AI and Compute</a>. It’s really good.</p>
+
+<h1 id="methods-for-counting-flop">Methods for counting FLOP</h1>
+
+<p>In this post, we use FLOP to denote floating-point operations and FLOP/s to mean FLOP per second. </p>
+
+<p>We can look up the peak FLOP/s performance of any GPU by checking its datasheet (see e.g. <a href="https://images.nvidia.com/content/tesla/pdf/nvidia-tesla-p100-PCIe-datasheet.pdf">NVIDIA’s Tesla P100</a>). To compare our empirical performance to the theoretical maximum, we need to measure the number of FLOP and time for one training run. This is where things get confusing. </p>
+
+<p>Packages such as PyTorch’s <a href="https://detectron2.readthedocs.io/en/latest/modules/fvcore.html">fvcore</a>, <a href="https://github.com/sovrasov/flops-counter.pytorch/tree/master/ptflops">ptflops</a> or <a href="https://github.com/1adrianb/pytorch-estimate-flops">pthflops</a> hook onto your model and compute the FLOP for one forward pass for a given input. However, they can’t estimate the FLOP for a backward pass. Given that we want to compute the utilization rate for the entire training, accurate estimates of FLOP for the backward pass are important. </p>
+
+<p>PyTorch also provides a list of packages called profilers, e.g. in the <a href="https://pytorch.org/docs/stable/profiler.html">main package</a> and <a href="https://pytorch.org/docs/stable/autograd.html#profiler">autograd</a>. The profilers hook onto your model and measure certain quantities at runtime, e.g. CPU time, GPU time, FLOP, etc. The profiler can return aggregate statistics or individual statistics for every single operation within the training period. Unfortunately, these two profilers seem to not count the backward pass either. </p>
+
+<p><a href="https://docs.nvidia.com/deeplearning/frameworks/pyprof-user-guide/profile.html">NVIDIA offers an alternative way of using the profiler with Nsight Systems</a> that supposedly estimates FLOP for forward and backward pass accurately. This would suffice for all of our purposes. Unfortunately, we encountered problems with the estimates from this method. It shows signs of over- and undercounting operations. While we could partly fix these issues post-hoc, there is still room for errors in the resulting estimates. </p>
+
+<p>NVIDIA also offers a profiler called <a href="https://docs.nvidia.com/deeplearning/frameworks/dlprof-user-guide/">dlprof</a>. However, we weren’t able to run it in Google Colab (see <a href="#appendix">appendix</a>). </p>
+
+<h1 id="our-experimental-setup">Our experimental setup</h1>
+
+<p>We try to estimate the empirical utilization rates of 13 different conventional neural network classification architectures (resnet18, resnet34, resnet50, resnet101, resnet152, vgg11, vgg13, vgg16, vgg19, wide_resnet50_2, alexnet, mobilenet_v2, efficientnet_b0) with different batch sizes for some of them. For all experiments, we use the <a href="https://images.nvidia.com/content/tesla/pdf/nvidia-tesla-p100-PCIe-datasheet.pdf">Tesla P100</a> GPU which seems to be the default for Google Colab. All experiments have been done in Google Colab and can be reproduced <a href="https://drive.google.com/drive/folders/1yFLAafYtyeJcAnnTbqv4sAd2KJaboKrt?usp=sharing">here</a>.</p>
+
+<p>We estimate the FLOP for a forward pass with fvcore, ptflops, pthflops and the PyTorch profiler. Furthermore, we compare them to the FLOP for forward and backward pass estimated by the profiler + nsight systems method (which we name profiler_nvtx). We measure the time for all computations once with the profiler and additionally with profiler_nvtx to get comparisons. </p>
+
+<p>One problem for the estimation of FLOP is that fvcore, ptflops and pthflops seem to count a <a href="https://en.wikipedia.org/wiki/FMA_instruction_set">Fused Multiply Add (FMA)</a> as one operation while the profiler methods count it as 2. Since basically all operations in NNs are FMAs that means we can just divide all profiler estimates by 2. We already applied this division to all estimates, so you don’t have to do it mentally. However, this is one potential source for errors since some operations might not be FMAs. </p>
+
+<p>Furthermore, it is not 100 percent clear which FMA convention was used for the peak performance. <a href="https://docs.nvidia.com/gameworks/content/developertools/desktop/analysis/report/cudaexperiments/kernellevel/achievedflops.htm">On their website</a>, NVIDIA states <em>“The peak single-precision floating-point performance of a CUDA device is defined as the number of CUDA Cores times the graphics clock frequency multiplied by two. The factor of two stems from the ability to execute two operations at once using fused multiply-add (FFMA) instructions”</em>. <br />
+We interpret this statement to mean that NVIDIA used the FMA=2FLOP assumption. However, PyTorch automatically transforms all single-precision tensors to half-precision during training. Therefore, we get a speedup factor of 2 (which cancels the FMA=2FLOP)</p>
+
+<p>For all experiments, we use input data of sizes 3x224x224 with 10 classes. This is similar to many common image classification setups. We either measure on single random batches of different sizes or on the test set of CIFAR10 containing 10000 images. </p>
+
+<h1 id="analysis">Analysis</h1>
+
+<h2 id="something-is-fishy-with-profiler_nvtx">Something is fishy with profiler_nvtx</h2>
+
+<p>To understand the estimates for the profiler_nvtx better, we run just one single forward and backward pass with different batch sizes. If we compare the profiler_nvtx FLOP estimates for one forward pass on a random batch of size one, we see that they sometimes don’t align with all other estimates. </p>
+
+<figure>
+  <img src="https://lh3.googleusercontent.com/mVPRuZimITOE_Oqw0TpyLafF6nKSobYx5_mJV4mwlTNgpzInQPMX2Kk5SfEs-2M7kFoBzkpm85YEXRGayjuAlvMqBYIU4GPfDVdA7ksNjHwYV3_FpRToacO5Z3md-Dx1Vc5z0_Sf" />
+</figure>
+
+<p>The first four methods basically always yield very comparable estimates and just profiler_nvtx sometimes undercounts quite drastically. </p>
+
+<p>But it gets worse —profiler_nvtx is inconsistent with its counting. We expected the number of FLOP for a batch size of 64 to be 64 times as large as for a batch size of 1, and the number of FLOP for a batch size of 128 to be 128 times as large as for a batch size of 1. However, this is not the case for both the forward and backward pass. </p>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/wR7B2z5SiqCHFKKP-crHflR6IIMQl3Ydo3wQfjtT94AsIyC-JIm3TgQoDRuHX-MAtn5uUAlHFxIeQLa23DAwtgR_mYq6ybOJj4a2SjkZIw293Bwgyg1hWcD3-ix4BXS5dpASB0Zi" />
+</figure>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/Nu8U3pPPX7tmEajhHZjjel_UepXt2-e5qBHyscqNIr2pdCqtPmw10rULgyHZhBfSPJLaR2iutBpSyf4S-wMbPXvuJO_WruGxhERjON_7CmTJoSq6haWeWc1FkyeYNWbVSxgMWKMz" />
+</figure>
+
+<p>All FLOP estimates have been normalized by the batch size. Thus, if our profiler counted correctly, all bars would have exactly the same height. This is not what we observe in some networks, which suggests that something is off. Some networks don’t have estimates for a batch size of 128 since it didn’t fit into the GPU memory. </p>
+
+<p>To check whether profiler_nvtx is over- or undercounting we investigate it further.</p>
+
+<h2 id="investigating-profiler_nvtx-further">Investigating profiler_nvtx further</h2>
+
+<p>Since the problems from above cause all analyses to be very uncertain, we try to find out what exactly is wrong and if we can fix it in the following section. If you don’t care about that, skip to the Results section.</p>
+
+<p>If we compare the counted FLOP by operation, e.g. on alexnet, we make multiple discoveries. </p>
+
+<ul>
+  <li><strong>FMAs:</strong> We find that profiler_nvtx counts exactly 2x as many FLOP as fvcore (red in table) since profiler_nvtx counts FMAs as 2 and fvcore as 1 FLOP. For the same reason, profiler_nvtx counts 128 as many operations when we use a batch size of 64 (blue in table).</li>
+  <li><strong>Undercounting:</strong> In some cases (green in table) profiler_nvtx just doesn’t register an operation and therefore counts 0 FLOP.</li>
+  <li><strong>Overcounting:</strong> In other cases (yellow in table), profiler_nvtx counts the same operation multiple times for no apparent reason.</li>
+</ul>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/joeogGpfisxYxSDzvn_uVgby_EC-kIZ9m4pphxC8LLEjuqP5CLjxSZ2aEf-j_c_0qL1YGk9Oq1PkC3Fo9pFEb-goL-bPOXMLlkI86VvH6RSIVxycyuzt5UIVOHYAaWDee5RXPha9" />
+</figure>
+
+<p>This double-counting can happen in more extreme versions. In the forward pass of VGG13, for example, profiler_nvtx counts a single operation 16 times. That is 15 times too often. Obviously, this distorts the results.</p>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/ylptH6R4YfWPwy2kjxw4gzqa_4axo3nJA2CaGIjsR1U61TfGuRortfMkFQDJghC2cmxUuNl765nl5yvWsBFbnGmCea8luM-CWehjxEibDtpBoEzZH-6HJTlxfRel2VuXvQ4V8_SW" />
+</figure>
+
+<p>Furthermore, we can check the empirical backward/ forward ratios from profiler_nvtx in detail. We find that </p>
+
+<ul>
+  <li>Operations like conv2d and linear have a backward/forward ratio of 2:1.</li>
+  <li>Operations like relu, dropout, maxpooling, avgpooling have a backward/forward ratio of 1:1.</li>
+</ul>
+
+<p>Since the vast majority of operations during training come from conv2d and linear layers, The overall ratio is therefore very close to 2:1. </p>
+
+<figure>
+  <img src="https://lh5.googleusercontent.com/kDyMzCk9EpHCXmxSjAKXTNKFp6IO_-rgGn9uOXSKeW0ynOn5HGesYw-khIKG-GCTt_7A5uweaO5EF5INm_PgJ3sIrUlGQFwIorGqu3Jgs1JVxxV7wUP-8bgMrBXVb_6lq0kaLmh2" />
+</figure>
+
+<p>To account for the double-counting mistakes from above, we cleaned up the original files and deleted all entries that mistakenly double-counted an operation. Note that we couldn’t fix the undercounting issue so the following numbers still contain undercounts sometimes. </p>
+
+<p>After fixing the double-counting issue we get slightly more consistent results for different batch sizes. </p>
+
+<figure>
+  <img src="https://lh3.googleusercontent.com/ksvO0oBGf37zWdfQvqEUl_HHcQ1fv1XduLbwkw45QzFHua7Wj2vIXHoL6xjjmGc3H1l1-jg2Xp_PqPQq5f20JKnq_CNARcEwLD1TecW5YC7EJjFfPRWEjxHv-maHmQU8afFBBoY5" />
+</figure>
+
+<figure>
+  <img src="https://lh3.googleusercontent.com/0C6kqPdgGJmnLmK055KClXN_Crx-tjM9-_d4PJ-cBDw7j0Z4tZqbInXVe-GbqTcwI3s9knq-4Ls3IO8LvhXsMQc-83RGLoB3-qHlz4tCLicsLjypEyojB3LUQez5yOC_hp5ltmZz" />
+</figure>
+
+<p>All remaining inconsistencies come from undercounting.</p>
+
+<h1 id="results">Results</h1>
+
+<p>The following results are done on the cleaned version of the profiler data, i.e. double counting has been removed but undercounting still poses an issue. </p>
+
+<p>The same analysis for the original (uncleaned) data can be found in the <a href="#appendix">appendix</a>.</p>
+
+<h2 id="comparing-batch-sizes">Comparing batch sizes</h2>
+
+<p>We trained some of our models with different batch sizes. We are interested in whether different batch sizes affect the time it takes to train models. We additionally compare the timings from the conventional profiler and profiler_nvtx. </p>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/c7LITX2iUICZH1ctuj7y9DK70CqkQcTp-Nkb4J3KGmOEYXQ_sRxuUcTx-mkarZFlI5i9sO96wHFHSAxbxd5iZQ8MVrB4P-j0YjSpDbg3iia1yv1cEURyEtp6bcp1KEW9nwctFQCm" />
+</figure>
+
+<p>We find that, as expected, larger batch sizes lead to minimally shorter training times for 4 out of the 5 models. We are not sure why VGG13 is an exception. We would have expected the differences between batch sizes to be larger but don’t have a strong explanation for the observed differences. A possible hypothesis is that our measurement of GPU time (compared to wall-clock time) hides some overhead that is usually reduced by larger batch sizes.</p>
+
+<p>Shorter training times directly translate into higher utilization rates since training time is part of the denominator. </p>
+
+<h2 id="backward-forward-pass-ratios">Backward-forward pass ratios</h2>
+
+<p>From the detailed analysis of profiler_nvtx (see above), we estimate that the backward pass uses 2x as many FLOP as the forward pass (there will be a second post on comparing backward/forward ratios in more detail). <a href="https://openai.com/blog/ai-and-compute/">OpenAI has also used a ratio of 2</a> in the past.</p>
+
+<p>We wanted to further test this ratio empirically. To check consistency we tested these ratios for a single forward pass with batch size one (one) an entire batch (batch) and an entire epoch (epoch). </p>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/OWKK3_wgC1LlbOob-JDM7N6t0SYME2oFllGJBS8LOS-UNj_IuU3iIW80E1r4kLyhkjriQAS9-hVUErPpM1ZkqQO1_j3XzJq7ToG5CBXRl08H8ulRvaFxOb8NI1kUzq7nWtof36kS" />
+</figure>
+
+<p>We find that the empirical backward/forward ratios are mostly around the 2:1 mark. Some of the exceptions are likely due to undercounting, i.e. profiler_nvtx just not registering an operation as discussed above. <br />
+We assume that the outliers in mobilenet and efficientnet come from the profiler incorrectly measuring FLOP for inverted bottleneck layers. </p>
+
+<h2 id="utilization-rates">Utilization rates</h2>
+
+<p>Ultimately, we want to estimate utilization rates. We compute them by using four different methods:</p>
+
+<ul>
+  <li><em>Theory method</em>: We get the forward pass FLOP estimate of fvcore and multiply it by 3.0 to account for the backward pass. Then, we divide it by the product of the GPU training time and the peak GPU performance of the Tesla P100.</li>
+  <li><em>One method</em>: We take the profiler_nvtx estimate for the forward and backward passes, and divide it by the product of the training time and maximal GPU performance.</li>
+  <li><em>Batch method</em>: We perform the same procedure for one batch.</li>
+  <li><em>Epoch method</em>: We perform the same procedure for one epoch.</li>
+</ul>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/cH6b6WvmA5mrSaYzOFeMiFoIFWvb1OeYllX74AUMdK95LMZ3WHd7jymmFHg9S0zHuv_8FRsDubDHA68bMbAu74rD7BNhuAwWf-QeiSVxxQOqxqI6Fr3SCPC5BHqeG_cYsJLZbukq" />
+</figure>
+
+<p>We can see that the utilization rates predicted by the theory are often comparable to the empirical measurements for batch and epoch. We can also see that the batch and epoch versions are usually very comparable while just forwarding and backwarding one sample is much less efficient. This is expected since the reason for larger batch sizes is that they utilize the GPU more efficiently. </p>
+
+<p>Most realistic utilization rates are between 0.3 and 0.75. Interestingly (and ironically), the least efficient utilization rates come from efficientnet and mobilenet which have low values in all approaches. We assume that the outliers come from the profiler incorrectly measuring FLOP for inverted bottleneck layers. </p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>We use different methods to compute the utilization rate of multiple NN architectures. We find that most values lie between 0.3  and 0.75 and are consistent between approaches. Mobilenet and efficientnet pose two outliers to this rule with low utilization rates around 0.04. We assume that the outliers come from the profiler incorrectly measuring FLOP for inverted bottleneck layers. </p>
+
+<h1 id="appendix">Appendix</h1>
+
+<p>We tried to run <a href="https://docs.nvidia.com/deeplearning/frameworks/dlprof-user-guide/">dlprof</a> since it looks like one possible solution to the issues with the profiler we are currently using. However, we were unable to install it since installing <a href="https://pypi.org/project/nvidia-dlprof/">dlprof with pip</a> (as is recommended in the instructions) always threw errors in Colab. I installed dlprof on another computer and wasn’t able to get FLOP information from it. </p>
+
+<h2 id="original-versions-of-the-main-figures">Original versions of the main figures</h2>
+
+<p>These versions are done without accounting for double counting. Thus, the results are wrong. We want to show them to allow readers to compare them to the cleaned-up versions. </p>
+
+<figure>
+  <img src="https://lh5.googleusercontent.com/KbAlxuiUZqpcO-Pif45Avm73Xqv8-sOp3Cv-xPa3HLxJScqrlf9DqoACWkfq92zS00sC1s3dbxtZ9IxtUgIiBsdVrSrkY03oRsHZ48WLZNUq5dC2gn1_TzWqsSt96NoJQlBUBH9p" />
+</figure>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/1CcoownVLSKxHN3dLOQPXsclSo1wNwzj4gfaN3bWjaILvPT7E1BwIcS9dopP9nM-KKmEzy388MieZ5slCKqWIpm5dOIG8yfBfX46pSFsW1lnuLjVSffRVuCc7PUABomYLD2N2nyj" />
+</figure>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/OYWmomtflIlO8fTWBWzk6DAI4rjlvgimE6hoWWoXrqZBqSx7WFfE9Njlk0G60cWmst2COE_-rg_wZvTWmRX_RatRYE5MpFCIUqJ0dI1oh9g4B3uKGR4SWX31lXkUymUe9V3nEBUq" />
+</figure>
+<hr>
+
+              <p class="hiring-message">
+                We are hiring! If you want to contribute to our research, consider applying to one of <a href="/careers#open-positions">our job offers</a>.
+              </p></d-article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <span>© 2022 Epoch. Epoch is a fiscal sponsorship project of <a href="https://rethinkpriorities.org/">Rethink Priorities</a>.</span>
+
+  <div class="footer-icons-container">
+    <div class="footer-icons">
+      <a data-contact="aW5mb0BlcG9jaGFpLm9yZw==" href="#">
+        <i class="bi bi-envelope"></i>
+      </a>
+      <a href="https://github.com/epoch-research">
+          <i class="bi bi-github"></i>
+      </a>
+      <a href="https://twitter.com/EpochAIResearch">
+          <i class="bi bi-twitter"></i>
+      </a>
+    </div>
+  </div>
+
+</footer>
+</body>
+
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script src="/assets/js/footnotes.js"></script>
+</html>
+
+<script>
+  // As seen here: https://www.bram.us/2020/01/10/smooth-scrolling-sticky-scrollspy-navigation/
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling
+
+    if (window.getComputedStyle(document.documentElement).scrollBehavior !== 'smooth') {
+      for (let internalLink of document.querySelectorAll('a[href^="#"]')) {
+        let href = internalLink.getAttribute('href');
+        if (href == '#') continue;
+        const targetElement = document.querySelector(href.replaceAll(':', '\\:'));
+        if (targetElement) {
+          internalLink.addEventListener('click', (e) => {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+            });
+            e.preventDefault();
+          });
+        }
+      };
+    }
+
+    // Highlight TOC on scroll
+
+    let headers = [];
+    for (let header of document.querySelectorAll('h1[id]')) {
+      let subHeaders = [];
+      for (let subHeader of document.querySelectorAll('h2[id]')) {
+        subHeaders.push(subHeader);
+      }
+      headers.push[{
+        dom: header,
+        subHeaders: subHeaders,
+      }];
+    }
+
+    document.addEventListener('scroll', function(e) {
+      let currentHeader;
+
+      let headers = document.querySelectorAll('h1[id], h2[id], h3[id]');
+      let middleY = document.documentElement.clientHeight/2;
+      for (let i = 0; i < headers.length; i++) {
+        let p0 = headers[i].getBoundingClientRect().top;
+        let p1 = (i < headers.length - 1) ? headers[i+1].getBoundingClientRect().top : 999999;
+
+        if (p0 <= middleY && p1 > middleY) {
+          currentHeader = headers[i];
+          break;
+        }
+      }
+
+      if (currentHeader) {
+        let id = currentHeader.id;
+        document.querySelectorAll(`d-contents nav li a:not([href="#${id}"])`).forEach(node => node.classList.remove('active'));
+        document.querySelector(`d-contents nav li a[href="#${id}"]`).classList.add('active');
+      } else {
+        document.querySelectorAll(`d-contents nav li a`).forEach(node => node.classList.remove('active'));
+      }
+    });
+  });
+</script>

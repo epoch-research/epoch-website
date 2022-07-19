@@ -1,0 +1,1423 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Grokking “Semi-informative priors over AI timelines”" />
+<meta name="author" content="Anson Ho" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I give visual explanations for Tom Davidson’s report, Semi-informative priors over AI timelines, and summarise the key assumptions and intuitions" />
+<meta property="og:description" content="I give visual explanations for Tom Davidson’s report, Semi-informative priors over AI timelines, and summarise the key assumptions and intuitions" />
+<link rel="canonical" href="https://epoch-website-dev.web.app/blog/grokking-semi-informative-priors" />
+<meta property="og:url" content="https://epoch-website-dev.web.app/blog/grokking-semi-informative-priors" />
+<meta property="og:site_name" content="Epoch" />
+<meta property="og:image" content="https://epoch-website-dev.web.app/assets/images/posts/2022/grokking-semi-informative-priors.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-06-13T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://epoch-website-dev.web.app/assets/images/posts/2022/grokking-semi-informative-priors.png" />
+<meta property="twitter:title" content="Grokking “Semi-informative priors over AI timelines”" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Anson Ho"},"dateModified":"2022-06-13T00:00:00+00:00","datePublished":"2022-06-13T00:00:00+00:00","description":"I give visual explanations for Tom Davidson’s report, Semi-informative priors over AI timelines, and summarise the key assumptions and intuitions","headline":"Grokking “Semi-informative priors over AI timelines”","image":"https://epoch-website-dev.web.app/assets/images/posts/2022/grokking-semi-informative-priors.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://epoch-website-dev.web.app/blog/grokking-semi-informative-priors"},"url":"https://epoch-website-dev.web.app/blog/grokking-semi-informative-priors"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <title> Grokking “Semi-informative priors over AI timelines” </title>
+
+  
+    
+
+
+
+
+
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/micromodal.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" >
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" ><!-- MathJax -->
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true,
+      },
+
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+      },
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+  
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <script src="/assets/js/micromodal.min.js"></script>
+
+  <!-- Copy buttons -->
+  <script src="/assets/js/clipboard.min.js"></script>
+  <script>
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
+
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
+      let wrapper = document.createElement('div');
+      wrapper.classList.add('copiable-wrapper');
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    }
+
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
+      target: function(trigger) {
+        return trigger.parentElement.querySelector('.copy-target');
+      },
+    });
+
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
+      tooltip.show();
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
+    });
+
+    clipboard.on('error', function(e) {
+      e.clearSelection();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
+  });
+</script>
+
+</head>
+<head>
+    <script src="/assets/js/distillpub/template.v2.js"></script>
+    <script src="/assets/js/distillpub/transforms.v2.js"></script>
+
+    
+      
+
+<script src="https://unpkg.com/@popperjs/core@2.11.2"></script>
+<script src="https://unpkg.com/tippy.js@6.2.6"></script>
+
+
+
+<style>
+  :root {
+    --resource-color: 78, 51, 80;
+  }
+
+  d-title {
+    padding: 0;
+  }
+
+  d-title {
+    margin-bottom: 15px;
+  }
+
+  d-article {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .article-head {
+    width: 100%;
+    background-color: var(--header-color);
+    margin-bottom: 4em;
+  }
+
+  .article-head-content {
+    padding-left: var(--nav-bar-margin);
+    padding-right: var(--nav-bar-margin);
+    display: flex;
+    margin: auto;
+    padding-top: 70px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+  }
+
+  .page-content {
+    padding-top: 0;
+  }
+
+  .summary-supertitle {
+    margin-bottom: 0;
+    margin-top: 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    word-spacing: 3px;
+  }
+
+  .summary-title {
+    margin-bottom: 15px;
+  }
+
+  .summary-title h1 {
+    margin-bottom: 0;
+  }
+
+  .cite-us {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    font-size: 0.9rem;
+    color: white !important;
+  }
+
+  .citation-tooltip {
+    max-width: calc(100vw - 27px);
+    box-shadow: 0 0 7px 7px black;
+    border-radius: var(--default-radius);
+  }
+
+  .citation-tooltip > .tippy-box {
+    padding-top: 0.5em;
+  }
+
+  .citation-tooltip pre * {
+    color: var(--code-color);
+  }
+
+  @media (min-width: 800px) {
+    .regular-banner .article-head-content {
+      width: auto;
+      height: calc(50vh);
+      padding-top: 0;
+      padding-bottom: 1em;
+      padding-left: var(--nav-bar-margin);
+      padding-right: var(--nav-bar-margin);
+    }
+
+    .regular-banner .banner-img-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .regular-banner .banner-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left;
+    }
+
+    .regular-banner .summary {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+    }
+
+    .regular-banner .summary-main {
+      width: 90%;
+      margin: auto;
+      margin-left: 0;
+    }
+
+    .regular-banner .banner {
+      flex: 0 0 50%;
+      margin: 0;
+      padding: 0;
+      object-fit: cover;
+    }
+}
+
+  
+
+  .summary {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1em;
+  }
+
+  .summary-title, .summary-title *,
+  .summary-authors, .summary-authors *,
+  .summary-abstract, .summary-abstract *,
+  .summary-supertitle, .summary-supertitle *,
+  .summary-footer, .summary-footer * {
+    color: white;
+  }
+
+  .article-resources, .article-resources * {
+    color: white !important;
+  }
+
+  .summary .copiable-wrapper i {
+    color: black;
+  }
+
+  .summary-footer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .summary-authors {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .banner {
+    order: 2;
+    flex: 0 0 41%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    //padding-right: 10px;
+  }
+
+  .banner-img-wrapper img {
+    border-radius: var(--default-radius);
+  }
+
+  .article-resources {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .article-resource {
+    border-radius: 4px;
+    background-color: rgba(var(--resource-color), 0.8);
+    padding: 6px 11px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 5px;
+    margin-top: 0.5em;
+    white-space: nowrap;
+  }
+
+  .article-resources i {
+    margin-right: 0.5rem;
+  }
+
+  .article-resource:hover {
+    background-color: rgba(var(--resource-color), 1.0);
+  }
+
+  @media (max-width: 800px) {
+    .article-head-content {
+      flex-wrap: wrap;
+    }
+
+    .banner, .regular-banner .banner {
+      order: 1;
+      flex-basis: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .summary {
+      order: 2;
+    }
+  }
+</style>
+
+    
+  </head>
+
+  <body><header class="site-header" role="banner">
+  <div class="header-wrapper"><a href="/">
+      <img src="/assets/images/epoch-logo-white-text.svg" alt="Epoch logo" class="header-logo">
+      
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+          
+          <a class="page-link" href="/research">Research</a>
+          <a class="page-link current-menu-item" href="/blog">Blog</a>
+          <a class="page-link" href="/mlinputs/visualization">Visualization</a>
+          <a class="page-link" href="/team">Team</a>
+          <a class="page-link" href="/careers">Careers</a>
+        </div>
+      </nav></div>
+
+  <script>
+    document.addEventListener('click', (e) => {
+      let navTrigger = document.querySelector('#nav-trigger');
+      if (navTrigger && navTrigger.checked) {
+        if (e.target != navTrigger.parentElement && !navTrigger.parentElement.contains(e.target)) {
+          navTrigger.checked = false;
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="post distill">
+
+        
+          
+
+<div class="article-head ">
+  <div class="article-head-content">
+    <div class="banner">
+      <div class="banner-img-wrapper">
+        <img src="/assets/images/posts/2022/grokking-semi-informative-priors.png"/>
+      </div>
+    </div>
+    <div class="summary">
+      <div class="summary-main">
+        
+        <div class="summary-title">
+          <h1>Grokking “Semi-informative priors over AI timelines”</h1>
+          <a class="cite-us"><i class="bi-journal-text"></i> Cite this post</a>
+        </div>
+        
+        <div class="summary-authors">
+          
+          
+
+
+
+      
+      <span class="author tooltiped" data-member-id="anson-ho">Anson Ho</span>
+
+<script src="/assets/js/umbrella.min.js"></script>
+<style>
+  .author.tooltiped {
+    cursor: pointer;
+  }
+
+  .summary-authors .tippy-content {
+    width: 180px;
+    padding: 5px;
+  }
+
+  .miniprofile .mug {
+    width: 180px;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .miniprofile a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .miniprofile .member-resource {
+    margin-right: 5px;
+  }
+
+  .miniprofile .member-info {
+    padding: 4px;
+    width: 180px;
+  }
+
+  .miniprofile .member-name, .miniprofile .member-role {
+    margin-bottom: 2px;
+  }
+</style>
+
+<script>
+
+  
+
+  
+
+  let teamMembers = {
+    
+      'jaime-sevilla': {
+        id: 'jaime-sevilla',
+        name: 'Jaime Sevilla',
+        description: 'Jaime is a researcher focused on statistics and technological forecasting. Besides his role at Epoch, he is a research affiliate of the <a href="https://www.cser.ac.uk/">Centre for the Study of Existential Risk</a> at Cambridge University and the cofounder of <a href="https://riesgoscatastroficosglobales.com/">Riesgos Catastróficos Globales</a>.',
+        role: 'Director',
+        imageUrl: '/assets/images/team/jaime-sevilla.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'amFpbWVAZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/Jsevillamol'},
+        
+        ],
+      },
+    
+      'tamay-besiroglu': {
+        id: 'tamay-besiroglu',
+        name: 'Tamay Besiroglu',
+        description: 'Tamay is a researcher focusing on the Economics of Computing and big-picture trends in Machine Learning. In addition to his role at Epoch, Tamay is a researcher at the Future Tech Lab at MIT, and AI Forecasting Lead at Metaculus. Previously, he led strategy for Metaculus, consulted for the UK Government, and worked at the Future of Humanity Institute.',
+        role: 'Associate director',
+        imageUrl: '/assets/images/team/tamay-besiroglu.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'dGFtYXlAZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'pablo-villalobos': {
+        id: 'pablo-villalobos',
+        name: 'Pablo Villalobos',
+        description: 'Pablo has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/pablo-villalobos.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'cGFibG9AZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'anson-ho': {
+        id: 'anson-ho',
+        name: 'Anson Ho',
+        description: 'Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/anson-ho.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'YW5zb25AZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'github', icon: 'github', url: 'https://github.com/ansonwhho'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://ansonwhho.github.io/'},
+        
+        ],
+      },
+    
+      'lennart-heim': {
+        id: 'lennart-heim',
+        name: 'Lennart Heim',
+        description: 'Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.',
+        role: 'Research Fellow and Strategy Specialist',
+        imageUrl: '/assets/images/team/lennart-heim.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bGVubmFydEBlcG9jaGFpLm9yZw=='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/ohlennart'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://heim.xyz'},
+        
+        ],
+      },
+    
+      'marius-hobbhahn': {
+        id: 'marius-hobbhahn',
+        name: 'Marius Hobbhahn',
+        description: 'Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.',
+        role: 'Research Fellow',
+        imageUrl: '/assets/images/team/marius-hobbhahn.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bWFyaXVzQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'eduardo-infante-roldan': {
+        id: 'eduardo-infante-roldan',
+        name: 'Eduardo Infante-Roldán',
+        description: 'Eduardo does some programming.',
+        role: 'Software Engineer',
+        imageUrl: '/assets/images/team/eduardo-infante-roldan.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWR1QGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'ege-erdil': {
+        id: 'ege-erdil',
+        name: 'Ege Erdil',
+        description: 'Ege Erdil is an undergraduate student at Middle East Technical University. He has interests in mathematics, statistics, economics and forecasting.',
+        role: 'Intern Researcher',
+        imageUrl: '/assets/images/team/ege-erdil.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWdlQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+  };
+
+  
+
+  
+
+  let advisors = {
+    
+      'tom-davidson': {
+        id: 'tom-davidson',
+        name: 'Tom Davidson',
+        description: 'Tom is a senior research analyst at Open Philanthropy. He’s currently working on assessing arguments that transformative AI might be developed relatively soon. Prior to joining Open Philanthropy, Tom worked as a Data Scientist for education technology startup BridgeU and taught science at a UK comprehensive school. He has a Masters in Physics and Philosophy from the University of Oxford.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/tom-davidson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+      'neil-thompson': {
+        id: 'neil-thompson',
+        name: 'Neil Thompson',
+        description: 'Neil is an Innovation Scholar at MIT’s Computer Science and Artificial Intelligence Lab and the Initiative on the Digital Economy where he leads the FutureTech Project. He is also an Associate Member of the Broad Institute.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/neil-thompson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+  };
+
+  
+
+  let members = {...teamMembers, ...advisors};
+</script>
+
+
+<script>
+  for (let author of document.querySelectorAll('.author.tooltiped')) {
+    let member = teamMembers[author.dataset.memberId];
+    if (!member) continue;
+
+    let resources = [];
+    for (let resource of member.resources) {
+      if (resource.name == "mail") {
+        resources.push(`<a class="member-resource" href="#" data-contact="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      } else {
+        resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      }
+    }
+
+    tippy(author, {
+      allowHTML: true,
+      placement: 'top',
+      arrow: false,
+      interactive: true,
+      maxWidth: '200px',
+      trigger: 'mouseenter click',
+      onShow: (instance) => {
+        tippy.hideAll();
+        for (let element of instance.popper.querySelectorAll('[data-contact]')) {
+          addMailDeobfuscator(element);
+        }
+      },
+      content:
+        `
+        <div class="miniprofile">
+          <div class="mug" style="border-radius: 5px; background-image: url('${member.imageUrl}')"></div>
+          <div class="member-info">
+            <h3 class="member-name">${member.name}</h3>
+            <h4 class="member-role">${member.role}</h4>
+            <div class="member-resources">
+              ${resources.join('\n')}
+            </div>
+          </div>
+        </div>
+        `,
+    });
+  }
+</script>
+
+        </div>
+        
+        
+        <div class="summary-abstract">
+          I give visual explanations for Tom Davidson’s report, Semi-informative priors over AI timelines, and summarise the key assumptions and intuitions
+        </div>
+        
+        
+      </div>
+      
+      <div class="summary-footer">
+        Jun. 13, 2022
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script>
+  let content = `
+    
+<p style="margin-bottom: 0">Cite this work as</p>
+
+<div class="language-plaintext highlighter-rouge wrappable-pre">
+<div class="highlight">
+  <pre class="highlight"><code>Anson Ho (2022), "Grokking “Semi-informative priors over AI timelines”". <em>Published online at epochai.org.</em> Retrieved from: 'https://epoch-website-dev.web.app/blog/grokking-semi-informative-priors' [online resource]</code></pre>
+</div>
+</div>
+
+<p style="margin-bottom: 0">BibTeX citation:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@misc{epoch2022grokkingsemiinformativepriors,
+  title = "Grokking “Semi-informative priors over AI timelines”",
+  author = {Anson Ho},
+  year = 2022,
+  howpublished = "\\url{https://epoch-website-dev.web.app/blog/grokking-semi-informative-priors}",
+  note = "Accessed: 2022-07-19"
+}
+</code></pre></div></div>
+
+  `;
+
+  tippy('.cite-us', {
+    allowHTML: true,
+    placement: 'bottom-start',
+    arrow: false,
+    interactive: true,
+    maxWidth: '900px',
+    trigger: 'click',
+    content: content,
+    onShow: (instance) => {
+      instance.popper.classList.add('citation-tooltip');
+      tippy.hideAll();
+      instance.popper.querySelectorAll('pre').forEach(pre => addCopyButton(pre));
+    },
+  });
+</script>
+
+
+        
+
+        <d-article>
+          <d-contents>
+            <nav class="l-text figcaption">
+            <h3>Contents</h3><div><ul id="toc" class="section-nav">
+<li class="toc-entry toc-h1"><a href="#executive-summary">Executive Summary</a></li>
+<li class="toc-entry toc-h1"><a href="#motivation">Motivation</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#laplaces-rule-of-succession">Laplace’s Rule of Succession</a></li>
+<li class="toc-entry toc-h2"><a href="#making-the-priors-less-uninformative">Making the priors less uninformative</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#semi-informative-priors-demystified">Semi-informative priors demystified</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#first-trial-probability">First-trial probability </a></li>
+<li class="toc-entry toc-h2"><a href="#number-of-virtual-successes">Number of virtual successes</a></li>
+<li class="toc-entry toc-h2"><a href="#regime-start-time">Regime start time</a></li>
+<li class="toc-entry toc-h2"><a href="#trial-definition">Trial definition</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#putting-things-together-final-distribution">Putting things together: Final distribution</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#model-extensions">Model Extensions</a></li>
+<li class="toc-entry toc-h2"><a href="#final-distribution">Final Distribution</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+</ul></div></nav>
+          </d-contents>
+
+          <p><em>Notes: </em></p>
+
+<ul>
+  <li><em>I give visual explanations for Tom Davidson’s report,</em> <a href="https://www.openphilanthropy.org/semi-informative-priors"><em>Semi-informative priors over AI timelines</em></a><em>, and summarise the key assumptions and intuitions</em></li>
+  <li><em>The diagrams can be found <a href="https://docs.google.com/presentation/d/1qQMpZBLRshVNETNTAXl00pcxsIdK53TyihT5iKVXy54/edit#slide=id.p">here</a> – you can click on some of the boxes to get linked to the part of the report that you’re interested in</em><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></li>
+</ul>
+
+<p><em>Thanks to the Epoch team for feedback and support! Thanks especially to Jaime Sevilla and Tom Davidson for providing detailed feedback.</em></p>
+
+<h1 id="executive-summary">Executive Summary</h1>
+
+<p>The framework in <a href="https://www.openphilanthropy.org/research/report-on-semi-informative-priors/"><em>Semi-informative priors over AI timelines</em></a> assumes a model of <a href="https://www.alignmentforum.org/tag/artificial-general-intelligence">AGI</a> development which consists of a sequence of <a href="https://en.wikipedia.org/wiki/Bernoulli_trial">Bernoulli trials</a>, i.e. it treats each calendar year as a “trial” at building AGI with constant probability \(p\) of succeeding.</p>
+
+<figure>
+  <img src="https://lh3.googleusercontent.com/0FBF9T2GaviXdaPVWFlNYu-ZE28-9R78DLT-2lLvBZUD0Oy9Hp660Nml36hrmIFPosWOIjkig7p9XsFpLs-33JWT4vwbIhDUZ18V1lsvpnXN1Jo6Uth9FP-L1PlQAXuiZjqZQCh6XuKcxx_jKQ" />
+  <figcaption class="caption">
+    <p>Image source: <a href="https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/">Davidson, 2021</a></p>
+  </figcaption>
+</figure>
+
+<p>However, we don’t know what this value of \(p\) is, so we use a generalisation of Laplace’s <a href="https://en.wikipedia.org/wiki/Rule_of_succession">rule of succession</a> to estimate \(P(\text{AGI next year | no AGI yet})\). This is done by specifying a <strong>first-trial probability</strong>, the probability of successfully building AGI in the first year of AI research, together with the <strong>number of virtual successes</strong>, which tells us how quickly we should update our estimate for  \(P(\text{AGI next year | no AGI yet})\) based on evidence. The framework leans very heavily on the first-trial probability, which is determined using a subjective selection of reference classes (<a href="#first-trial-probability">more here</a>).</p>
+
+<p>How much evidence we get depends on the number of trials that we see, which depends on the <strong>regime start-time</strong> –  you can think of this as the time before which failure to develop AGI doesn’t tell us anything useful about the probability of success in later trials. For instance, we might think that 1956 (the year of the Dartmouth Conference) was the first year where people seriously started trying to build AGI, so the absence of AGI before 1956 isn’t very informative. If we think of each trial as a calendar year, then there have been 2021-1956 = 65 trials since the regime start-time, and we still haven’t developed AGI, so that’s 65 failed trials which we use to update \(P(\text{AGI next year | no AGI yet})\), where “next year” now corresponds to 2022 rather than 1957.</p>
+
+<p>But why should a trial correspond to a calendar year? The answer is that it doesn’t have to! In total, Davidson considers three candidate <strong>trial definitions</strong>:</p>
+
+<ul>
+  <li><strong>Calendar-year trials:</strong> 1 trial = 1 calendar year</li>
+  <li><strong>Compute trials:</strong> 1 trial = a 1% increase in the largest amount of compute used to develop an AI system to date</li>
+  <li><strong>Researcher-year trials:</strong> 1 trial = a 1% increase in the total researcher-years so far</li>
+</ul>
+
+<p>If we extend this reasoning, then we can predict the probability that AGI is built \(X\) years into the future. Davidson does this to predict \(P(\text{AGI by 2036 | no AGI yet})\) as follows:</p>
+
+<p>\[\begin{align}P(\text{AGI by 2036 | no AGI yet}) &amp;= 1-P(\text{no AGI by 2036 | no AGI yet})\\&amp;=1-P(\text{no AGI in 2022 | no AGI by 2021})…P(\text{no AGI in 2036 | no AGI by 2035}) \end{align}\]</p>
+
+<p>The idea is that this framework only incorporates a small amount of information based on observational evidence, giving “<strong>semi-informative priors”</strong> over AI timelines. This framework is shown in more detail below:</p>
+
+<figure>
+  <img src="https://lh5.googleusercontent.com/ol9PwdpOsmfcWd2wXwPBuiDBX1DXP0aSWM-lTkN1AXni5L2vaFS-ZG-A5XylrAKfHkyRYFzq5n3yPBLLUoxqmuhkZCL27LTSzpupZXF5XSrM6fh5TsxkJf3rTNzrnrTCTUHxr4kwfQMKFI-OpQ" />
+</figure>
+
+<p>Since Davidson uses three different trial definitions, we actually get three of these diagrams!</p>
+
+<figure>
+  <img src="https://lh3.googleusercontent.com/oF780MeafmXGjGDi7qDil09ubHHY6QCc7SgCE6FyHxdKeWGKTtYUNJ0qkjlfMGpzjjDAdUhubNHj4cjgWWyvSyL-5M3E5zAKIMRJQUmQ5sxN_JhyrcKRvtExjg2RurT8A_9irMtzPlUSuOm9TA" />
+</figure>
+
+<p>All in all, Davidson uses this to get a central estimate of \(P(\text{AGI by 2036 | no AGI yet}) = 8\%\), with the following cumulative probability function:</p>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/L-lpbRMIE0mKFwJnALK6wjyigvhgMENTxwjouHpCB83b0RLSYQ9eCsdme2mjx98Jm-wHDDhOZVAQrqr5hjxe7ZIi-njB1xP91oG8oLWfmj8LxII6N6mQO6Py-cHO6B0bKgv3qbMWKMdbrbQTFA" />
+</figure>
+
+<h1 id="motivation">Motivation</h1>
+
+<p>One way of forecasting <a href="https://www.alignmentforum.org/tag/ai-timelines">AI Timelines</a> is to consider the inner workings of AI, guess what kinds of developments are the most important, and then generate a probability distribution over when <a href="https://www.alignmentforum.org/tag/artificial-general-intelligence"><strong>Artificial General Intelligence (AGI)</strong></a> will be developed. This is the approach taken by Ajeya Cotra in <a href="https://drive.google.com/drive/u/0/folders/15ArhEPZSTYU8f012bs6ehPS6-xmhtBPP"><em>Forecasting TAI with biological anchors</em></a>, a really detailed draft report that draws analogy to the human brain to forecast when <a href="https://www.openphilanthropy.org/blog/some-background-our-views-regarding-advanced-artificial-intelligence"><strong>Transformative AI (TAI)</strong></a> will first be developed. <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></p>
+
+<p>Tom Davidson’s report, <a href="https://www.openphilanthropy.org/semi-informative-priors#footnote2_f3alfr1"><em>Semi-informative priors over AI timelines</em></a>, is also a detailed report forecasting AI timelines, but it takes a different approach to Cotra’s report. Rather than thinking about the details of AI development, it assumes we know <em>almost nothing</em> about it<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup>! </p>
+
+<p>The goal of this post is to explain the model through the liberal use of diagrams, so that you can get high-level intuitions about how it works, hopefully informing your research or understanding of AI forecasting. </p>
+
+<h2 id="laplaces-rule-of-succession">Laplace’s Rule of Succession</h2>
+
+<p>Suppose we’re trying to determine when AGI will first be developed, without knowing anything about the world except that there have been \(N\) years so far, and AGI has not been developed in any of these years. How would you determine the probability that AGI is developed in the next year<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup>?</p>
+
+<p>A naive approach we might take is to think of each year as a <a href="https://en.wikipedia.org/wiki/Bernoulli_trial">“trial” with two possible outcomes</a> – (1) <em>successful trials</em>, where AGI is successfully built in the year of interest, and (2) <em>failed trials</em>, where AGI is not built in the year of interest. We then assume that the probability of building AGI in the next year is given by the total successful trials divided by the total trials:</p>
+
+<p>\[P(\text{AGI next year | no AGI yet}) = \frac{\text{successes}}{\text{successes + failures}} = \frac{\text{successes}}{\text{total trials}}\]</p>
+
+<p>\(\)Since AGI hasn’t been built in any of the last \(N\) years, there have been zero successes out of \(N\) trials. We thus conclude that the probability of AGI in the next year is zero… but clearly there’s something wrong with this!</p>
+
+<p>The problem is that this approach doesn’t even account for the possibility that AGI might ever be developed, and simply counting the number of successes isn’t going to be very helpful for a technology that hasn’t been invented yet. How can we modify this approach so that both the possibility of success and failure are considered?</p>
+
+<p>One clever way of doing this is to consider “virtual trials”. If you know that it’s possible for each trial to be either a success or a failure, then it’s as if you had previously observed one “virtual success” and one “virtual failure”, which we can add to the total observed successes and failures respectively. We can then modify the equation to:</p>
+
+<p>\[P(\text{AGI next year | no AGI yet}) = \frac{\text{successes + 1}}{\text{(successes + 1) + (failures + 1)}} = \frac{\text{successes + 1}}{\text{total trials + 2}}\]</p>
+
+<p>This equation is called <a href="https://en.wikipedia.org/wiki/Rule_of_succession">Laplace’s rule of succession</a>, which is one approach to estimating the probabilities of events that have never been observed in the past. In particular, it assumes that we know <em>nothing</em> about the world except for the number of trials and the number of successes or failures. </p>
+
+<p>If we apply this method, then we find that the probability of building AGI in the next year is \(1/(N+2)\). Assuming that the field of AI was formed in <a href="https://en.wikipedia.org/wiki/Dartmouth_workshop">1956 at the famous Dartmouth Conference</a>, then this suggests that \(N = 2021 - 1956 = 65\) and \(P(\text{AGI is built in 2022})=1/67\), or a probability of around 1.5%.</p>
+
+<p>If we extend this reasoning, then we can predict the probability that AGI is built \(X\) years into the future. Davidson does this to predict \(P(\text{AGI by 2036 | no AGI yet})\) as follows:</p>
+
+<p>\[\begin{align}P(\text{AGI by 2036 | no AGI yet}) &amp;= 1-P(\text{no AGI by 2036 | no AGI yet})\\&amp;=1-P(\text{no AGI in 2022 | no AGI by 2021})…P(\text{no AGI in 2036 | no AGI by 2035}) \end{align}\]</p>
+
+<p>This seems a lot more reasonable than the naive approach, but there’s still some serious problems with it, like the following:</p>
+
+<ul>
+  <li><strong>It’s extremely aggressive before considering evidence</strong>: For instance, according to Laplace’s rule the attendants of the <a href="https://en.wikipedia.org/wiki/Dartmouth_workshop">1956 Dartmouth Conference</a> should have predicted a 50% probability of developing AGI in the first year of AI research, and 91% probability within the first ten years!</li>
+  <li><strong>It’s sensitive to the definition of a “trial”: If we had chosen each trial to be “one day” instead of a year, our conclusions would be drastically different. </strong></li>
+</ul>
+
+<p>What’s going on here (among other things) is that the rule of succession makes very few prior assumptions – i.e. it’s an <strong>uninformative prior</strong>. In fact, it’s so uninformative that it doesn’t even capture the intuition that building a transformative technology in the first year of R&amp;D is not commonplace! Clearly, we still need something better if we’re going to make predictions about AGI timelines. </p>
+
+<h2 id="making-the-priors-less-uninformative">Making the priors less uninformative</h2>
+
+<p>The solution that Davidson proposes is to make this prior less uninformative, by incorporating certain pieces of common sense intuition and evidence about AI R&amp;D. Looking more closely at the framework given by Laplace’s rule of succession, we see that it depends on several factors: </p>
+
+<ul>
+  <li><strong>Regime start-time:</strong> You can think of this as the time before which failure to develop AGI doesn’t tell us anything useful about the probability of success in later trials. We’ve been assuming this to be 1956, but this doesn’t have to be the case!</li>
+  <li><strong>First-trial probability</strong>: The odds of success on the first “trial” from the regime start-time onwards</li>
+  <li><strong>Trial definition</strong>: Why are we using “one year” as a single trial, and what are some alternatives?</li>
+</ul>
+
+<p>We can also add an additional modification, in the form of the <strong>number of virtual successes</strong>. This affects how quickly you update away from the first-trial probability given new evidence – the more virtual successes, the smaller your uncertainty about how difficult it is to build AGI, and thus the less you update based on observing more failed trials. For example, suppose that your initial \(P(\text{AGI next year | no AGI yet})\) is 1/100:</p>
+
+<ul>
+  <li>If you start with 1 virtual success, then after observing 100 failed trials your updated \(P(\text{AGI next year | no AGI yet})\) is now 1/200</li>
+  <li>In contrast, if you start with 10 virtual successes, then after 100 failed trials your updated \(P(\text{AGI next year | no AGI yet})\) is 1/110</li>
+</ul>
+
+<p>So far, we’ve been thinking about predicting whether or not AGI will be developed in the next year, but what we’re really interested in is <em>when it will be developed, if at all</em>. Davidson tries to answer this by assuming a simple model of development, consisting of a sequence of trials, where each trial has a constant probability \(p\) of succeeding.<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup> Note that this probability is not the same as \(P(\text{AGI next year | no AGI yet})\) - the latter corresponds to our <em>belief</em> about the value of \(p\); it isn’t the same as \(p\) itself.</p>
+
+<figure>
+  <img src="https://lh3.googleusercontent.com/0FBF9T2GaviXdaPVWFlNYu-ZE28-9R78DLT-2lLvBZUD0Oy9Hp660Nml36hrmIFPosWOIjkig7p9XsFpLs-33JWT4vwbIhDUZ18V1lsvpnXN1Jo6Uth9FP-L1PlQAXuiZjqZQCh6XuKcxx_jKQ" />
+  <figcaption class="caption">
+    <p>Image source: <a href="https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/">Davidson, 2021</a></p>
+  </figcaption>
+</figure>
+
+<p>When the four inputs to the distribution \(P(\text{AGI in year } X \text{ | no AGI yet})\) are determined using common sense and some relevant reference classes, Davidson calls this distribution a “<strong>semi-informative prior</strong>” over AGI timelines. Rather than considering tons of gnarly factors that could in principle influence progress towards AGI, we only look at a few select inputs that seem most relevant. </p>
+
+<figure>
+  <img src="https://lh5.googleusercontent.com/ol9PwdpOsmfcWd2wXwPBuiDBX1DXP0aSWM-lTkN1AXni5L2vaFS-ZG-A5XylrAKfHkyRYFzq5n3yPBLLUoxqmuhkZCL27LTSzpupZXF5XSrM6fh5TsxkJf3rTNzrnrTCTUHxr4kwfQMKFI-OpQ" />
+  <figcaption class="caption">
+    <p><em>Adapted from</em> <a href="https://www.openphilanthropy.org/semi-informative-priors#:~:text=The%20following%20diagram%20gives%20a%20more%20detailed%20mathematical%20view%20of%20the%20framework%3A"><em>Davidson (2021)</em></a></p>
+  </figcaption>
+</figure>
+
+<p>The diagram above shows how the framework is pieced together. The first trial probability and number of virtual successes are used to generate an initial distribution for the probability of AGI in the next year. We then update this distribution with 2020 evidence based on the trials we’ve observed, depending on our specified regime start-time. This gives us the 2020 distribution for \(P(\text{AGI next year (i.e. 2021) | no AGI yet})\). We  combine this with the number of trials between 2020 and the year \(X\) that we’re interested in, to get the final distribution over \(P(\text{AGI by year }X \text{ | no AGI in 2020})\). Note that this actually also depends on the trial definition – we’ll discuss how this fits into the diagram later.</p>
+
+<h1 id="semi-informative-priors-demystified">Semi-informative priors demystified</h1>
+
+<p>Now that we have the basic framework established, we just need to figure out what values we should assign to the input variables (i.e. first-trial probability, number of virtual successes, regime start-time, and trial definition). Davidson considers the first-trial probability to be the most significant out of these four input factors (via a <a href="https://colab.research.google.com/drive/1ErtsiwpVLQFSPRP0u5WXwYr7Kf_4ognL#scrollTo=Sj_Ha6FyJo8l">sensitivity analysis</a>), although all are based on fairly subjective judgements. </p>
+
+<p>Let’s take a look at each of these in turn.</p>
+
+<h2 id="first-trial-probability">First-trial probability </h2>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/_f0t5BRKgrV9OBo69ln8w2r4MEejkQO3uNeJlvAxUB-EEep1l9uoFuhLv_--dQz78RCsMMkCdZgu1zLKrmESl0Gnbp_dyawEbw7dZp0_0i_HiuDuLKWN6-y4qj8cUYG5zQvVIzIyHPvsXkPDag" />
+</figure>
+
+<p>The <strong>first-trial probability</strong> asks, “what is the probability of successfully building AGI on the first ‘trial’?”. This is very hard to determine just on the surface, and so Davidson turns to several historical examples from a few <a href="https://en.wikipedia.org/wiki/Reference_class_forecasting">reference classes</a>. In particular, he looks at: </p>
+
+<ul>
+  <li>~10 examples of ambitious but feasible technologies that a serious STEM field is explicitly trying to develop (analogously, the field of AI is explicitly trying to achieve the ambitious but likely achievable goal of AGI)</li>
+  <li>Technologies that serious STEM fields are trying to build in 2020, that plausibly seem like they could have a <a href="https://www.cold-takes.com/transformative-ai-timelines-part-1-of-4-what-kind-of-ai/">transformative impact on society</a></li>
+  <li>Previous technologies that have had a transformative impact on the nature of work and society</li>
+  <li>Notable mathematical conjectures and how long it took for them to be resolved (if indeed they were)</li>
+</ul>
+
+<p>Davidson uses these reference classes to derive constraints on the first-trial probability – this can be done by obtaining a base rate of successful trials from the past examples. Most of these don’t succeed in the first trial<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">6</a></sup>, so one approach he uses is to look at how many successes there are after \(X\) trials, then works backwards using Laplace’s rule. He ultimately settles on a <strong>best guess first-trial probability of 4%</strong>. </p>
+
+<p>It’s worth noting that these reference classes and upward adjustments from the other trial definitions are the most important part of the framework, and the choice of these reference classes makes a really big difference to the final conclusions. </p>
+
+<h2 id="number-of-virtual-successes">Number of virtual successes</h2>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/xNLC4Tj_maKPmujohIs-HpnA1zZwU0ZE6nUfGoA7nbsXuxYXLIa5FGTtlbqp4IwioAHslggCudkI5xXYqLJ_mwSJMUX4-7wOPYYsdce1J2e234iG8pQf2ewUfgPLnws0jYm1YfOIVhCnEaX30g" />
+</figure>
+
+<p>The <strong>number of virtual successes</strong> changes how quickly we should update based on our observation of failed trials.<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">7</a></sup> We want the size of this update to be reasonable, so we don’t want this number to be too large or too small. Davidson ultimately settles on <strong>1 virtual success</strong> for most of the report, based on a combination of pragmatism, the plausibility of the prior<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">8</a></sup>, and the plausibility about the update size given new evidence.<sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">9</a></sup></p>
+
+<p>Different choices of the number of virtual successes matter less when the first-trial probability is lower, because making a big update (in proportion) from the prior distribution matters less in an absolute sense when the initial priors are already small. </p>
+
+<h2 id="regime-start-time">Regime start time</h2>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/voj9dcuDy4CN8zZoxLiNDk5Pr7c3bYpxmWRVcE5fRN9GAqKkg9FkmFcrm3adxp2JkMyHh_InqNiTL8vjqQTbe1gCu5SfxRn4P8GAzMfBnBes0ub1-oRclGOn3G6movfeagdk0JfXa3cjRXbsyQ" />
+</figure>
+
+<p>The <strong>regime start-time</strong> is the time for which “the failure to develop AGI before that time tells us very little about the probability of success after that time”, and affects the number of failed trials that we observe. While we previously considered the Dartmouth Conference in 1956 as the natural start of AI research, other alternatives (e.g. 1945, when the first digital computer was built) also seem reasonable. </p>
+
+<p>A problem with assuming a constant probability \(p\) of AGI being developed in any year becomes especially salient if we consider <em>very</em> early start-times. Suppose we argue that people have been <a href="https://en.wikipedia.org/wiki/History_of_robots">trying to automate parts of their work since ancient times</a>, and choose a start-time correspondingly. Then the framework would suggest the odds of building AGI in any year in ancient times is the same as that today!</p>
+
+<p>Davidson addresses this problem by down-weighting <em>the number of trials</em> occurring in ancient times relative to modern times, by multiplying (with normalisation!) each year by the global population or the economic growth in that year.<sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">10</a></sup> Overall, he places the most emphasis on a start-time of 1956, but does a sensitivity analysis with several alternatives, which do not significantly change the conclusions when appropriate down-weighting is applied. </p>
+
+<h2 id="trial-definition">Trial definition</h2>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/E5tQk5sWKBLWL0wHDrU0SIoTYo1wU7GfUnR6Oo8XbgeQA6RSfyugvYnQMrGaC8QEbd_P4K2Q8iQ4qrqWmRUqzqWm2o-yYqm3hwypMnFvIw3fN004BvDI3r_x_IFtQqAgEf3kuN86NqLggYwlUA" />
+</figure>
+
+<p>The final input to the framework is the <strong>trial definition</strong>, which specifies what exactly constitutes a single “trial” at building AGI. The initial approach we considered was in terms of calendar years, but there are reasonable alternatives, for example:</p>
+
+<ul>
+  <li><strong>Compute trials:</strong> Trials based on compute, e.g. 1 trial = “a 1% increase in the largest amount of compute used to develop an AI system to date”. These trials implicitly assume that increases in training compute are a key driver of AI progress<sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">11</a></sup></li>
+  <li><strong>Researcher-year trials:</strong> Trials that are defined in terms of the number of researcher-years performed so far, e.g. 1 trial = “a 1% increase in the total researcher-years so far”. We’re in effect assuming that each 1% increase in the “level of AI technological development” has a constant probability of developing AGI.<sup id="fnref:12" role="doc-noteref"><a href="#fn:12" class="footnote" rel="footnote">12</a></sup></li>
+</ul>
+
+<p>Davidson considers both of these possible trial definitions, together with the calendar-year definition, finding that the resulting probabilities can vary a little depending on the chosen trial definition. In effect, we now have three separate frameworks based on the trial definition:</p>
+
+<figure>
+  <img src="https://lh6.googleusercontent.com/JNWfWpYK3hBVH9gnSi3h3NBV57ZBqKi6d3pLJ50vIklH6-Vy8UskoMO3F3RFqJGjMdkbbBNTleIxMBjrWSfYkKAa_XQBFoNzwQZ2QDElSgWgmbui94HKRfMhmH6RQcLPbAJ7BiJZrA1SZJaonA" />
+</figure>
+
+<p>If we change the trial definition, then presumably we’ll also change the first-trial probability, so how do we calculate this? One approach that Davidson takes is to compute the first-trial probability for compute-years and researcher-years from the first-trial probability for calendar years – I’ll not go into this here, but I suggest looking at <a href="https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/#612-choosing-the-first-trial-probability-for-the-researcher-year-trial-definition">these</a> <a href="https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/#622-choosing-the-first-trial-probability-for-the-compute-trial-definition">sections</a> of the report to find out more. </p>
+
+<p>Assuming 1 virtual success and a regime start-time of 1956, here’s what we get: </p>
+
+<table style="text-align: center; vertical-align: top;">
+  <caption>
+    Table from <a href="https://www.openphilanthropy.org/semi-informative-priors#:~:text=This%20summarizes%20what%20my%20preferred%20ranges%20for%20pr(AGI%20by%202036)%20before%20this%20section%2C%20assuming%201%20virtual%20success%20and%20a%20regime%20start%2Dtime%20of%201956%20(except%20for%20the%20late%20start%2Dtimes%20considered%20in%20the%20compute%20analysis).">Davidson, 2021</a>
+  </caption>
+
+  <thead style="font-weight: bold;">
+    <tr style="background-color:#f3f3f3;">
+      <td>&nbsp;</td>
+      <td colspan="3">
+        <p>P(AGI by 2036)</p>
+      </td>
+    </tr>
+    <tr style="background-color:#f3f3f3; padding:5pt;">
+      <td>
+        <p>Trial definition</p>
+      </td>
+      <td>
+        <p>Low-end</p>
+      </td>
+      <td>
+        <p>Central estimate</p>
+      </td>
+      <td>
+        <p>High-end</p>
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <p>Calendar-year</p>
+      </td>
+      <td>
+        <p>1.5%</p>
+      </td>
+      <td>
+        <p>4%</p>
+      </td>
+      <td>
+        <p>9%</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Researcher-year</p>
+      </td>
+      <td>
+        <p>2%</p>
+      </td>
+      <td>
+        <p>8%</p>
+      </td>
+      <td>
+        <p>15%</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p>Compute trial</p>
+      </td>
+      <td>
+        <p>2%</p>
+      </td>
+      <td>
+        <p>15%</p>
+      </td>
+      <td>
+        <p>25%</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Importantly, we can choose our first-trial probability such that our predictions remain the same for trivial changes in the trial definition, helping solve one of the aforementioned problems with applying Laplace’s rule of succession.<sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel="footnote">13</a></sup> Overall, Davidson assigns <strong>⅓ weight to each of the three trial definitions</strong> considered.</p>
+
+<h1 id="putting-things-together-final-distribution">Putting things together: Final distribution</h1>
+
+<h2 id="model-extensions">Model Extensions</h2>
+
+<p>The framework also considers three extensions to the stuff outlined above:</p>
+
+<ul>
+  <li><strong>Conjunctive model of AGI</strong>: It considers treating AGI development as the conjunction of multiple <em>independent</em> tasks</li>
+  <li><a href="https://en.wikipedia.org/wiki/Hyperprior"><strong>Hyperpriors</strong></a> <strong>over update rules</strong>: Updating a prior over what weight to assign to different update rules, which are themselves determined by the four inputs<sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">14</a></sup></li>
+  <li><strong>Allow some probability that AGI is impossible</strong></li>
+</ul>
+
+<p>For the most part, these extensions don’t have a particularly large effect on the final numbers and conclusions. </p>
+
+<h2 id="final-distribution">Final Distribution</h2>
+
+<p>If we combine everything from above then we end up with the following distribution and predicted numbers<sup id="fnref:15" role="doc-noteref"><a href="#fn:15" class="footnote" rel="footnote">15</a></sup>: </p>
+
+<figure>
+  <img src="https://lh4.googleusercontent.com/ZYCNByD88X58PTdf4EBXtf7ZIo12XTxaLU8MqovUDhqjLSYVLEqiTbFsZt5-dHBirNQhRgVfZDW-LNNxYzs4mxb28IcGfqL_EPJAKKadGGPGog24W20h-QWM09Xog1skTSSWu5E28saXYlQECg" />
+</figure>
+
+<table style="text-align: center">
+   <tbody>
+      <tr style="background-color:#f3f3f3;font-weight:bold">
+         <td>
+            <p>P(TAI before 2030)</p>
+         </td>
+         <td>
+            <p>P(TAI before 2050)</p>
+         </td>
+         <td>
+            <p>P(TAI before 2100)</p>
+         </td>
+      </tr>
+      <tr>
+         <td>
+            <p>~6%</p>
+         </td>
+         <td>
+            <p>~11%</p>
+         </td>
+         <td>
+            <p>~20%</p>
+         </td>
+      </tr>
+      <tr class="no-border">
+         <td class="no-border">&nbsp;</td>
+         <td class="no-border">&nbsp;</td>
+         <td class="no-border">&nbsp;</td>
+      </tr>
+      <tr style="background-color:#f3f3f3;font-weight:bold">
+         <td>
+            <p>10%</p>
+         </td>
+         <td>
+            <p>50%</p>
+         </td>
+         <td>
+            <p>90%</p>
+         </td>
+      </tr>
+      <tr>
+         <td>
+            <p>~2044</p>
+         </td>
+         <td>
+            <p>&gt;2100</p>
+         </td>
+         <td>
+            <p>&gt;2100</p>
+         </td>
+      </tr>
+   </tbody>
+</table>
+
+<p>Davidson highlights three main strengths of his framework: </p>
+
+<ul>
+  <li><strong>It quantifies the size of the update to </strong>\(P(\text{AGI next year | no AGI yet})\) <strong>based on observed failures</strong></li>
+  <li><strong>It highlights the significance of intuitive parameters,</strong> e.g. the first-trial probability, regime start-time, and the trial definition</li>
+  <li><strong>It’s arguably appropriate for expressing deep uncertainty about AGI timelines,</strong> e.g. by avoiding claims about “what fraction of the research we’ve completed towards AGI”</li>
+</ul>
+
+<p>He also points out some main weaknesses of the framework: </p>
+
+<ul>
+  <li><strong>It incorporates limited kinds of evidence which could be really informative</strong>, e.g. how close we are to AGI</li>
+  <li><strong>Its near term predictions are too high,</strong> because current AI systems are not nearly as capable as AGI, and the framework doesn’t account for this evidence<sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">16</a></sup></li>
+  <li><strong>It’s insensitive to small changes in the definition of AGI</strong></li>
+  <li><strong>It assumes a constant chance of success in each trial</strong> (although the conjunctive model of AGI proposed in the extension relaxes this assumption)</li>
+</ul>
+
+<p>There are also some situations where it doesn’t make sense to use this framework – for instance, when we know what “fraction of progress” we’ve made towards achieving a particular goal. This can be hard to quantify for AGI development, but it’s actually closely related to an approach that the <a href="http://mediangroup.org/insights">Median group has previously attempted</a>. </p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>I think this model suggests that developing AGI within this century is <em>at least</em> plausible – we shouldn’t dismiss the possibility of developing AGI in the near term, and that the failure to develop AGI to date is not strong evidence for low \(P(\text{AGI by 2036})\).</p>
+
+<p>I personally found the approach taken in this report really interesting, particularly in terms of the solutions Davidson proposes to the problems posed by the rule of succession. This seems possibly very valuable for other work on forecasting. I encourage you to look at the report’s <a href="https://www.openphilanthropy.org/research/report-on-semi-informative-priors/">blog post</a><sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">17</a></sup>, and to try <a href="https://aipriors.com/">making your own predictions using the framework</a>. </p>
+
+<p><em>You can play with the diagrams</em> <a href="https://docs.google.com/presentation/d/1qQMpZBLRshVNETNTAXl00pcxsIdK53TyihT5iKVXy54/edit#slide=id.g12d162e3365_0_31"><em>here</em></a><em>, where the boxes link to the corresponding part of the report.</em></p>
+
+<hr />
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>Green boxes correspond to inputs, red boxes are assumptions or limitations, and blue boxes are classed as “other”. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>I’ve written a <a href="/blog/grokking-bioanchors">summary of the report</a>, if you’re interested! <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>One way to think about this is as a distinction between <a href="https://forum.effectivealtruism.org/topics/inside-vs-outside-view">“inside view” and “outside view”</a> approaches (however see also <a href="https://www.lesswrong.com/posts/BcYfsi7vmhDvzQGiF/taboo-outside-view">this post</a>). Cotra’s bioanchors report takes an inside view, roughly based on the assumption that training compute is the biggest bottleneck to building TAI, and quantifying how much we’ll need to be able to train a transformative model. Davidson’s semi-informative priors report instead specifies very little about how AI development works, leaning more heavily on reference classes from similar technologies and a general Bayesian framework. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>This is a variation of the <a href="https://en.wikipedia.org/wiki/Sunrise_problem">sunrise problem</a>, which was the original problem that <a href="https://en.wikipedia.org/wiki/Pierre-Simon_Laplace">Pierre-Simon Laplace</a> was trying to solve. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>This is of a course a somewhat dubious assumption, and we’ll come back to this later on. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>Indeed, looking only at the base rate of successful first trials alone would have a big problem of sparsity – there’s just not enough historical data! <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>We could also think about the number of virtual <em>trials</em> rather than virtual <em>successes</em>, but Davidson decides against this. Loosely speaking, if we use virtual trials, then it’s not as easy to separate out the effects of the first-trial probability and the effects from observed failed trials (<a href="https://docs.google.com/document/d/185QBE8vFZyGl-HN5j4mjgSN8aA-7ZEfGXubLcZ9ewvs/edit#heading=h.o0m9p1xlhjgg">more</a>). <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8" role="doc-endnote">
+      <p>The prior is defined using a <a href="https://en.wikipedia.org/wiki/Beta_distribution">Beta distribution</a> parameterised by (1) the number of virtual successes, and (2) the inverse of the first-trial probability. See <a href="https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/#:~:text=10.2.2%20The%20parameterization%20of%20Beta%20distributions%20used%20in%20the%20semi%2Dinformative%20priors%20framework,-Beta%20distributions%20are">here</a> for more information. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p>The “plausibility of the prior” focuses on the shape of the <a href="https://en.wikipedia.org/wiki/Beta_distribution">Beta distribution</a>, e.g. whether or not you should expect the probability density to be larger in the interval [0, 1/1000] or [1/1000, 2/1000]. On the other hand, the “plausibility of the update” looks at your expected probability of building AGI next year should change given the outcomes of newly observed trials. For example (borrowing from the report), “If you initially thought the annual chance of developing AGI was 1/100, 50 years of failure is not that surprising and it should not reduce your estimate down as low as 1/600”. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10" role="doc-endnote">
+      <p>This approach also applies to researcher-years and compute years, and is described more <a href="https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/#:~:text=2%20%E2%80%93%2025%25.-,6.3%20Varying%20the%20number%20of%20virtual%20successes%20and%20the%20regime%20start%2Dtime,-When%20the%C2%A0">here</a>. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:11" role="doc-endnote">
+      <p>Incidentally, this is a claim that’s central to another of <a href="https://www.openphilanthropy.org/blog/our-progress-2018-and-plans-2019#:~:text=a%20function%20tentatively%20called%20%E2%80%9Cworldview%20investigations%2C%E2%80%9D">Open Philanthropy’s Worldview Investigations</a>, <a href="https://drive.google.com/drive/u/0/folders/15ArhEPZSTYU8f012bs6ehPS6-xmhtBPP"><em>Forecasting TAI with biological anchors</em></a>, which <a href="/blog/grokking-bioanchors">I’ve discussed in another post</a>. <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:12" role="doc-endnote">
+      <p>Note that this doesn’t imply that there’s an infinite probability of developing AGI in the first researcher-year of effort, because it’s not true that we’re starting from the “zero” level of AI technological development. Essentially, the regime start-time is <em>not</em> about “when the level AI technological development started increasing” – <a href="https://www.openphilanthropy.org/semi-informative-priors#footnote68_z33c1z5">see this footnote</a> for more on discussion. <a href="#fnref:12" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:13" role="doc-endnote">
+      <p>For example, we would like our prediction for \(P(\text{AGI within 10 years})\) to remain the same even if we use a trial definition of 1 month instead of 1 year. Although using a trial definition of 1 month would ordinarily lead to more total observed trials and thus more updating, this effect is cancelled out by choosing a different first-trial probability. <a href="#fnref:13" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:14" role="doc-endnote">
+      <p>More concretely, suppose you think that several different updates rules (corresponding to e.g. different numbers of virtual successes) all seem reasonable, and you’re uncertain what to do. One approach is to weight the results for the different choices of update rules, and use these rules to update the forecasts based on evidence. But we might also be interested in <em>updating how we weight the update rules</em>, which is where the hyper prior comes in (<a href="https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/#:~:text=non%2Dconjunctive%20model.-,7.2%20Updating%20a%20hyper%20prior,-There%20are%20many">more</a>). <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:15" role="doc-endnote">
+      <p>These numbers were extracted using <a href="https://automeris.io/WebPlotDigitizer/">WebPlotDigitizer</a>. <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:16" role="doc-endnote">
+      <p>Depending on your point of view, this may not be very compelling evidence – e.g. you might think that the ramp up to AGI would be extremely fast due to the discovery of a “<a href="https://sideways-view.com/2018/02/24/takeoff-speeds/#:~:text=in%20ML%20research.-,Finding%20the%20secret%20sauce,-Summary%20of%20my">secret sauce</a>”. <a href="#fnref:16" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:17" role="doc-endnote">
+      <p>You can also have a look at the <a href="https://www.openphilanthropy.org/research/semi-informative-priors-over-ai-timelines/">full report</a> if you want to get into the details! <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+<hr>
+
+              <p class="hiring-message">
+                We are hiring! If you want to contribute to our research, consider applying to one of <a href="/careers#open-positions">our job offers</a>.
+              </p></d-article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <span>© 2022 Epoch. Epoch is a fiscal sponsorship project of <a href="https://rethinkpriorities.org/">Rethink Priorities</a>.</span>
+
+  <div class="footer-icons-container">
+    <div class="footer-icons">
+      <a data-contact="aW5mb0BlcG9jaGFpLm9yZw==" href="#">
+        <i class="bi bi-envelope"></i>
+      </a>
+      <a href="https://github.com/epoch-research">
+          <i class="bi bi-github"></i>
+      </a>
+      <a href="https://twitter.com/EpochAIResearch">
+          <i class="bi bi-twitter"></i>
+      </a>
+    </div>
+  </div>
+
+</footer>
+</body>
+
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script src="/assets/js/footnotes.js"></script>
+</html>
+
+<script>
+  // As seen here: https://www.bram.us/2020/01/10/smooth-scrolling-sticky-scrollspy-navigation/
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling
+
+    if (window.getComputedStyle(document.documentElement).scrollBehavior !== 'smooth') {
+      for (let internalLink of document.querySelectorAll('a[href^="#"]')) {
+        let href = internalLink.getAttribute('href');
+        if (href == '#') continue;
+        const targetElement = document.querySelector(href.replaceAll(':', '\\:'));
+        if (targetElement) {
+          internalLink.addEventListener('click', (e) => {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+            });
+            e.preventDefault();
+          });
+        }
+      };
+    }
+
+    // Highlight TOC on scroll
+
+    let headers = [];
+    for (let header of document.querySelectorAll('h1[id]')) {
+      let subHeaders = [];
+      for (let subHeader of document.querySelectorAll('h2[id]')) {
+        subHeaders.push(subHeader);
+      }
+      headers.push[{
+        dom: header,
+        subHeaders: subHeaders,
+      }];
+    }
+
+    document.addEventListener('scroll', function(e) {
+      let currentHeader;
+
+      let headers = document.querySelectorAll('h1[id], h2[id], h3[id]');
+      let middleY = document.documentElement.clientHeight/2;
+      for (let i = 0; i < headers.length; i++) {
+        let p0 = headers[i].getBoundingClientRect().top;
+        let p1 = (i < headers.length - 1) ? headers[i+1].getBoundingClientRect().top : 999999;
+
+        if (p0 <= middleY && p1 > middleY) {
+          currentHeader = headers[i];
+          break;
+        }
+      }
+
+      if (currentHeader) {
+        let id = currentHeader.id;
+        document.querySelectorAll(`d-contents nav li a:not([href="#${id}"])`).forEach(node => node.classList.remove('active'));
+        document.querySelector(`d-contents nav li a[href="#${id}"]`).classList.add('active');
+      } else {
+        document.querySelectorAll(`d-contents nav li a`).forEach(node => node.classList.remove('active'));
+      }
+    });
+  });
+</script>

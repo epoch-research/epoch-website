@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Projecting compute trends in Machine Learning" />
+<meta name="author" content="Tamay Besiroglu" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Projecting forward 70 years worth of trends in the amount of compute used to train Machine Learning models." />
+<meta property="og:description" content="Projecting forward 70 years worth of trends in the amount of compute used to train Machine Learning models." />
+<link rel="canonical" href="https://epoch-website-dev.web.app/blog/projecting-compute-trends" />
+<meta property="og:url" content="https://epoch-website-dev.web.app/blog/projecting-compute-trends" />
+<meta property="og:site_name" content="Epoch" />
+<meta property="og:image" content="https://epoch-website-dev.web.app/assets/images/posts/2022/projecting-compute-trends.jpeg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-03-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://epoch-website-dev.web.app/assets/images/posts/2022/projecting-compute-trends.jpeg" />
+<meta property="twitter:title" content="Projecting compute trends in Machine Learning" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Tamay Besiroglu"},"dateModified":"2022-03-07T00:00:00+00:00","datePublished":"2022-03-07T00:00:00+00:00","description":"Projecting forward 70 years worth of trends in the amount of compute used to train Machine Learning models.","headline":"Projecting compute trends in Machine Learning","image":"https://epoch-website-dev.web.app/assets/images/posts/2022/projecting-compute-trends.jpeg","mainEntityOfPage":{"@type":"WebPage","@id":"https://epoch-website-dev.web.app/blog/projecting-compute-trends"},"url":"https://epoch-website-dev.web.app/blog/projecting-compute-trends"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <title> Projecting compute trends in Machine Learning </title>
+
+  
+    
+
+
+
+
+
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/micromodal.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" >
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" ><!-- MathJax -->
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true,
+      },
+
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+      },
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+  
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <script src="/assets/js/micromodal.min.js"></script>
+
+  <!-- Copy buttons -->
+  <script src="/assets/js/clipboard.min.js"></script>
+  <script>
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
+
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
+      let wrapper = document.createElement('div');
+      wrapper.classList.add('copiable-wrapper');
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    }
+
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
+      target: function(trigger) {
+        return trigger.parentElement.querySelector('.copy-target');
+      },
+    });
+
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
+      tooltip.show();
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
+    });
+
+    clipboard.on('error', function(e) {
+      e.clearSelection();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
+  });
+</script>
+
+</head>
+<head>
+    <script src="/assets/js/distillpub/template.v2.js"></script>
+    <script src="/assets/js/distillpub/transforms.v2.js"></script>
+
+    
+      
+
+<script src="https://unpkg.com/@popperjs/core@2.11.2"></script>
+<script src="https://unpkg.com/tippy.js@6.2.6"></script>
+
+
+
+<style>
+  :root {
+    --resource-color: 78, 51, 80;
+  }
+
+  d-title {
+    padding: 0;
+  }
+
+  d-title {
+    margin-bottom: 15px;
+  }
+
+  d-article {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .article-head {
+    width: 100%;
+    background-color: var(--header-color);
+    margin-bottom: 4em;
+  }
+
+  .article-head-content {
+    padding-left: var(--nav-bar-margin);
+    padding-right: var(--nav-bar-margin);
+    display: flex;
+    margin: auto;
+    padding-top: 70px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+  }
+
+  .page-content {
+    padding-top: 0;
+  }
+
+  .summary-supertitle {
+    margin-bottom: 0;
+    margin-top: 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    word-spacing: 3px;
+  }
+
+  .summary-title {
+    margin-bottom: 15px;
+  }
+
+  .summary-title h1 {
+    margin-bottom: 0;
+  }
+
+  .cite-us {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    font-size: 0.9rem;
+    color: white !important;
+  }
+
+  .citation-tooltip {
+    max-width: calc(100vw - 27px);
+    box-shadow: 0 0 7px 7px black;
+    border-radius: var(--default-radius);
+  }
+
+  .citation-tooltip > .tippy-box {
+    padding-top: 0.5em;
+  }
+
+  .citation-tooltip pre * {
+    color: var(--code-color);
+  }
+
+  @media (min-width: 800px) {
+    .regular-banner .article-head-content {
+      width: auto;
+      height: calc(50vh);
+      padding-top: 0;
+      padding-bottom: 1em;
+      padding-left: var(--nav-bar-margin);
+      padding-right: var(--nav-bar-margin);
+    }
+
+    .regular-banner .banner-img-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .regular-banner .banner-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left;
+    }
+
+    .regular-banner .summary {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+    }
+
+    .regular-banner .summary-main {
+      width: 90%;
+      margin: auto;
+      margin-left: 0;
+    }
+
+    .regular-banner .banner {
+      flex: 0 0 50%;
+      margin: 0;
+      padding: 0;
+      object-fit: cover;
+    }
+}
+
+  
+
+  .summary {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1em;
+  }
+
+  .summary-title, .summary-title *,
+  .summary-authors, .summary-authors *,
+  .summary-abstract, .summary-abstract *,
+  .summary-supertitle, .summary-supertitle *,
+  .summary-footer, .summary-footer * {
+    color: white;
+  }
+
+  .article-resources, .article-resources * {
+    color: white !important;
+  }
+
+  .summary .copiable-wrapper i {
+    color: black;
+  }
+
+  .summary-footer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .summary-authors {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .banner {
+    order: 2;
+    flex: 0 0 41%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    //padding-right: 10px;
+  }
+
+  .banner-img-wrapper img {
+    border-radius: var(--default-radius);
+  }
+
+  .article-resources {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .article-resource {
+    border-radius: 4px;
+    background-color: rgba(var(--resource-color), 0.8);
+    padding: 6px 11px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 5px;
+    margin-top: 0.5em;
+    white-space: nowrap;
+  }
+
+  .article-resources i {
+    margin-right: 0.5rem;
+  }
+
+  .article-resource:hover {
+    background-color: rgba(var(--resource-color), 1.0);
+  }
+
+  @media (max-width: 800px) {
+    .article-head-content {
+      flex-wrap: wrap;
+    }
+
+    .banner, .regular-banner .banner {
+      order: 1;
+      flex-basis: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .summary {
+      order: 2;
+    }
+  }
+</style>
+
+    
+  </head>
+
+  <body><header class="site-header" role="banner">
+  <div class="header-wrapper"><a href="/">
+      <img src="/assets/images/epoch-logo-white-text.svg" alt="Epoch logo" class="header-logo">
+      
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+          
+          <a class="page-link" href="/research">Research</a>
+          <a class="page-link current-menu-item" href="/blog">Blog</a>
+          <a class="page-link" href="/mlinputs/visualization">Visualization</a>
+          <a class="page-link" href="/team">Team</a>
+          <a class="page-link" href="/careers">Careers</a>
+        </div>
+      </nav></div>
+
+  <script>
+    document.addEventListener('click', (e) => {
+      let navTrigger = document.querySelector('#nav-trigger');
+      if (navTrigger && navTrigger.checked) {
+        if (e.target != navTrigger.parentElement && !navTrigger.parentElement.contains(e.target)) {
+          navTrigger.checked = false;
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="post distill">
+
+        
+          
+
+<div class="article-head ">
+  <div class="article-head-content">
+    <div class="banner">
+      <div class="banner-img-wrapper">
+        <img src="/assets/images/posts/2022/projecting-compute-trends.jpeg"/>
+      </div>
+    </div>
+    <div class="summary">
+      <div class="summary-main">
+        
+        <div class="summary-title">
+          <h1>Projecting compute trends in Machine Learning</h1>
+          <a class="cite-us"><i class="bi-journal-text"></i> Cite this post</a>
+        </div>
+        
+        <div class="summary-authors">
+          
+          
+
+
+
+      
+      <span class="author tooltiped" data-member-id="tamay-besiroglu">Tamay Besiroglu</span>, 
+      
+      <span class="author tooltiped" data-member-id="lennart-heim">Lennart Heim</span> and 
+      
+      <span class="author tooltiped" data-member-id="jaime-sevilla">Jaime Sevilla</span>
+
+<script src="/assets/js/umbrella.min.js"></script>
+<style>
+  .author.tooltiped {
+    cursor: pointer;
+  }
+
+  .summary-authors .tippy-content {
+    width: 180px;
+    padding: 5px;
+  }
+
+  .miniprofile .mug {
+    width: 180px;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .miniprofile a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .miniprofile .member-resource {
+    margin-right: 5px;
+  }
+
+  .miniprofile .member-info {
+    padding: 4px;
+    width: 180px;
+  }
+
+  .miniprofile .member-name, .miniprofile .member-role {
+    margin-bottom: 2px;
+  }
+</style>
+
+<script>
+
+  
+
+  
+
+  let teamMembers = {
+    
+      'jaime-sevilla': {
+        id: 'jaime-sevilla',
+        name: 'Jaime Sevilla',
+        description: 'Jaime is a researcher focused on statistics and technological forecasting. Besides his role at Epoch, he is a research affiliate of the <a href="https://www.cser.ac.uk/">Centre for the Study of Existential Risk</a> at Cambridge University and the cofounder of <a href="https://riesgoscatastroficosglobales.com/">Riesgos Catastróficos Globales</a>.',
+        role: 'Director',
+        imageUrl: '/assets/images/team/jaime-sevilla.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'amFpbWVAZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/Jsevillamol'},
+        
+        ],
+      },
+    
+      'tamay-besiroglu': {
+        id: 'tamay-besiroglu',
+        name: 'Tamay Besiroglu',
+        description: 'Tamay is a researcher focusing on the Economics of Computing and big-picture trends in Machine Learning. In addition to his role at Epoch, Tamay is a researcher at the Future Tech Lab at MIT, and AI Forecasting Lead at Metaculus. Previously, he led strategy for Metaculus, consulted for the UK Government, and worked at the Future of Humanity Institute.',
+        role: 'Associate director',
+        imageUrl: '/assets/images/team/tamay-besiroglu.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'dGFtYXlAZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'pablo-villalobos': {
+        id: 'pablo-villalobos',
+        name: 'Pablo Villalobos',
+        description: 'Pablo has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/pablo-villalobos.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'cGFibG9AZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'anson-ho': {
+        id: 'anson-ho',
+        name: 'Anson Ho',
+        description: 'Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/anson-ho.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'YW5zb25AZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'github', icon: 'github', url: 'https://github.com/ansonwhho'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://ansonwhho.github.io/'},
+        
+        ],
+      },
+    
+      'lennart-heim': {
+        id: 'lennart-heim',
+        name: 'Lennart Heim',
+        description: 'Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.',
+        role: 'Research Fellow and Strategy Specialist',
+        imageUrl: '/assets/images/team/lennart-heim.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bGVubmFydEBlcG9jaGFpLm9yZw=='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/ohlennart'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://heim.xyz'},
+        
+        ],
+      },
+    
+      'marius-hobbhahn': {
+        id: 'marius-hobbhahn',
+        name: 'Marius Hobbhahn',
+        description: 'Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.',
+        role: 'Research Fellow',
+        imageUrl: '/assets/images/team/marius-hobbhahn.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bWFyaXVzQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'eduardo-infante-roldan': {
+        id: 'eduardo-infante-roldan',
+        name: 'Eduardo Infante-Roldán',
+        description: 'Eduardo does some programming.',
+        role: 'Software Engineer',
+        imageUrl: '/assets/images/team/eduardo-infante-roldan.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWR1QGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'ege-erdil': {
+        id: 'ege-erdil',
+        name: 'Ege Erdil',
+        description: 'Ege Erdil is an undergraduate student at Middle East Technical University. He has interests in mathematics, statistics, economics and forecasting.',
+        role: 'Intern Researcher',
+        imageUrl: '/assets/images/team/ege-erdil.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWdlQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+  };
+
+  
+
+  
+
+  let advisors = {
+    
+      'tom-davidson': {
+        id: 'tom-davidson',
+        name: 'Tom Davidson',
+        description: 'Tom is a senior research analyst at Open Philanthropy. He’s currently working on assessing arguments that transformative AI might be developed relatively soon. Prior to joining Open Philanthropy, Tom worked as a Data Scientist for education technology startup BridgeU and taught science at a UK comprehensive school. He has a Masters in Physics and Philosophy from the University of Oxford.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/tom-davidson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+      'neil-thompson': {
+        id: 'neil-thompson',
+        name: 'Neil Thompson',
+        description: 'Neil is an Innovation Scholar at MIT’s Computer Science and Artificial Intelligence Lab and the Initiative on the Digital Economy where he leads the FutureTech Project. He is also an Associate Member of the Broad Institute.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/neil-thompson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+  };
+
+  
+
+  let members = {...teamMembers, ...advisors};
+</script>
+
+
+<script>
+  for (let author of document.querySelectorAll('.author.tooltiped')) {
+    let member = teamMembers[author.dataset.memberId];
+    if (!member) continue;
+
+    let resources = [];
+    for (let resource of member.resources) {
+      if (resource.name == "mail") {
+        resources.push(`<a class="member-resource" href="#" data-contact="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      } else {
+        resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      }
+    }
+
+    tippy(author, {
+      allowHTML: true,
+      placement: 'top',
+      arrow: false,
+      interactive: true,
+      maxWidth: '200px',
+      trigger: 'mouseenter click',
+      onShow: (instance) => {
+        tippy.hideAll();
+        for (let element of instance.popper.querySelectorAll('[data-contact]')) {
+          addMailDeobfuscator(element);
+        }
+      },
+      content:
+        `
+        <div class="miniprofile">
+          <div class="mug" style="border-radius: 5px; background-image: url('${member.imageUrl}')"></div>
+          <div class="member-info">
+            <h3 class="member-name">${member.name}</h3>
+            <h4 class="member-role">${member.role}</h4>
+            <div class="member-resources">
+              ${resources.join('\n')}
+            </div>
+          </div>
+        </div>
+        `,
+    });
+  }
+</script>
+
+        </div>
+        
+        
+        <div class="summary-abstract">
+          Projecting forward 70 years worth of trends in the amount of compute used to train Machine Learning models.
+        </div>
+        
+        
+      </div>
+      
+      <div class="summary-footer">
+        Mar. 07, 2022
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script>
+  let content = `
+    
+<p style="margin-bottom: 0">Cite this work as</p>
+
+<div class="language-plaintext highlighter-rouge wrappable-pre">
+<div class="highlight">
+  <pre class="highlight"><code>Tamay Besiroglu, Lennart Heim and Jaime Sevilla (2022), "Projecting compute trends in Machine Learning". <em>Published online at epochai.org.</em> Retrieved from: 'https://epoch-website-dev.web.app/blog/projecting-compute-trends' [online resource]</code></pre>
+</div>
+</div>
+
+<p style="margin-bottom: 0">BibTeX citation:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@misc{epoch2022projectingcomputetrends,
+  title = "Projecting compute trends in Machine Learning",
+  author = {Tamay Besiroglu, Lennart Heim and Jaime Sevilla},
+  year = 2022,
+  howpublished = "\\url{https://epoch-website-dev.web.app/blog/projecting-compute-trends}",
+  note = "Accessed: 2022-07-19"
+}
+</code></pre></div></div>
+
+  `;
+
+  tippy('.cite-us', {
+    allowHTML: true,
+    placement: 'bottom-start',
+    arrow: false,
+    interactive: true,
+    maxWidth: '900px',
+    trigger: 'click',
+    content: content,
+    onShow: (instance) => {
+      instance.popper.classList.add('citation-tooltip');
+      tippy.hideAll();
+      instance.popper.querySelectorAll('pre').forEach(pre => addCopyButton(pre));
+    },
+  });
+</script>
+
+
+        
+
+        <d-article>
+          <d-contents>
+            <nav class="l-text figcaption">
+            <h3>Contents</h3><div><ul id="toc" class="section-nav">
+<li class="toc-entry toc-h1"><a href="#summary">Summary</a></li>
+<li class="toc-entry toc-h1"><a href="#introduction">Introduction</a></li>
+<li class="toc-entry toc-h1"><a href="#when-will-the-current-scaling-trend-revert-back-to-moores-law">When will the current scaling trend revert back to Moore’s law?</a></li>
+<li class="toc-entry toc-h1"><a href="#projecting-ml-compute-trends">Projecting ML compute trends</a></li>
+<li class="toc-entry toc-h1"><a href="#conclusion">Conclusion</a></li>
+<li class="toc-entry toc-h1"><a href="#details-of-the-simulations">Details of the simulations</a></li>
+</ul></div></nav>
+          </d-contents>
+
+          <h1 id="summary">Summary</h1>
+
+<p>Using <a href="https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/edit?usp=sharing">our dataset</a> of milestone Machine Learning models, and <a href="https://arxiv.org/pdf/2202.05924.pdf">our recent analysis of compute trends in ML</a>, we project forward 70 years worth of trends in the amount of compute used to train Machine Learning models. Our simulations account for (a) uncertainty in estimates of the growth rates in compute usage during the Deep Learning (DL)-era and Pre-DL era, and (b) uncertainty over the ‘reversion date’, i.e. the date when the current DL-era compute trend (with a ~6 month doubling time) will end and revert to the historically more common trend associated with Moore’s law. Assuming a reversion date of between 8 to 18 years, and without accounting for algorithmic progress, our projections suggest that the median of <a href="https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines">Cotra 2020</a>’s biological anchors may be surpassed around August 2046 [95% CI: Jun 2039, Jul 2060]. This suggests that historical rates of compute scaling, if sustained briefly (relative to how long these trends have been around so far), could result in the emergence of transformative models.</p>
+
+<p>Our work can be replicated using <a href="https://colab.research.google.com/drive/1FasOOiA-oh7nCkd0cEtuqbA3DSCAeDI-?usp=sharing">this Colab notebook</a>.</p>
+
+<p>Note: we present projections, not predictions. Our post answers the question of: “<em>What would historical trends over the past 70 years when naively extrapolated forward imply about the future of ML compute?</em>” It does not answer the question: “<em>What should our all-things-considered best guess be about how much compute we should expect will be used in future ML experiments?</em>”</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Recently, we put together <a href="https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/edit?usp=sharing">a dataset</a> of over a hundred milestone Machine Learning models, spanning from 1952 to today, annotated with the compute required to train them. Using this data, we produce simple projections of the amount of compute that might be used to train future ML systems.</p>
+
+<p>The question of how much compute we might have available to train ML systems has received some attention in the past, most notably in Cotra’s Biological Anchors report. Cotra’s report investigates TAI timelines by analyzing: (i) the training compute required for the final training run of a transformative model (using biological anchors), and (ii) the amount of effective compute available at year Y. This article replaces (ii) the compute estimate by projecting 70 years worth of trends in the amount of compute used to train Machine Learning models.</p>
+
+<p>Cotra’s amount of effective compute available at year Y is broken down into forecasts of (a) compute cost, (b) compute spending, and (c) algorithimic progress. By contrast, we do not decompose the estimate, and rather project it on our previous investigation of training compute of ML milestone systems. This trend includes the willingness to spend over time including the reduced compute costs over time; however, it does not address algorithmic progress. We explicitly do not forecast the cost of compute or compute spending.</p>
+
+<figure>
+  <img src="https://live.staticflickr.com/65535/51921949947_e6b29982f3_k.jpg" />
+  <figcaption>
+    <p>Figure 1. Contrasting our work with that of <a href="https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines">Cotra 2020</a></p>
+  </figcaption>
+</figure>
+
+<p>In this post, we present projections based on previously observed trends and some basic insights about how long the current 6-month doubling time can be sustained. That is, our post answers the question of: what would current trends imply about the future if you naively extrapolate them forwards.</p>
+
+<p>One key reason we don’t expect these projections to be particularly good predictions is that it seems likely that Moore’s law might break down in some important way over the next few decades. We therefore might expect that that the doubling-time in compute usage, when the dollar-budgets to scale compute grow at the economic growth-rate, will be substantially longer than the historically common ~20-month doubling period.</p>
+
+<h1 id="when-will-the-current-scaling-trend-revert-back-to-moores-law">When will the current scaling trend revert back to Moore’s law?</h1>
+
+<p>In our recent analysis of compute trends in ML (<a href="https://arxiv.org/pdf/2202.05924.pdf">Sevilla et al., 2022</a>), we find that, since the advent of Deep Learning, the amount of compute used to train ML systems has been doubling every 6 months. This is much faster than the previous historical doubling time that we find to be roughly 20 months (which is roughly in line with Moore’s law). Previous work (<a href="https://aiimpacts.org/interpreting-ai-compute-trends/">Carey, 2018</a>, and <a href="https://cset.georgetown.edu/publication/ai-and-compute/">Lohn and Musser, 2022</a>) has pointed out that a scaling-rate that outstrips Moore’s law by a wide margin cannot be sustained for many years as a rate of growth in ML compute spending that far exceeds economic growth cannot be sustained for many years.</p>
+
+<p>A key question, then, for projecting compute used in future ML systems, is: How long can the current fast trend continue, before it reverts to the historically much more common trend associated with Moore’s law?</p>
+
+<p>To answer this question, we replicate the analysis by <a href="https://aiimpacts.org/interpreting-ai-compute-trends/">Carey, 2018</a>, but instead of using the numbers from OpenAI’s AI and Compute (<a href="https://openai.com/blog/ai-and-compute/">Amodei and Hernandez, 2018</a>), we use the numbers from <a href="https://arxiv.org/pdf/2202.05924.pdf">our recent analysis</a> (<a href="/blog/compute-trends">summary</a>).<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> This analysis, roughly, points to three scenarios:</p>
+
+<ul>
+  <li><strong>Bearish</strong>: slow compute cost-performance improvements and very little specialized hardware improvements. In this scenario, it takes 12 years for the cost of computation to fall by an OOM. The current 6-month doubling period can be maintained for another ~8 years.</li>
+  <li><strong>Middle of the road</strong>: Moderate compute cost-performance improvements and moderate improvements in specialized computing. In this scenario, it takes roughly 7 years for the cost of computation to fall by an OOM, and progress in specialized hardware helps sustain the trend ~3 additional years. The current 6-month doubling period can be maintained for another ~12 years.</li>
+  <li><strong>Bullish</strong>: Fast compute cost-performance improvements and substantial improvements in specialized computing. In this scenario, it takes 4 years for the cost of computation to fall by an OOM, and progress in specialized hardware helps sustain the trend ~6 additional years. The current 6-month doubling period can be maintained for another ~18 years.</li>
+</ul>
+
+<p>Roughly, we might say that these scenarios are represented by the following distributions over ‘reversion dates’, i.e. dates when the scaling trends are more similar to Moore’s law than they are to the current fast trend.</p>
+
+<figure>
+  <img src="https://live.staticflickr.com/65535/51923034058_7418269584_k.jpg" />
+  <figcaption>
+    <p>Fig 2. Distributions that roughly correspond to the three scenarios that come out of our replication of <a href="https://aiimpacts.org/interpreting-ai-compute-trends/">Carey, 2018</a><sup id="fnref:1:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></p>
+  </figcaption>
+</figure>
+
+<p>We then produce a mixture of these distributions by creating a weighted linear pool where “Bearish” is assigned 0.75, “Middle of the road” is assigned 0.20, and “Bullish” 0.05, based on our best-guesses (you can apply your own weights using <a href="https://colab.research.google.com/drive/1FasOOiA-oh7nCkd0cEtuqbA3DSCAeDI-?usp=sharing">this Colab notebook</a>.)</p>
+
+<figure>
+  <img src="https://live.staticflickr.com/65535/51923563815_73fb46fa4d_k.jpg" />
+  <figcaption>
+    <p>Fig 3. our best-guess for a prior over reversion dates, formed by mixing the previous distributions</p>
+  </figcaption>
+</figure>
+
+<p>We can use this as our prior over when the fast-trend will revert to the more historically common trend associated with Moore’s law.</p>
+
+<h1 id="projecting-ml-compute-trends">Projecting ML compute trends</h1>
+
+<p>We simulate compute paths based on (a) our estimates of the growth rates in compute usage during the DL-era and Pre-DL era, and (b) our prior over ‘reversion date’, i.e. the date when the current DL-era compute trend will end. We account for the uncertainty in both (a) and (b) in our simulations (see details <a href="#details-of-the-simulations">here</a>).</p>
+
+<figure>
+  <img src="https://live.staticflickr.com/65535/51923027296_7ff01cfd2e_k.jpg" />
+  <figcaption>
+    <p>Fig 4. 10,000 projected compute paths. Solid line represents the median projected compute at each date, and the shaded region represents 2-standard deviations around the median.</p>
+  </figcaption>
+</figure>
+
+<p>Our simulations reveal the following projections about the amount of compute used to train ML models.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>    <strong>Year</strong></th>
+      <th><strong>Projected FLOPs used to train largest ML model</strong></th>
+      <th><strong>Enough for how many anchor’s median compute requirements?</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>2025</td>
+      <td>\(10^{25.90}\) [\(10^{25.33}\), \(10^{26.14}\)]</td>
+      <td>0/6</td>
+    </tr>
+    <tr>
+      <td>2030</td>
+      <td>\(10^{28.67}\) [\(10^{26.71}\), \(10^{29.47}\)]</td>
+      <td>0/6</td>
+    </tr>
+    <tr>
+      <td>2040</td>
+      <td>\(10^{32.42}\) [\(10^{29.27}\), \(10^{34.71}\)]</td>
+      <td>1/6</td>
+    </tr>
+    <tr>
+      <td>2050</td>
+      <td>\(10^{35.26}\) [\(10^{31.78}\), \(10^{38.86}\)]</td>
+      <td>3/6</td>
+    </tr>
+    <tr>
+      <td>2060</td>
+      <td>\(10^{38.10}\) [\(10^{34.35}\), \(10^{42.49}\)]</td>
+      <td>5/6</td>
+    </tr>
+    <tr>
+      <td>2070</td>
+      <td>\(10^{40.79}\) [\(10^{36.83}\), \(10^{45.49}\)]</td>
+      <td>5/6</td>
+    </tr>
+    <tr>
+      <td>2080</td>
+      <td>\(10^{43.32}\) [\(10^{39.04}\), \(10^{48.18}\)]</td>
+      <td>6/6</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="caption">
+  <p>Table 1: Projected FLOPs from 2025 to 2080</p>
+</div>
+
+<p>These projections suggest that, without accounting for algorithmic progress, the most modest of <a href="https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines">Cotra 2020</a>’s biological anchors will be surpassed around August 2030 [95% CI: Jan 2029, May 2038], the median anchor (~\(10^{34.36}\) FLOPS) will be surpassed around August 2046 [95% CI: Jun 2039, Jul 2060], and the strongest of anchors will be surpassed around May 2072 [95% CI: Jan 2057, Jun 2089].</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>If we naively extrapolate the trends uncovered from 70-years worth of compute scaling in Machine Learning, we find that within roughly 25 years, large-scale ML experiments will use amounts of compute that exceed the half of the compute budgets that <a href="https://www.lesswrong.com/posts/KrJfoZzpSDpnrv9va/draft-report-on-ai-timelines">Cotra 2020</a> has suggested may be sufficient for training a transformative model. This highlights the fact that historical rates of compute scaling in Machine Learning, even if sustained relatively briefly (relative to how long these trends have been around so far), could place us in novel territory where it might be likely that transformative systems would be trained. This work also suggests that understanding compute trends might be a promising direction for predicting ML progress.</p>
+
+<h1 id="details-of-the-simulations">Details of the simulations</h1>
+
+<p>We assume compute grows exponentially in time at some rate \(g\): </p>
+
+<p>\[\begin{equation}    C(t) = C(0) e^{gt}, \hspace{0.15cm} \text{where}  \hspace{0.15cm} t \geq 0. \end{equation}\]</p>
+
+<p>In our projections, we replace \(g\) with \(g^*\), defined as a weighted geometric mean of our best-guess of the growth rate during Moore’s law (\(\tilde{g}_{\text{M}}\)), and the growth rate of our estimate of the growth rate during the Deep-Learning Era (\(\hat{g}_{\text{DL}}\)): </p>
+
+<p>\[\begin{equation} g^* =  \hat{g}_{\text{DL}}^{w(t)} \tilde{g}_{\text{M}}^{1-w(t)}, \hspace{0.15cm} \text{where}  \hspace{0.15cm} w(t) \in [0,1]. \end{equation}\]</p>
+
+<p>Here, \(\hat{g}_{\text{DL}}\) simply denotes the growth rate during the Deep Learning Era (2010 onwards) as estimated using OLS. In particular, we estimate the following model using our dataset: </p>
+
+<p>\[\begin{equation}    \log C(t) = \beta + g_{DL}t, \hspace{0.15cm} \text{where}  \hspace{0.15cm} t&gt;2010. \end{equation}\]</p>
+
+<p> \(\tilde{g}_{\text{M}}\) is defined as follows: </p>
+
+<p>\[\begin{equation}    \tilde{g}_{\text{M}} = \sqrt{\hat{g}_{\text{M}}g_{\text{20-month}}}, \end{equation}\]</p>
+
+<p> where \(\hat{g}_{\text{M}}\) is the estimated growth rate during the Pre-DL era, and \(g_{\text{20-month}}\) is the growth rate implied by a 20-month doubling period. The reason we take the geometric mean of the estimated growth rate, and the growth rate implied by a 20-month doubling period is because Moore’s law is sufficiently well-established that the error bars around \(\hat{g}_{\text{M}}\) are too large relative to how well-established Moore’s law is. We therefore artificially increase our precision of the growth rate associated with Moore’s law by taking an average of our estimated value and the usual growth rate implied by an ~20-month doubling-time.</p>
+
+<p>Our weight function, \(w(t)\), is constructed as follows: </p>
+
+<p>\[\begin{equation}    w(t) = \exp\bigg(\frac{(t-2022)^2}{2(\text{reversion date}-2022)^2}\bigg)^{-1}. \end{equation}\]</p>
+
+<p>Why? Well, it’s a logistic-like function with a unit-interval range, which exceeds \(1/2\) when \(t&lt; \text{reversion date}\), equals \(1/2\) when \(t = \text{reversion date}\), and is less than \(1/2\) otherwise. This is what it looks like:</p>
+
+<figure>
+  <img src="https://live.staticflickr.com/65535/51923032268_b5cbe67301_k.jpg" />
+</figure>
+
+<p>We then simulate some path \(C^j\) as follows: </p>
+
+<p>\[\begin{equation}    C_j = C(2022) e^{g^*_{j}t}, \hspace{0.15cm} \text{where, for any } \hspace{0.15cm} j: \end{equation}\]</p>
+
+<ul>
+  <li>\(\hat{g}_{\text{DL}}\) is estimated on our randomly sampled (with replacement) DL-Era Data,</li>
+  <li>\(\hat{g}_{\text{M}}\) is estimated on our randomly sampled (with replacement) Pre-DL Era data, and</li>
+  <li>\(w(t)\) is set based on a randomly sampled reversion date from our prior over reversion dates.</li>
+</ul>
+
+<hr />
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>You can find the details of this analysis and a comparison to Carey’s results <a href="https://docs.google.com/spreadsheets/d/15qaKhLYcwJRSi7woQMdhiQbdEgiZHOFZKtqfEOzsJpM/edit?usp=sharing">here</a>. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a> <a href="#fnref:1:1" class="reversefootnote" role="doc-backlink">&#8617;<sup>2</sup></a></p>
+    </li>
+  </ol>
+</div>
+<hr>
+
+              <p class="hiring-message">
+                We are hiring! If you want to contribute to our research, consider applying to one of <a href="/careers#open-positions">our job offers</a>.
+              </p></d-article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <span>© 2022 Epoch. Epoch is a fiscal sponsorship project of <a href="https://rethinkpriorities.org/">Rethink Priorities</a>.</span>
+
+  <div class="footer-icons-container">
+    <div class="footer-icons">
+      <a data-contact="aW5mb0BlcG9jaGFpLm9yZw==" href="#">
+        <i class="bi bi-envelope"></i>
+      </a>
+      <a href="https://github.com/epoch-research">
+          <i class="bi bi-github"></i>
+      </a>
+      <a href="https://twitter.com/EpochAIResearch">
+          <i class="bi bi-twitter"></i>
+      </a>
+    </div>
+  </div>
+
+</footer>
+</body>
+
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script src="/assets/js/footnotes.js"></script>
+</html>
+
+<script>
+  // As seen here: https://www.bram.us/2020/01/10/smooth-scrolling-sticky-scrollspy-navigation/
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling
+
+    if (window.getComputedStyle(document.documentElement).scrollBehavior !== 'smooth') {
+      for (let internalLink of document.querySelectorAll('a[href^="#"]')) {
+        let href = internalLink.getAttribute('href');
+        if (href == '#') continue;
+        const targetElement = document.querySelector(href.replaceAll(':', '\\:'));
+        if (targetElement) {
+          internalLink.addEventListener('click', (e) => {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+            });
+            e.preventDefault();
+          });
+        }
+      };
+    }
+
+    // Highlight TOC on scroll
+
+    let headers = [];
+    for (let header of document.querySelectorAll('h1[id]')) {
+      let subHeaders = [];
+      for (let subHeader of document.querySelectorAll('h2[id]')) {
+        subHeaders.push(subHeader);
+      }
+      headers.push[{
+        dom: header,
+        subHeaders: subHeaders,
+      }];
+    }
+
+    document.addEventListener('scroll', function(e) {
+      let currentHeader;
+
+      let headers = document.querySelectorAll('h1[id], h2[id], h3[id]');
+      let middleY = document.documentElement.clientHeight/2;
+      for (let i = 0; i < headers.length; i++) {
+        let p0 = headers[i].getBoundingClientRect().top;
+        let p1 = (i < headers.length - 1) ? headers[i+1].getBoundingClientRect().top : 999999;
+
+        if (p0 <= middleY && p1 > middleY) {
+          currentHeader = headers[i];
+          break;
+        }
+      }
+
+      if (currentHeader) {
+        let id = currentHeader.id;
+        document.querySelectorAll(`d-contents nav li a:not([href="#${id}"])`).forEach(node => node.classList.remove('active'));
+        document.querySelector(`d-contents nav li a[href="#${id}"]`).classList.add('active');
+      } else {
+        document.querySelectorAll(`d-contents nav li a`).forEach(node => node.classList.remove('active'));
+      }
+    });
+  });
+</script>

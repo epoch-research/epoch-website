@@ -1,0 +1,33 @@
+
+
+.rightAligned {
+  text-align: right;
+}
+
+.dropdown {
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  background-color: grey;
+  border-radius: 4px;
+  list-style: none;
+  padding: 5px;
+  width: 200px;
+}
+
+table.dataTable th, table.dataTable td {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-right: 4px !important;
+  padding-left: 4px !important;
+}
+
+.dateSlider {
+  margin: 10px auto;
+}
+
+.download-header {
+  color: white;
+  font-size: 0.9em;
+  text-align: left;
+}

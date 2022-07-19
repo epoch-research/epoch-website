@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+
+
+
+
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.2.2" />
+<meta property="og:title" content="Compute Trends Across Three Eras of Machine Learning" />
+<meta name="author" content="Jaime Sevilla" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="We’ve compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward." />
+<meta property="og:description" content="We’ve compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward." />
+<link rel="canonical" href="https://epoch-website-dev.web.app/blog/compute-trends" />
+<meta property="og:url" content="https://epoch-website-dev.web.app/blog/compute-trends" />
+<meta property="og:site_name" content="Epoch" />
+<meta property="og:image" content="https://epoch-website-dev.web.app/assets/images/posts/2022/compute-trends.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-02-16T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://epoch-website-dev.web.app/assets/images/posts/2022/compute-trends.png" />
+<meta property="twitter:title" content="Compute Trends Across Three Eras of Machine Learning" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Jaime Sevilla"},"dateModified":"2022-02-16T00:00:00+00:00","datePublished":"2022-02-16T00:00:00+00:00","description":"We’ve compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward.","headline":"Compute Trends Across Three Eras of Machine Learning","image":"https://epoch-website-dev.web.app/assets/images/posts/2022/compute-trends.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://epoch-website-dev.web.app/blog/compute-trends"},"url":"https://epoch-website-dev.web.app/blog/compute-trends"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <title> Compute Trends Across Three Eras of Machine Learning </title>
+
+  
+    
+
+
+
+
+
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/assets/css/micromodal.css">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg" >
+  <link rel="shortcut icon" type="image/png" href="/assets/images/favicon.png" ><!-- MathJax -->
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        processEscapes: true,
+      },
+
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+      },
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
+  
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+
+  <script src="/assets/js/micromodal.min.js"></script>
+
+  <!-- Copy buttons -->
+  <script src="/assets/js/clipboard.min.js"></script>
+  <script>
+  // TODO Temporary, compress
+  function addCopyButton(node) {
+    let copyButton;
+
+    if (node.tagName == 'PRE') {
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    } else {
+      let wrapper = document.createElement('div');
+      wrapper.classList.add('copiable-wrapper');
+      node.parentNode.insertBefore(wrapper, node);
+      wrapper.appendChild(node);
+
+      copyButton = document.createElement('button');
+      node.parentElement.appendChild(copyButton);
+      node.parentElement.classList.add('copiable-wrapper');
+      node.classList.add('copy-target');
+      copyButton.classList.add('copy-button');
+      copyButton.innerHTML = '<i class="bi-clipboard"></i>';
+    }
+
+    copyButton.querySelector('i').style.backgroundColor = node.style.backgroundColor;
+
+    let clipboard = new ClipboardJS(copyButton, {
+      target: function(trigger) {
+        return trigger.parentElement.querySelector('.copy-target');
+      },
+    });
+
+    let tooltip = tippy(copyButton, {
+      content: 'Copied',
+      trigger: 'manual',
+      placement: 'left',
+      appendTo: copyButton,
+      arrow: false,
+      offset: [1, -1],
+    });
+
+    clipboard.on('success', function(e) {
+      e.clearSelection();
+
+      let icon = e.trigger.querySelector('i');
+      icon.classList.remove('bi-clipboard');
+      icon.classList.add('bi-clipboard-check');
+
+      tooltip.show();
+      setTimeout(() => {
+        tooltip.hide();
+        icon.classList.remove('bi-clipboard-check');
+        icon.classList.add('bi-clipboard');
+      }, 1200);
+    });
+
+    clipboard.on('error', function(e) {
+      e.clearSelection();
+    });
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    for (let element of document.querySelectorAll('pre, .boxed-text')) {
+      addCopyButton(element);
+    }
+  });
+</script>
+
+</head>
+<head>
+    <script src="/assets/js/distillpub/template.v2.js"></script>
+    <script src="/assets/js/distillpub/transforms.v2.js"></script>
+
+    
+      
+
+<script src="https://unpkg.com/@popperjs/core@2.11.2"></script>
+<script src="https://unpkg.com/tippy.js@6.2.6"></script>
+
+
+
+<style>
+  :root {
+    --resource-color: 78, 51, 80;
+  }
+
+  d-title {
+    padding: 0;
+  }
+
+  d-title {
+    margin-bottom: 15px;
+  }
+
+  d-article {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .article-head {
+    width: 100%;
+    background-color: var(--header-color);
+    margin-bottom: 4em;
+  }
+
+  .article-head-content {
+    padding-left: var(--nav-bar-margin);
+    padding-right: var(--nav-bar-margin);
+    display: flex;
+    margin: auto;
+    padding-top: 70px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+  }
+
+  .page-content {
+    padding-top: 0;
+  }
+
+  .summary-supertitle {
+    margin-bottom: 0;
+    margin-top: 10px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    word-spacing: 3px;
+  }
+
+  .summary-title {
+    margin-bottom: 15px;
+  }
+
+  .summary-title h1 {
+    margin-bottom: 0;
+  }
+
+  .cite-us {
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    font-size: 0.9rem;
+    color: white !important;
+  }
+
+  .citation-tooltip {
+    max-width: calc(100vw - 27px);
+    box-shadow: 0 0 7px 7px black;
+    border-radius: var(--default-radius);
+  }
+
+  .citation-tooltip > .tippy-box {
+    padding-top: 0.5em;
+  }
+
+  .citation-tooltip pre * {
+    color: var(--code-color);
+  }
+
+  @media (min-width: 800px) {
+    .regular-banner .article-head-content {
+      width: auto;
+      height: calc(50vh);
+      padding-top: 0;
+      padding-bottom: 1em;
+      padding-left: var(--nav-bar-margin);
+      padding-right: var(--nav-bar-margin);
+    }
+
+    .regular-banner .banner-img-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .regular-banner .banner-img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: left;
+    }
+
+    .regular-banner .summary {
+      flex: 0 0 50%;
+      box-sizing: border-box;
+    }
+
+    .regular-banner .summary-main {
+      width: 90%;
+      margin: auto;
+      margin-left: 0;
+    }
+
+    .regular-banner .banner {
+      flex: 0 0 50%;
+      margin: 0;
+      padding: 0;
+      object-fit: cover;
+    }
+}
+
+  
+
+  .summary {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1em;
+  }
+
+  .summary-title, .summary-title *,
+  .summary-authors, .summary-authors *,
+  .summary-abstract, .summary-abstract *,
+  .summary-supertitle, .summary-supertitle *,
+  .summary-footer, .summary-footer * {
+    color: white;
+  }
+
+  .article-resources, .article-resources * {
+    color: white !important;
+  }
+
+  .summary .copiable-wrapper i {
+    color: black;
+  }
+
+  .summary-footer {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .summary-authors {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .banner {
+    order: 2;
+    flex: 0 0 41%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    //padding-right: 10px;
+  }
+
+  .banner-img-wrapper img {
+    border-radius: var(--default-radius);
+  }
+
+  .article-resources {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .article-resource {
+    border-radius: 4px;
+    background-color: rgba(var(--resource-color), 0.8);
+    padding: 6px 11px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 5px;
+    margin-top: 0.5em;
+    white-space: nowrap;
+  }
+
+  .article-resources i {
+    margin-right: 0.5rem;
+  }
+
+  .article-resource:hover {
+    background-color: rgba(var(--resource-color), 1.0);
+  }
+
+  @media (max-width: 800px) {
+    .article-head-content {
+      flex-wrap: wrap;
+    }
+
+    .banner, .regular-banner .banner {
+      order: 1;
+      flex-basis: 100%;
+      margin-left: 0;
+      margin-right: 0;
+      padding-left: 0;
+      text-align: left;
+    }
+
+    .summary {
+      order: 2;
+    }
+  }
+</style>
+
+    
+  </head>
+
+  <body><header class="site-header" role="banner">
+  <div class="header-wrapper"><a href="/">
+      <img src="/assets/images/epoch-logo-white-text.svg" alt="Epoch logo" class="header-logo">
+      
+    </a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger">
+          
+          
+          <a class="page-link" href="/research">Research</a>
+          <a class="page-link current-menu-item" href="/blog">Blog</a>
+          <a class="page-link" href="/mlinputs/visualization">Visualization</a>
+          <a class="page-link" href="/team">Team</a>
+          <a class="page-link" href="/careers">Careers</a>
+        </div>
+      </nav></div>
+
+  <script>
+    document.addEventListener('click', (e) => {
+      let navTrigger = document.querySelector('#nav-trigger');
+      if (navTrigger && navTrigger.checked) {
+        if (e.target != navTrigger.parentElement && !navTrigger.parentElement.contains(e.target)) {
+          navTrigger.checked = false;
+        }
+      }
+    });
+  </script>
+
+  <style>
+    .image-tooltip {
+      display: inline-block;
+      width: 400px !important;
+    }
+
+    .image-tooltip img {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.addEventListener('load', () => {
+      for (let tooltipedElement of document.querySelectorAll('[data-tooltip-image]')) {
+        let href = tooltipedElement.href;
+        let imageUrl = tooltipedElement.dataset.tooltipImage;
+
+        if (!imageUrl) continue;
+
+        let content;
+        if (href) {
+          content = `<a class="image-tooltip" href="${href}"><img src='${imageUrl}'></img></a>`;
+        } else {
+          content = `<img class="image-tooltip" src='${imageUrl}'></img>`;
+        }
+
+        tippy(tooltipedElement, {
+          allowHTML: true,
+          placement: 'top',
+          arrow: false,
+          interactive: true,
+          maxWidth: '500px',
+          trigger: 'mouseenter',
+          onShow: () => {
+            tippy.hideAll();
+          },
+          content: content,
+        });
+      }
+    });
+  </script>
+
+  <script>
+    // Deobfuscate email addresses
+
+    function addMailDeobfuscator(element) {
+      element.addEventListener('mouseover', () => element.href = 'mailto:' + atob(element.dataset.contact));
+      element.addEventListener('focus', () => element.href = 'mailto:' + atob(element.dataset.contact));
+    }
+
+    window.addEventListener('load', () => {
+      for (let element of document.querySelectorAll("[data-contact]")) {
+        addMailDeobfuscator(element);
+      }
+    });
+  </script>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="post distill">
+
+        
+          
+
+<div class="article-head ">
+  <div class="article-head-content">
+    <div class="banner">
+      <div class="banner-img-wrapper">
+        <img src="/assets/images/posts/2022/compute-trends.png"/>
+      </div>
+    </div>
+    <div class="summary">
+      <div class="summary-main">
+        
+        <div class="summary-title">
+          <h1>Compute Trends Across Three Eras of Machine Learning</h1>
+          <a class="cite-us"><i class="bi-journal-text"></i> Cite this post</a>
+        </div>
+        
+        <div class="summary-authors">
+          
+          
+
+
+
+      
+      <span class="author tooltiped" data-member-id="jaime-sevilla">Jaime Sevilla</span>, 
+      
+      <span class="author tooltiped" data-member-id="tamay-besiroglu">Tamay Besiroglu</span>, 
+      
+      <span class="author tooltiped" data-member-id="anson-ho">Anson Ho</span>, 
+      
+      <span class="author tooltiped" data-member-id="lennart-heim">Lennart Heim</span>, 
+      
+      <span class="author tooltiped" data-member-id="marius-hobbhahn">Marius Hobbhahn</span> and 
+      
+      <span class="author tooltiped" data-member-id="pablo-villalobos">Pablo Villalobos</span>
+
+<script src="/assets/js/umbrella.min.js"></script>
+<style>
+  .author.tooltiped {
+    cursor: pointer;
+  }
+
+  .summary-authors .tippy-content {
+    width: 180px;
+    padding: 5px;
+  }
+
+  .miniprofile .mug {
+    width: 180px;
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .miniprofile a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .miniprofile .member-resource {
+    margin-right: 5px;
+  }
+
+  .miniprofile .member-info {
+    padding: 4px;
+    width: 180px;
+  }
+
+  .miniprofile .member-name, .miniprofile .member-role {
+    margin-bottom: 2px;
+  }
+</style>
+
+<script>
+
+  
+
+  
+
+  let teamMembers = {
+    
+      'jaime-sevilla': {
+        id: 'jaime-sevilla',
+        name: 'Jaime Sevilla',
+        description: 'Jaime is a researcher focused on statistics and technological forecasting. Besides his role at Epoch, he is a research affiliate of the <a href="https://www.cser.ac.uk/">Centre for the Study of Existential Risk</a> at Cambridge University and the cofounder of <a href="https://riesgoscatastroficosglobales.com/">Riesgos Catastróficos Globales</a>.',
+        role: 'Director',
+        imageUrl: '/assets/images/team/jaime-sevilla.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'amFpbWVAZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/Jsevillamol'},
+        
+        ],
+      },
+    
+      'tamay-besiroglu': {
+        id: 'tamay-besiroglu',
+        name: 'Tamay Besiroglu',
+        description: 'Tamay is a researcher focusing on the Economics of Computing and big-picture trends in Machine Learning. In addition to his role at Epoch, Tamay is a researcher at the Future Tech Lab at MIT, and AI Forecasting Lead at Metaculus. Previously, he led strategy for Metaculus, consulted for the UK Government, and worked at the Future of Humanity Institute.',
+        role: 'Associate director',
+        imageUrl: '/assets/images/team/tamay-besiroglu.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'dGFtYXlAZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'pablo-villalobos': {
+        id: 'pablo-villalobos',
+        name: 'Pablo Villalobos',
+        description: 'Pablo has a background in Mathematics and Computer Science. After spending some time as a software engineer, he decided to pivot towards AI. His interests include the economic consequences of advanced AI systems and the role of algorithmic improvements in AI progress.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/pablo-villalobos.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'cGFibG9AZXBvY2hhaS5vcmc='},
+        
+        ],
+      },
+    
+      'anson-ho': {
+        id: 'anson-ho',
+        name: 'Anson Ho',
+        description: 'Anson is a researcher and writer for Epoch. His research interests are in interpretability, theoretical AI alignment, and ensuring safe AI development through governance and strategy. Prior to this, he completed his BSc in physics at the University of St Andrews.',
+        role: 'Staff Researcher',
+        imageUrl: '/assets/images/team/anson-ho.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'YW5zb25AZXBvY2hhaS5vcmc='},
+        
+          
+          
+          
+          
+          
+          {name: 'github', icon: 'github', url: 'https://github.com/ansonwhho'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://ansonwhho.github.io/'},
+        
+        ],
+      },
+    
+      'lennart-heim': {
+        id: 'lennart-heim',
+        name: 'Lennart Heim',
+        description: 'Lennart is a researcher on AI and compute. His research interests include the role of compute in the AI production function, the compute landscape/supply chain, security of AI systems, and forecasting emerging technologies. He is a research affiliate with the Centre for the Governance of AI in Oxford and has a background in Computer Engineering.',
+        role: 'Research Fellow and Strategy Specialist',
+        imageUrl: '/assets/images/team/lennart-heim.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bGVubmFydEBlcG9jaGFpLm9yZw=='},
+        
+          
+          
+          
+          
+          
+          {name: 'twitter', icon: 'twitter', url: 'https://twitter.com/ohlennart'},
+        
+          
+          
+          
+          
+          
+          {name: 'website', icon: 'globe', url: 'https://heim.xyz'},
+        
+        ],
+      },
+    
+      'marius-hobbhahn': {
+        id: 'marius-hobbhahn',
+        name: 'Marius Hobbhahn',
+        description: 'Marius builds models for AI timelines and takeoff using historical trends and his best understanding of the future.',
+        role: 'Research Fellow',
+        imageUrl: '/assets/images/team/marius-hobbhahn.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'bWFyaXVzQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'eduardo-infante-roldan': {
+        id: 'eduardo-infante-roldan',
+        name: 'Eduardo Infante-Roldán',
+        description: 'Eduardo does some programming.',
+        role: 'Software Engineer',
+        imageUrl: '/assets/images/team/eduardo-infante-roldan.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWR1QGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+      'ege-erdil': {
+        id: 'ege-erdil',
+        name: 'Ege Erdil',
+        description: 'Ege Erdil is an undergraduate student at Middle East Technical University. He has interests in mathematics, statistics, economics and forecasting.',
+        role: 'Intern Researcher',
+        imageUrl: '/assets/images/team/ege-erdil.jpg',
+        resources: [
+        
+          
+          
+          
+          
+          
+          {name: 'mail', icon: 'envelope', url: 'ZWdlQGVwb2NoYWkub3Jn'},
+        
+        ],
+      },
+    
+  };
+
+  
+
+  
+
+  let advisors = {
+    
+      'tom-davidson': {
+        id: 'tom-davidson',
+        name: 'Tom Davidson',
+        description: 'Tom is a senior research analyst at Open Philanthropy. He’s currently working on assessing arguments that transformative AI might be developed relatively soon. Prior to joining Open Philanthropy, Tom worked as a Data Scientist for education technology startup BridgeU and taught science at a UK comprehensive school. He has a Masters in Physics and Philosophy from the University of Oxford.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/tom-davidson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+      'neil-thompson': {
+        id: 'neil-thompson',
+        name: 'Neil Thompson',
+        description: 'Neil is an Innovation Scholar at MIT’s Computer Science and Artificial Intelligence Lab and the Initiative on the Digital Economy where he leads the FutureTech Project. He is also an Associate Member of the Broad Institute.',
+        role: 'Research Advisor',
+        imageUrl: '/assets/images/advisors/neil-thompson.jpg',
+        resources: [
+        
+        ],
+      },
+    
+  };
+
+  
+
+  let members = {...teamMembers, ...advisors};
+</script>
+
+
+<script>
+  for (let author of document.querySelectorAll('.author.tooltiped')) {
+    let member = teamMembers[author.dataset.memberId];
+    if (!member) continue;
+
+    let resources = [];
+    for (let resource of member.resources) {
+      if (resource.name == "mail") {
+        resources.push(`<a class="member-resource" href="#" data-contact="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      } else {
+        resources.push(`<a class="member-resource" href="${resource.url}"><i class="bi bi-${resource.icon}"></i></a>`);
+      }
+    }
+
+    tippy(author, {
+      allowHTML: true,
+      placement: 'top',
+      arrow: false,
+      interactive: true,
+      maxWidth: '200px',
+      trigger: 'mouseenter click',
+      onShow: (instance) => {
+        tippy.hideAll();
+        for (let element of instance.popper.querySelectorAll('[data-contact]')) {
+          addMailDeobfuscator(element);
+        }
+      },
+      content:
+        `
+        <div class="miniprofile">
+          <div class="mug" style="border-radius: 5px; background-image: url('${member.imageUrl}')"></div>
+          <div class="member-info">
+            <h3 class="member-name">${member.name}</h3>
+            <h4 class="member-role">${member.role}</h4>
+            <div class="member-resources">
+              ${resources.join('\n')}
+            </div>
+          </div>
+        </div>
+        `,
+    });
+  }
+</script>
+
+        </div>
+        
+        
+        <div class="summary-abstract">
+          We’ve compiled a dataset of the training compute for over 120 Machine Learning models, highlighting novel trends and insights into the development of AI since 1952, and what to expect going forward.
+        </div>
+        
+        
+          <div class="article-resources">
+            
+            <a class="article-resource" href="https://arxiv.org/abs/2202.05924"><i class="bi bi-file-text"></i>Paper</a>
+            
+            <a class="article-resource" href="/mlinputs/visualization"><i class="bi bi-graph-up"></i>Visualization</a>
+            
+            <a class="article-resource" href="/mlinputs/data"><i class="bi bi-table"></i>Dataset</a>
+            
+          </div>
+        
+      </div>
+      
+      <div class="summary-footer">
+        Feb. 16, 2022
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<script>
+  let content = `
+    
+<p style="margin-bottom: 0">Cite this work as</p>
+
+<div class="language-plaintext highlighter-rouge wrappable-pre">
+<div class="highlight">
+  <pre class="highlight"><code>Jaime Sevilla et al. (2022), "Compute Trends Across Three Eras of Machine Learning". <em>Published online at epochai.org.</em> Retrieved from: 'https://epoch-website-dev.web.app/blog/compute-trends' [online resource]</code></pre>
+</div>
+</div>
+
+<p style="margin-bottom: 0">BibTeX citation:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@misc{epoch2022computetrends,
+  title = "Compute Trends Across Three Eras of Machine Learning",
+  author = {Jaime Sevilla, Tamay Besiroglu, Anson Ho, Lennart Heim, Marius Hobbhahn and Pablo Villalobos},
+  year = 2022,
+  howpublished = "\\url{https://epoch-website-dev.web.app/blog/compute-trends}",
+  note = "Accessed: 2022-07-19"
+}
+</code></pre></div></div>
+
+  `;
+
+  tippy('.cite-us', {
+    allowHTML: true,
+    placement: 'bottom-start',
+    arrow: false,
+    interactive: true,
+    maxWidth: '900px',
+    trigger: 'click',
+    content: content,
+    onShow: (instance) => {
+      instance.popper.classList.add('citation-tooltip');
+      tippy.hideAll();
+      instance.popper.querySelectorAll('pre').forEach(pre => addCopyButton(pre));
+    },
+  });
+</script>
+
+
+        
+
+        <d-article>
+          <d-contents>
+            <nav class="l-text figcaption">
+            <h3>Contents</h3><div><ul id="toc" class="section-nav">
+<li class="toc-entry toc-h1"><a href="#introduction">Introduction</a></li>
+<li class="toc-entry toc-h1"><a href="#methodology">Methodology</a></li>
+<li class="toc-entry toc-h1"><a href="#results">Results</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#compute-trends-are-slower-than-previously-reported">Compute trends are slower than previously reported</a></li>
+<li class="toc-entry toc-h2"><a href="#three-eras-of-machine-learning">Three eras of machine learning</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#implications-and-further-work">Implications and further work</a></li>
+</ul></div></nav>
+          </d-contents>
+
+          
+<link rel="stylesheet" href="/assets/bundles/trends/graph.css" />
+
+<link rel="stylesheet" href="/assets/bundles/trends/plotter/multislider.css" />
+
+<link rel="stylesheet" href="/assets/bundles/trends/plotter/libs/modal.css" />
+
+<link rel="stylesheet" href="/assets/bundles/trends/plotter/mlp.css" />
+
+<script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-array@3"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-color@3"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-format@3"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-interpolate@3"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-time@3"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-time-format@4"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/d3-scale/d3-scale@4"></script>
+
+<script src="/assets/bundles/trends/plotter/HEADER.js"></script>
+
+<script src="/assets/bundles/trends/plotter/utils.js"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/canvas-txt.js"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/modal.js"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/interact.min.js"></script>
+
+<script src="/assets/bundles/trends/plotter/libs/event.js"></script>
+
+<script src="/assets/bundles/trends/plotter/canvas.js"></script>
+
+<script src="/assets/bundles/trends/plotter/objects.js"></script>
+
+<script src="/assets/bundles/trends/plotter/controls.js"></script>
+
+<script src="/assets/bundles/trends/plotter/plotter.js"></script>
+
+<script src="/assets/bundles/trends/plotter/multislider.js"></script>
+
+<script src="/assets/bundles/trends/stats.js"></script>
+
+<script src="/assets/bundles/trends/trends.js"></script>
+
+<script src="/assets/bundles/trends/presets.js"></script>
+
+<script src="/assets/bundles/trends/graph.js"></script>
+
+<script src="/assets/bundles/trends/database.js"></script>
+
+<style>
+  @media (hover: hover){
+    /* For non touch devices, I think */
+    #trends-graph-wrapper:not(.active) {
+      cursor: pointer;
+    }
+  }
+
+  #trends-graph-wrapper:not(.active) * {
+    pointer-events: none;
+  }
+
+  #trends-graph-wrapper.active {
+    box-shadow: 0px 0px 7px 8px rgb(0 0 0 / 10%);
+  }
+
+  #trends-graph-wrapper {
+    transition: box-shadow 0.3s ease;
+    grid-column: page;
+    padding: 7px 8px 0px 8px;
+  }
+
+  #trends-graph-wrapper:not(.active) .dateSliderContainer, #trends-graph-wrapper:not(.active) .over-button {
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  #trends-graph-wrapper .dateSliderContainer, #trends-graph-wrapper .over-button {
+    transition: visibility 0.3s ease, opacity 0.3s ease;
+  }
+
+  #trends-graph {
+    width: 100%;
+    height: 80vh;
+  }
+
+  .mlp-modal .modal-container {
+    max-width: 400px;
+  }
+
+  .mlp-tooltip-table {
+    border: 0;
+    margin-bottom: 0;
+  }
+
+  .mlp-tooltip-table td {
+    padding: 2px;
+  }
+
+  .mlp-tooltip-table tr, .mlp-tooltip-table td {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 0;
+  }
+</style>
+
+<!--
+# Contents
+{:.no_toc}
+
+1. Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+-->
+
+<p><strong>Last update</strong>: May 2nd, 2022</p>
+
+<p><em>Summary: We have collected a dataset and analysed key trends in the training compute of Machine Learning models since 1950. We identify three major eras of training compute - the pre-Deep Learning Era, the Deep Learning Era, and the Large-Scale Era. Furthermore, we find that the training compute has grown by a factor of 10 billion since 2010, with a doubling rate of around 5-6 months. See our recent paper, <a href="https://arxiv.org/abs/2202.05924">Compute Trends Across Three Eras of Machine Learning</a>, for more details.</em></p>
+
+<h1 id="introduction">Introduction</h1>
+<p>It is well known that progress in machine learning (ML) is driven by three primary factors - algorithms, data, and compute. This makes intuitive sense - the development of algorithms like backpropagation transformed the way that machine learning models were trained, leading to significantly improved efficiency compared to previous optimisation techniques (<a href="https://www.deeplearningbook.org/contents/mlp.html#pf25">Goodfellow <em>et al.</em>, 2016</a>; <a href="http://www.cs.toronto.edu/~hinton/absps/naturebp.pdf">Rumelhart <em>et al.</em>, 1986</a>). Data has been becoming increasingly available, particularly with the advent of “<a href="https://en.wikipedia.org/wiki/Big_data">big data</a>” in recent years. At the same time, progress in computing hardware has been rapid, with increasingly powerful and specialised AI hardware (<a href="https://forum.effectivealtruism.org/s/4yLbeJ33fYrwnfDev/p/YNB39RyJ7iAQKGJvq">Heim, 2021</a>; <a href="https://cset.georgetown.edu/wp-content/uploads/AI-Chips%E2%80%94What-They-Are-and-Why-They-Matter.pdf">Khan and Mann, 2020</a>).</p>
+
+<p>What is less obvious is the <em>relative</em> importance of these factors, and what this implies for the future of AI. <a href="https://arxiv.org/abs/2001.08361">Kaplan <em>et al.</em> (2020)</a> studied these developments through the lens of <strong>scaling laws</strong>, identifying three key variables:</p>
+<ul>
+  <li>Number of parameters of a machine learning model</li>
+  <li>Training dataset size</li>
+  <li>Compute required for the final training run of a machine learning model (henceforth referred to as <strong>training compute</strong>)</li>
+</ul>
+
+<p>Trying to understand the relative importance of these is challenging because our theoretical understanding of them is insufficient - instead, we need to take large quantities of data and analyse the resulting trends. Previously, we looked at trends in parameter counts of ML models - in this paper, we try to understand how training compute has evolved over time.</p>
+
+<p><a href="https://openai.com/blog/ai-and-compute/">Amodei and Hernandez (2018)</a> laid the groundwork for this, finding a $300,000\times$ increase in training compute from 2012 to 2018, doubling every 3.4 months. However, this investigation had only around $15$ datapoints, and does not include some of the most impressive recent ML models like GPT-3 (<a href="https://arxiv.org/abs/2005.14165">Brown, 2020</a>).</p>
+
+<p>Motivated by these problems, we have curated the largest ever dataset containing the training compute of machine learning models, with over 120 datapoints. Using this data, we have drawn several novel insights into the significance of compute as an input to ML models.</p>
+
+<p>These findings have implications for the future of AI development, and how governments should orient themselves to compute governance and a future with powerful AI systems.</p>
+
+<h1 id="methodology">Methodology</h1>
+<p>Following the approach taken by OpenAI (<a href="https://openai.com/blog/ai-and-compute/">Amodei and Hernandez, 2018</a>), we use two main approaches to determining the training compute<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> of ML systems:</p>
+<ol>
+  <li><strong>Counting the number of operations</strong>: The training compute can be determined from the number of arithmetic operations that is performed by the machine. By looking at the model architecture and closely monitoring the training process, we can directly calculate the total number of multiplications and additions, yielding the training compute. As ML models become significantly more complex (as continues to be the case), this approach becomes significantly more tedious and tricky. Doing this also requires knowledge of key details of the training process<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>, which may not always be accessible.</li>
+  <li><strong>GPU-time</strong>: A second approach, which is independent of the model architecture, uses the information about the total training time and hardware to estimate the training compute. This method typically requires making several assumptions about the training process, which leads to a greater uncertainty in the final value.<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup></li>
+</ol>
+
+<p>Most of the time, we were able to use either of the above approaches to estimate the training compute for a particular ML model. In practice this process involved many difficulties, since authors would often not publish key information about the hardware used or training time.</p>
+
+<p>Of course, it would be infeasible for us to gather this data for <em>all</em> ML systems since 1950. Instead, we focus on <em>milestone</em> systems, based on the following criteria:</p>
+<ul>
+  <li><strong>Clear importance</strong>: These are systems that have major historical influence, significantly improve on the state-of-the-art, or have over 1000 citations<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup></li>
+  <li><strong>Relevance</strong>: We only include papers which include <em>experimental results</em> and a key machine learning component, and have a goal of pushing the existing state-of-the-art</li>
+  <li><strong>Uniqueness</strong>: If another paper describing the same system is more influential, then the paper is excluded from our dataset</li>
+</ul>
+
+<p>This selection process lets us focus on the most important systems, helping us understand the key drivers of the state-of-the-art.</p>
+
+<h1 id="results">Results</h1>
+<p>Using these techniques, we yielded a <a href="https://docs.google.com/spreadsheets/d/1AAIebjNsnJj_uKALHbXNfn3_YsT6sHXtCU0q7OIPuc4/edit#gid=0">dataset</a> with training compute for over 120 milestone ML systems, the largest such dataset yet. We have chosen to make this and our <a href="/mlinputs/visualization">interactive data visualisation</a> publicly available, in order to facilitate further research along the same lines.</p>
+
+<div id="trends-graph-wrapper">
+  <div id="trends-graph">
+  </div>
+</div>
+
+<p>When analysing the gathered data, we draw two main conclusions.</p>
+<ul>
+  <li>Trends in training compute are slower than previously reported</li>
+  <li>We identify three eras of training compute usage across machine learning</li>
+</ul>
+
+<h2 id="compute-trends-are-slower-than-previously-reported">Compute trends are slower than previously reported</h2>
+<p>In the previous investigation by <a href="https://openai.com/blog/ai-and-compute/">Amodei and Hernandez (2018)</a>, the authors found that the training compute used was growing extremely rapidly - doubling every 3.4 months. With approximately 10 times more data than the original study, we find a doubling time closer to 6 months. This is still extraordinarily fast! Since 2010, the amount of training compute for machine learning models has grown by a factor of 10 billion, significantly exceeding a naive extrapolation of Moore’s Law.</p>
+
+<p>This suggests that many previous analyses based on OpenAI’s paper were biased towards rapid developments, approximately by a factor of two.</p>
+
+<h2 id="three-eras-of-machine-learning">Three eras of machine learning</h2>
+<p>One of the more speculative contributions of our paper is that we argue for the presence of three eras of machine learning. This is in contrast to prior work, which identifies two trends separated by the start of the Deep Learning revolution (<a href="https://openai.com/blog/ai-and-compute/">Amodei and Hernandez, 2018</a>). Instead, we split the history of ML compute into three eras:</p>
+<ol>
+  <li>The <strong>Pre-Deep Learning Era</strong>: Prior to Deep Learning, training compute approximately follows Moore’s Law, with a doubling time of approximately every 20 months.</li>
+  <li>The <strong>Deep Learning Era</strong>: This starts somewhere between 2010 and 2012<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup>, and displays a doubling time of approximately 6 months</li>
+  <li>The <strong>Large-Scale Era</strong>: Arguably, a separate trend of of models breaks off the main trend between 2015 and 2016. These systems are characteristic in that they are run by large corporations, and use training compute 2-3 orders of magnitude larger than systems that follow the Deep Learning Era trend in the same year. Interestingly, the growth of compute in these Large-Scale models seems slower, with a doubling time of about 10 months.</li>
+</ol>
+
+<p>A key benefit of this framing is that it helps make sense of developments over the last two decades of ML research. Deep Learning marked a major paradigm shift in ML, with an increased focus on training larger models, using larger datasets, and using more compute. The bifurcation of the Deep Learning trend coincides with the shift in focus towards major projects at large corporations, such as DeepMind and OpenAI.</p>
+
+<p>However, there is a fair bit of ambiguity with this framing. For instance, how do we know exactly which models can be considered large-scale? How can we be sure that this “large-scale” trend isn’t just due to noise? To test these questions, we used different statistical thresholds for what counts as “large-scale”, and the resulting trend does not change very much, thus the findings are at least somewhat robust to different selection criteria. Of course, the exact threshold that we use is still debatable, and it is hard to be certain about the observed trends without more data.</p>
+
+<h1 id="implications-and-further-work">Implications and further work</h1>
+<p>We expect that future work will build upon this research project. Using the aforementioned compute estimation techniques, more training compute data can be gathered, offering the potential for more conclusive analyses. We can also make the data gathering process easier, such as by:</p>
+<ul>
+  <li>Developing tools for automatically measuring training compute usage (as well as inference compute)</li>
+  <li>Publishing key details about the training process, such as the GPU model used</li>
+</ul>
+
+<p>Taking these steps helps key actors obtain valuable information in the future.</p>
+
+<p>Naturally, we will also be looking at trends in dataset sizes, and comparing the relative importance of data and compute for increased performance. We can also look how factors like funding and talent influence the primary inputs of a ML system, like data and compute.</p>
+
+<p>Answering questions like these is crucial for understanding how the future of AI will look like. At Epoch, we’re particularly concerned about ensuring that AI is developed in a beneficial way, with appropriate governance intervention to ensure safety. Better understanding the progress of compute capabilities can help us better navigate a future with powerful AI systems.</p>
+
+<p><em><a href="https://arxiv.org/abs/2202.05924">Read the full paper now on the arXiv</a>.</em></p>
+
+<hr />
+
+<script>
+  buildTrendsGraph("#trends-graph", database);
+
+  let graphWrapperNode = document.getElementById("trends-graph-wrapper");
+
+  // :hover alternative for touch devices
+  document.addEventListener('click', function(e) {
+    e = e || window.event;
+    var target = e.target || e.srcElement;
+
+    if (graphWrapperNode.contains(target)) {
+      graphWrapperNode.classList.add("active");
+    } else {
+      graphWrapperNode.classList.remove("active");
+    }
+  });
+
+  // Escape from the graph on Escape
+  document.body.addEventListener('keyup', function(e) {
+    if (e.key == "Escape") {
+      graphWrapperNode.classList.remove("active");
+    }
+  });
+</script>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>Specifically, we focus on the <em>final</em> training run of a ML system. This is primarily due to measurability - researchers generally do not mention the total compute or training time that does not directly contribute to the final machine learning model. We simply do not have sufficient information to determine the total compute through the entire experimentation process. <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>i.e. the total number of iterations during training. <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>For instance, we often assumed that the GPU utilisation rate was 10%. We often also had to guess which GPU model was in use based on the year in which the paper was published, in the event that this information was not disclosed in the paper of interest and the authors were not able to provide an answer. <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>These criteria are ambiguous and can vary on a case-by-case basis. For instance, new papers (published within the last year or two) can be very influential without having had the time to gather many citations. In such cases we make relatively subjective decisions of the importance of these ML models. <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>We discuss this more in Appendix D of the <a href="https://arxiv.org/pdf/2202.05924.pdf">paper</a>. While AlexNet (<a href="https://proceedings.neurips.cc/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf">Krizhevsky <em>et al.</em>, 2012</a>) is commonly associated with the start of Deep Learning, we argue that models before AlexNet have key features commonly associated with Deep Learning, and that 2010 is most consistent with evidence. <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+<hr>
+
+              <p class="hiring-message">
+                We are hiring! If you want to contribute to our research, consider applying to one of <a href="/careers#open-positions">our job offers</a>.
+              </p></d-article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <span>© 2022 Epoch. Epoch is a fiscal sponsorship project of <a href="https://rethinkpriorities.org/">Rethink Priorities</a>.</span>
+
+  <div class="footer-icons-container">
+    <div class="footer-icons">
+      <a data-contact="aW5mb0BlcG9jaGFpLm9yZw==" href="#">
+        <i class="bi bi-envelope"></i>
+      </a>
+      <a href="https://github.com/epoch-research">
+          <i class="bi bi-github"></i>
+      </a>
+      <a href="https://twitter.com/EpochAIResearch">
+          <i class="bi bi-twitter"></i>
+      </a>
+    </div>
+  </div>
+
+</footer>
+</body>
+
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script src="/assets/js/footnotes.js"></script>
+</html>
+
+<script>
+  // As seen here: https://www.bram.us/2020/01/10/smooth-scrolling-sticky-scrollspy-navigation/
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Smooth scrolling
+
+    if (window.getComputedStyle(document.documentElement).scrollBehavior !== 'smooth') {
+      for (let internalLink of document.querySelectorAll('a[href^="#"]')) {
+        let href = internalLink.getAttribute('href');
+        if (href == '#') continue;
+        const targetElement = document.querySelector(href.replaceAll(':', '\\:'));
+        if (targetElement) {
+          internalLink.addEventListener('click', (e) => {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+            });
+            e.preventDefault();
+          });
+        }
+      };
+    }
+
+    // Highlight TOC on scroll
+
+    let headers = [];
+    for (let header of document.querySelectorAll('h1[id]')) {
+      let subHeaders = [];
+      for (let subHeader of document.querySelectorAll('h2[id]')) {
+        subHeaders.push(subHeader);
+      }
+      headers.push[{
+        dom: header,
+        subHeaders: subHeaders,
+      }];
+    }
+
+    document.addEventListener('scroll', function(e) {
+      let currentHeader;
+
+      let headers = document.querySelectorAll('h1[id], h2[id], h3[id]');
+      let middleY = document.documentElement.clientHeight/2;
+      for (let i = 0; i < headers.length; i++) {
+        let p0 = headers[i].getBoundingClientRect().top;
+        let p1 = (i < headers.length - 1) ? headers[i+1].getBoundingClientRect().top : 999999;
+
+        if (p0 <= middleY && p1 > middleY) {
+          currentHeader = headers[i];
+          break;
+        }
+      }
+
+      if (currentHeader) {
+        let id = currentHeader.id;
+        document.querySelectorAll(`d-contents nav li a:not([href="#${id}"])`).forEach(node => node.classList.remove('active'));
+        document.querySelector(`d-contents nav li a[href="#${id}"]`).classList.add('active');
+      } else {
+        document.querySelectorAll(`d-contents nav li a`).forEach(node => node.classList.remove('active'));
+      }
+    });
+  });
+</script>
